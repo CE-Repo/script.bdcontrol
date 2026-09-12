@@ -31,19 +31,22 @@
       <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
       <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
 
-      <!-- Chapter tab above the panel's top right corner. It is declared
-           before the panel so the panel is drawn over its lower half, which
-           is what makes it read as a tab rather than a floating box. The
-           text comes straight from a window property, so the tab can hide
-           itself when there is no chapter to show. -->
+      <!-- Chapter tab, resting on the panel's top right corner. Its lower
+           edge stops exactly where the panel begins rather than running on
+           underneath: two translucent shapes over each other double up their
+           colour, which showed as a dark block once the panel transparency
+           was turned down. Its texture is rounded along the top and square
+           along the bottom, so the join with the panel reads as one shape at
+           any transparency. The text comes straight from a window property,
+           so the tab can hide itself when there is no chapter to show. -->
       <control type="group">
         <visible>!String.IsEmpty(Window(10000).Property(BDControl.Chapter))</visible>
         <control type="image">
           <left>1163</left>
           <top>-30</top>
           <width>180</width>
-          <height>52</height>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
+          <height>30</height>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="12">bd-tab.png</texture>
         </control>
         <control type="label">
           <left>1163</left>
