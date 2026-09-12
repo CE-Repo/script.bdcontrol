@@ -7,8 +7,8 @@ import xbmc
 import xbmcgui
 
 from . import actions, kodiutils, player, theme, tools
-from .kodiutils import (PROP_OSD_CLOSE, PROP_OSD_OPEN, PROP_OSD_TRIGGERED,
-                        home_property, localize, log)
+from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
+                        PROP_OSD_TRIGGERED, home_property, localize, log)
 
 XML_FILE = 'script-bdcontrol-osd.xml'
 SKIN_FOLDER = 'default'
@@ -19,7 +19,6 @@ GROUP_PANEL = 2
 LABEL_TITLE = 100
 LABEL_STATUS = 101
 LABEL_HINT = 103
-LABEL_CHAPTER = 104
 
 # Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
 # position" slider - bottom-anchored by default, sliding up to a small margin
@@ -129,6 +128,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         if self._closing:
             return
         self._closing = True
+        # The tab reads this straight from the window, so a stale value would
+        # outlive the OSD and reappear with the next one.
+        home_property(PROP_CHAPTER, '')
         self._stop.set()
         super(BDControlDialog, self).close()
 
@@ -223,7 +225,7 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             return
         self._set_label(LABEL_TITLE, state.title())
         self._set_label(LABEL_STATUS, state.describe())
-        self._set_label(LABEL_CHAPTER, state.chapter_text())
+        home_property(PROP_CHAPTER, state.chapter_text())
         if not state.playing:
             # Playback ended while the OSD was open - there is nothing to
             # control any more.
@@ -237,7 +239,7 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """
         self._set_label(LABEL_TITLE, localize(30451))
         self._set_label(LABEL_STATUS, '0:42:17 / 1:58:03')
-        self._set_label(LABEL_CHAPTER, localize(30010, 3, 24))
+        home_property(PROP_CHAPTER, localize(30010, 3, 24))
 
     def _preview_loop(self):
         """Close the preview after PREVIEW_SECONDS, unless closed sooner."""
@@ -330,6 +332,7 @@ def show():
         dialog.wait_for_worker()
         home_property(PROP_OSD_OPEN, '')
         home_property(PROP_OSD_CLOSE, '')
+        home_property(PROP_CHAPTER, '')
         del dialog
     if failed:
         fallback()

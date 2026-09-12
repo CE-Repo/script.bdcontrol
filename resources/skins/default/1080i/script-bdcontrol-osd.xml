@@ -29,6 +29,33 @@
       <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
       <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
 
+      <!-- Chapter tab above the panel's top right corner. It is declared
+           before the panel so the panel is drawn over its lower half, which
+           is what makes it read as a tab rather than a floating box. The
+           text comes straight from a window property, so the tab can hide
+           itself when there is no chapter to show. -->
+      <control type="group">
+        <visible>!String.IsEmpty(Window(10000).Property(BDControl.Chapter))</visible>
+        <control type="image">
+          <left>1550</left>
+          <top>-40</top>
+          <width>240</width>
+          <height>70</height>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
+        </control>
+        <control type="label">
+          <left>1550</left>
+          <top>-37</top>
+          <width>240</width>
+          <height>34</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <label>$INFO[Window(10000).Property(BDControl.Chapter)]</label>
+        </control>
+      </control>
+
       <control type="image" id="3">
         <left>0</left>
         <top>0</top>
@@ -486,19 +513,6 @@
           <aligny>center</aligny>
           <label></label>
         </control>
-      </control>
-
-      <!-- Chapter: bottom right, clear of the centred hint. -->
-      <control type="label" id="104">
-        <left>30</left>
-        <top>137</top>
-        <width>1760</width>
-        <height>34</height>
-        <font>font10</font>
-        <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
-        <align>right</align>
-        <aligny>center</aligny>
-        <label></label>
       </control>
 
       <!-- Explanation of the focused button - icons-only style needs it, text

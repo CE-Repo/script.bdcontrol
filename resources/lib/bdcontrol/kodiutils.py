@@ -17,6 +17,10 @@ PROP_OSD_OPEN = 'bdcontrol.osd.open'
 PROP_OSD_CLOSE = 'bdcontrol.osd.close'
 PROP_OSD_TRIGGERED = 'bdcontrol.osd.triggered'
 
+# Read by the skin file rather than by us: the chapter tab takes its text
+# from here and hides itself while it is empty.
+PROP_CHAPTER = 'BDControl.Chapter'
+
 
 def addon():
     """Return a fresh Addon object (settings are cached per instance)."""
