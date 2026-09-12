@@ -23,8 +23,8 @@ LABEL_HINT = 103
 # Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
 # position" slider - bottom-anchored by default, sliding up to a small margin
 # below the top edge.
-PANEL_TOP_BOTTOM = 812
-PANEL_TOP_TOP = 20
+PANEL_TOP_BOTTOM = 860
+PANEL_TOP_TOP = 50
 
 BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202

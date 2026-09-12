@@ -33,7 +33,7 @@
         <left>0</left>
         <top>0</top>
         <width>1820</width>
-        <height>200</height>
+        <height>170</height>
         <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
       </control>
 
@@ -287,10 +287,10 @@
            and icons+text already show the label itself. -->
       <control type="label" id="103">
         <left>30</left>
-        <top>152</top>
+        <top>137</top>
         <width>1760</width>
         <height>34</height>
-        <font>font13</font>
+        <font>font10</font>
         <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
         <align>center</align>
         <aligny>center</aligny>
