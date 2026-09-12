@@ -32,6 +32,13 @@ PANEL_LAYOUT = {
     True: (278, 902, 50),
 }
 
+# How far the compact panel may travel sideways: from the screen margin the
+# full size panel keeps, to the same margin on the right (1920 - 1365 - 50).
+# The midpoint of that range is where the compact panel is centred, so 50%
+# leaves it exactly where it sits with no setting at all.
+COMPACT_LEFT_MIN = 50
+COMPACT_LEFT_MAX = 505
+
 BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
 BUTTON_KODI_OSD = 203
@@ -189,11 +196,17 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """Move the panel to the configured vertical position.
 
         100% is the bottom of the screen and the default; 0% moves it to a
-        small margin below the top edge.
+        small margin below the top edge. Sideways only the compact panel can
+        move: the full size one spans the screen and has nowhere to go.
         """
         left, bottom, ceiling = PANEL_LAYOUT[self._compact]
         percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 100)))
         top = ceiling + round((bottom - ceiling) * percent / 100)
+        if self._compact:
+            across = max(0, min(100,
+                                kodiutils.get_setting_int('osd_position_x', 50)))
+            left = COMPACT_LEFT_MIN + round(
+                (COMPACT_LEFT_MAX - COMPACT_LEFT_MIN) * across / 100)
         try:
             self.getControl(GROUP_PANEL).setPosition(left, top)
         except Exception:  # pylint: disable=broad-except

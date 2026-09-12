@@ -301,6 +301,14 @@ msgctxt "#30226"
 msgid "Draw the OSD at about three quarters the size: a shorter panel with smaller text, icons and buttons."
 msgstr ""
 
+msgctxt "#30227"
+msgid "Horizontal position"
+msgstr ""
+
+msgctxt "#30228"
+msgid "Compact mode only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The full size panel spans the screen and has nowhere to move."
+msgstr ""
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr ""

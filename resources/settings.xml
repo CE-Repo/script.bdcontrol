@@ -62,6 +62,23 @@
             <popup>false</popup>
           </control>
         </setting>
+        <setting id="osd_position_x" type="integer" label="30227" help="30228">
+          <level>0</level>
+          <default>50</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <dependencies>
+            <dependency type="enable">
+              <condition operator="is" setting="osd_compact">true</condition>
+            </dependency>
+          </dependencies>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
       </group>
       <group id="2" label="30275">
         <setting id="osd_panel_color" type="integer" label="30275" help="30276">
