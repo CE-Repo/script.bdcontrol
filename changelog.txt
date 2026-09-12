@@ -1,0 +1,43 @@
+v1.0.0
+- First release.
+- BD Control OSD that stays reachable while a Blu-ray disc menu owns the remote.
+- Keymap generator: long press OK (and other spare buttons) opens the OSD.
+- Direct access to Kodi's own OSD, video/audio/subtitle settings and codec info.
+- Pause, stop, chapter skip, seek, audio and subtitle selection during menu playback.
+- Title browser: play a single title without the disc menu.
+- Blu-ray playback mode switch, disc eject and a diagnostics report for CoreELEC.
+
+v1.0.1
+- Disc menu now uses PlayerControl(ShowVideoMenu), which reaches the player
+  directly instead of depending on which window has focus.
+- The keymap binds the Title / Top Menu button to the disc menu, the mapping
+  Kodi does not ship itself.
+- Optional separate popup and top menu entries for builds whose
+  PlayerControl(ShowVideoMenu) accepts "popup" and "top".
+
+v1.0.2
+- "Find my button": learns a button code from a real key press and binds it
+  directly, for remotes whose driver does not report held keys so long press
+  never fires.
+- "Show recent key presses from the log": reads the HandleKey lines out of
+  kodi.log and lets you bind one, without needing SSH.
+- Diagnostics now include the generated keymap, the remote.conf key-repeat
+  settings, whether debug logging is on and the last few key presses.
+
+v1.0.3
+- Started with no arguments - as Keymap Editor's runaddon() does - the addon
+  now opens the OSD during playback instead of its menu.
+- The service notices when another addon renames the BD Control keymap away
+  (Keymap Editor does this on save unless "Allow multiple keymap files" is on),
+  restores it and says so.
+- Diagnostics report Keymap Editor's version, its file name, whether it is set
+  to co-exist, and any disabled copies of the keymap.
+
+v1.0.4
+- The keymap is now built from buttons you assign in the addon settings: press
+  the button, then answer whether it should need a long press.
+- Two assignable buttons - one for the BD Control OSD, one for the disc menu.
+- The fixed list of trigger buttons (long press OK, Menu, Info, context menu,
+  Back, Display, Stop) is gone; a button assigned with an older version is
+  carried over automatically.
+- Nothing is bound until a button is assigned.
