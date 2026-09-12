@@ -93,8 +93,8 @@ ICON_ONLY_BUTTONS = (BUTTON_DIAGNOSTICS,)
 # Left to right, matching the skin file and the plain-list fallback. The ids
 # are not in order here: they were handed out as the buttons were added, the
 # row has been arranged since.
-BUTTON_ORDER = (BUTTON_KODI_OSD, BUTTON_POPUP_MENU, BUTTON_TOP_MENU,
-                BUTTON_STREAM, BUTTON_DIAGNOSTICS)
+BUTTON_ORDER = (BUTTON_KODI_OSD, BUTTON_STREAM, BUTTON_POPUP_MENU,
+                BUTTON_TOP_MENU, BUTTON_DIAGNOSTICS)
 
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
