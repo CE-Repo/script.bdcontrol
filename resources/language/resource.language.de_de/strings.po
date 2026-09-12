@@ -317,14 +317,6 @@ msgctxt "#30286"
 msgid "Color of the status line and the hint text."
 msgstr "Farbe der Statuszeile und des Hinweistexts."
 
-msgctxt "#30287"
-msgid "Progress bar"
-msgstr "Fortschrittsbalken"
-
-msgctxt "#30288"
-msgid "Color of the progress bar."
-msgstr "Farbe des Fortschrittsbalkens."
-
 msgctxt "#30289"
 msgid "Focused button"
 msgstr "Fokussierte Schaltfläche"

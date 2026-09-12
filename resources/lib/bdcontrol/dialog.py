@@ -18,7 +18,6 @@ SKIN_RESOLUTION = '1080i'
 GROUP_PANEL = 2
 LABEL_TITLE = 100
 LABEL_STATUS = 101
-PROGRESS = 102
 LABEL_HINT = 103
 
 # Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
@@ -193,17 +192,10 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             # The control is gone once the window closes; nothing to do.
             pass
 
-    def _set_progress(self, percentage):
-        try:
-            self.getControl(PROGRESS).setPercent(float(percentage))
-        except Exception:  # pylint: disable=broad-except
-            pass
-
     def _refresh(self):
         state = player.PlayerState()
         self._set_label(LABEL_TITLE, state.title())
         self._set_label(LABEL_STATUS, state.describe())
-        self._set_progress(state.percentage)
         if not state.playing:
             # Playback ended while the OSD was open - there is nothing to
             # control any more.
@@ -217,7 +209,6 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """
         self._set_label(LABEL_TITLE, localize(30451))
         self._set_label(LABEL_STATUS, localize(30010, 3, 24))
-        self._set_progress(35)
 
     def _preview_loop(self):
         """Close the preview after PREVIEW_SECONDS, unless closed sooner."""

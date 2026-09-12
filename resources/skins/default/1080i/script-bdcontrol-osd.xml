@@ -63,15 +63,6 @@
         <label></label>
       </control>
 
-      <control type="progress" id="102">
-        <left>30</left>
-        <top>62</top>
-        <width>1760</width>
-        <height>10</height>
-        <texturebg>bd-bar-back.png</texturebg>
-        <midtexture colordiffuse="$INFO[Window(10000).Property(BDControl.ProgressColor)]">bd-bar-mid.png</midtexture>
-      </control>
-
       <!-- 201: set from dialog.py -->
       <control type="button" id="201">
         <left>30</left>
@@ -292,7 +283,8 @@
         <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>
       </control>
 
-      <!-- Explanation of the focused button -->
+      <!-- Explanation of the focused button - icons-only style needs it, text
+           and icons+text already show the label itself. -->
       <control type="label" id="103">
         <left>30</left>
         <top>176</top>
@@ -302,6 +294,7 @@
         <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
         <align>center</align>
         <aligny>center</aligny>
+        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0)</visible>
         <label></label>
       </control>
     </control>

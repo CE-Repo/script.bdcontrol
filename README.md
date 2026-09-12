@@ -27,8 +27,8 @@ Because the keymap is evaluated *before* the action reaches the player, that
 button is not swallowed by the disc, and the dialog that opens receives the
 remote itself — so OK, the arrow keys and Back all work normally inside it.
 
-The OSD shows the disc title, the position, the chapter counter and a progress
-bar, and holds exactly four buttons:
+The OSD shows the disc title, the position and the chapter counter, and holds
+exactly four buttons:
 
 | Button | What it does |
 | --- | --- |
@@ -67,7 +67,8 @@ Buttons → Button style**:
 | **Text** | the label only |
 | **Icons and text** | both (the default) |
 
-Whichever you pick, the line under the buttons always explains the focused one.
+The line under the buttons that explains the focused one only shows for
+**Icons** — with a label already on the button, it would just repeat it.
 
 ## Installation
 
@@ -157,7 +158,7 @@ written.
 * *Vertical position* — `0 %` anchors the panel at the bottom, `100 %` moves
   it to just below the top edge.
 * A colour and an opacity for each part of the OSD — panel, screen dim, title,
-  text, progress bar, and the focused / unfocused button background and text.
+  text, and the focused / unfocused button background and text.
   Each offers a 50-colour palette plus a custom **HEX colour** entry.
 * *Show OSD preview (3 seconds)* — renders the OSD with sample data so a
   colour, style or position change can be checked without a disc in the drive.

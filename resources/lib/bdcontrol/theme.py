@@ -176,7 +176,6 @@ _PROPERTIES = (
     ('BDControl.DimColor', _BACKGROUND_COLORS, 'osd_dim_color'),
     ('BDControl.TitleColor', _TEXT_COLORS, 'osd_title_color'),
     ('BDControl.TextColor', _TEXT_COLORS, 'osd_text_color'),
-    ('BDControl.ProgressColor', _TEXT_COLORS, 'osd_progress_color'),
     ('BDControl.NoFocusColor', _TEXT_COLORS, 'osd_nofocus_color'),
     ('BDControl.NoFocusTextColor', _TEXT_COLORS, 'osd_nofocus_text_color'),
     ('BDControl.FocusColor', _FOCUS_COLORS, 'osd_focus_color'),
