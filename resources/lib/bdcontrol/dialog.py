@@ -38,10 +38,14 @@ BUTTON_STREAM = 205
 PAIR_LABEL_OFFSET = 100
 PAIR_FOCUS_LABEL_OFFSET = 200
 
-# Left to right, matching the skin file and the plain-list fallback. The
-# stream button was added last but sits fourth on screen, so the ids are not
-# in order here.
-BUTTON_ORDER = (BUTTON_POPUP_MENU, BUTTON_TOP_MENU, BUTTON_KODI_OSD,
+# Buttons the skin file lays out square and icon-only, whatever the selected
+# button style - they have no label of either kind to fill in.
+ICON_ONLY_BUTTONS = (BUTTON_DIAGNOSTICS,)
+
+# Left to right, matching the skin file and the plain-list fallback. The ids
+# are not in order here: they were handed out as the buttons were added, the
+# row has been arranged since.
+BUTTON_ORDER = (BUTTON_KODI_OSD, BUTTON_POPUP_MENU, BUTTON_TOP_MENU,
                 BUTTON_STREAM, BUTTON_DIAGNOSTICS)
 
 ACTION_PREVIOUS_MENU = 10
@@ -198,6 +202,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """
         style = theme.button_style()
         for control_id, command in self.commands.items():
+            if control_id in ICON_ONLY_BUTTONS:
+                # Square and wordless in every style; its name reaches the
+                # user through the hint line instead.
+                self._set_label(control_id, '')
+                continue
             self._set_label(control_id,
                             command.label if style == theme.STYLE_TEXT else '')
             paired = command.label if style == theme.STYLE_ICONS_AND_TEXT else ''
