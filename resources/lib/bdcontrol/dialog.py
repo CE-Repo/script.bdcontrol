@@ -6,7 +6,7 @@ import time
 import xbmc
 import xbmcgui
 
-from . import actions, kodiutils, player, tools
+from . import actions, kodiutils, player, theme, tools
 from .kodiutils import (PROP_OSD_CLOSE, PROP_OSD_OPEN, home_property, localize,
                         log)
 
@@ -15,10 +15,17 @@ SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
 # Control ids, mirroring resources/skins/default/1080i/script-bdcontrol-osd.xml
+GROUP_PANEL = 2
 LABEL_TITLE = 100
 LABEL_STATUS = 101
 PROGRESS = 102
 LABEL_HINT = 103
+
+# Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
+# position" slider - bottom-anchored by default, sliding up to a small margin
+# below the top edge.
+PANEL_TOP_BOTTOM = 724
+PANEL_TOP_TOP = 20
 
 BUTTON_DISC_MENU = 201
 BUTTON_PLAY_PAUSE = 202
@@ -45,6 +52,9 @@ ACTION_PAUSE = 12
 CLOSE_ACTIONS = (ACTION_PREVIOUS_MENU, ACTION_NAV_BACK)
 
 TICK_SECONDS = 0.5
+
+# How long the settings "preview" button shows the OSD for.
+PREVIEW_SECONDS = 3
 
 
 class Command(object):
@@ -98,16 +108,25 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._last_input = time.time()
         self._timeout = max(kodiutils.get_setting_int('osd_timeout', 10), 0)
         self._closing = False
+        # Set by preview() before doModal(): shows sample data and auto-closes
+        # after PREVIEW_SECONDS instead of following real playback.
+        self.preview_mode = False
 
     # -- lifecycle --------------------------------------------------------
 
     def onInit(self):
+        self._apply_position()
         for control_id, command in self.commands.items():
             self._set_label(control_id, command.label)
-        self._refresh()
+        if self.preview_mode:
+            self._show_preview_content()
+        else:
+            self._refresh()
         self._touch()
         if self._worker is None:
-            self._worker = threading.Thread(target=self._tick_loop)
+            target = (self._preview_loop if self.preview_mode
+                      else self._tick_loop)
+            self._worker = threading.Thread(target=target)
             self._worker.daemon = True
             self._worker.start()
 
@@ -132,6 +151,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         if action_id in CLOSE_ACTIONS:
             self.close()
             return
+        if self.preview_mode:
+            # Sample data only - remote shortcuts must not run real commands.
+            return
         if action_id in (ACTION_STOP,):
             self.close()
             actions.stop()
@@ -143,6 +165,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
 
     def onClick(self, control_id):
         self._touch()
+        if self.preview_mode:
+            # Sample data only - a click must not run a real player command.
+            return
         command = self.commands.get(control_id)
         if command is None:
             return
@@ -167,6 +192,20 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._set_label(LABEL_HINT, command.hint if command else '')
 
     # -- rendering --------------------------------------------------------
+
+    def _apply_position(self):
+        """Move the panel to the configured vertical position.
+
+        0% keeps the skin's default bottom-anchored position; 100% moves it
+        to a small margin below the top edge.
+        """
+        percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 0)))
+        top = PANEL_TOP_BOTTOM - round(
+            (PANEL_TOP_BOTTOM - PANEL_TOP_TOP) * percent / 100)
+        try:
+            self.getControl(GROUP_PANEL).setPosition(50, top)
+        except Exception:  # pylint: disable=broad-except
+            pass
 
     def _touch(self):
         self._last_input = time.time()
@@ -199,6 +238,26 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             # Playback ended while the OSD was open - there is nothing to
             # control any more.
             self.close()
+
+    def _show_preview_content(self):
+        """Fill the labels with sample data for the settings' preview button.
+
+        Lets a color or position change be checked without anything needing
+        to be playing.
+        """
+        self._set_label(LABEL_TITLE, localize(30451))
+        self._set_label(LABEL_STATUS, localize(30010, 3, 24))
+        self._set_progress(35)
+        self._set_label(BUTTON_PLAY_PAUSE, localize(30021))
+        step = max(kodiutils.get_setting_int('seek_step', 30), 1)
+        self._set_label(BUTTON_SEEK_BACK, localize(30025, step))
+        self._set_label(BUTTON_SEEK_FORWARD, localize(30027, step))
+
+    def _preview_loop(self):
+        """Close the preview after PREVIEW_SECONDS, unless closed sooner."""
+        if not xbmc.Monitor().waitForAbort(PREVIEW_SECONDS):
+            if not self._stop.is_set():
+                self.close()
 
     def _tick_loop(self):
         """Keep the labels live and close the OSD after the idle timeout."""
@@ -289,6 +348,7 @@ def show():
         # on its first refresh.
         kodiutils.notify(localize(30102))
         return
+    theme.apply_theme()
     try:
         dialog = BDControlDialog(XML_FILE, kodiutils.addon_path(), SKIN_FOLDER,
                                  SKIN_RESOLUTION)
@@ -310,6 +370,29 @@ def show():
         del dialog
     if failed:
         fallback()
+
+
+def preview():
+    """Show the OSD with sample data for a few seconds.
+
+    Lets a color or position change made in the settings be checked without
+    needing something to be playing, or disturbing real playback if there is.
+    """
+    theme.apply_theme()
+    try:
+        preview_dialog = BDControlDialog(XML_FILE, kodiutils.addon_path(),
+                                         SKIN_FOLDER, SKIN_RESOLUTION)
+    except Exception as exc:  # pylint: disable=broad-except
+        kodiutils.log_error('could not create the preview OSD window: %s' % exc)
+        return
+    preview_dialog.preview_mode = True
+    try:
+        preview_dialog.doModal()
+    except Exception as exc:  # pylint: disable=broad-except
+        kodiutils.log_error('the preview OSD window failed: %s' % exc)
+    finally:
+        preview_dialog.wait_for_worker()
+        del preview_dialog
 
 
 def toggle():

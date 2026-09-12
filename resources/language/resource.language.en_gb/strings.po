@@ -552,3 +552,531 @@ msgstr ""
 msgctxt "#30262"
 msgid "Opens the OSD by itself whenever a disc menu takes over the remote."
 msgstr ""
+
+msgctxt "#30270"
+msgid "Appearance"
+msgstr ""
+
+msgctxt "#30271"
+msgid "Position"
+msgstr ""
+
+msgctxt "#30272"
+msgid "Vertical position"
+msgstr ""
+
+msgctxt "#30273"
+msgid "0% keeps the OSD at the bottom of the screen; 100% moves it to the top."
+msgstr ""
+
+msgctxt "#30275"
+msgid "Panel background"
+msgstr ""
+
+msgctxt "#30276"
+msgid "Background color of the OSD panel."
+msgstr ""
+
+msgctxt "#30277"
+msgid "Transparency"
+msgstr ""
+
+msgctxt "#30278"
+msgid "Opacity of this element, from 0% (fully transparent) to 100% (fully opaque)."
+msgstr ""
+
+msgctxt "#30279"
+msgid "Screen dim"
+msgstr ""
+
+msgctxt "#30280"
+msgid "Color of the dimming behind the OSD."
+msgstr ""
+
+msgctxt "#30283"
+msgid "Title text"
+msgstr ""
+
+msgctxt "#30284"
+msgid "Color of the title text."
+msgstr ""
+
+msgctxt "#30285"
+msgid "Secondary text"
+msgstr ""
+
+msgctxt "#30286"
+msgid "Color of the status line and the hint text."
+msgstr ""
+
+msgctxt "#30287"
+msgid "Progress bar"
+msgstr ""
+
+msgctxt "#30288"
+msgid "Color of the progress bar."
+msgstr ""
+
+msgctxt "#30289"
+msgid "Focused button"
+msgstr ""
+
+msgctxt "#30290"
+msgid "Background color of the focused button."
+msgstr ""
+
+msgctxt "#30291"
+msgid "Focused button text"
+msgstr ""
+
+msgctxt "#30292"
+msgid "Text color of the focused button."
+msgstr ""
+
+msgctxt "#30340"
+msgid "[COLOR=FFEDEDED]●[/COLOR] White (Default)"
+msgstr ""
+
+msgctxt "#30341"
+msgid "[COLOR=FFE0E0E0]●[/COLOR] Light gray"
+msgstr ""
+
+msgctxt "#30342"
+msgid "[COLOR=FFFF8A80]●[/COLOR] Light red"
+msgstr ""
+
+msgctxt "#30343"
+msgid "[COLOR=FFFFCC80]●[/COLOR] Light orange"
+msgstr ""
+
+msgctxt "#30344"
+msgid "[COLOR=FFFFFF8D]●[/COLOR] Light yellow"
+msgstr ""
+
+msgctxt "#30345"
+msgid "[COLOR=FFB9F6CA]●[/COLOR] Light green"
+msgstr ""
+
+msgctxt "#30346"
+msgid "[COLOR=FF84FFFF]●[/COLOR] Light cyan"
+msgstr ""
+
+msgctxt "#30347"
+msgid "[COLOR=FF82B1FF]●[/COLOR] Light blue"
+msgstr ""
+
+msgctxt "#30348"
+msgid "[COLOR=FFE1BEE7]●[/COLOR] Light purple"
+msgstr ""
+
+msgctxt "#30349"
+msgid "[COLOR=FFFF80AB]●[/COLOR] Light pink"
+msgstr ""
+
+msgctxt "#30350"
+msgid "[COLOR=FFFF8A65]●[/COLOR] Coral"
+msgstr ""
+
+msgctxt "#30351"
+msgid "[COLOR=FFFFAB91]●[/COLOR] Salmon"
+msgstr ""
+
+msgctxt "#30352"
+msgid "[COLOR=FFFFD54F]●[/COLOR] Amber"
+msgstr ""
+
+msgctxt "#30353"
+msgid "[COLOR=FFFFE082]●[/COLOR] Gold"
+msgstr ""
+
+msgctxt "#30354"
+msgid "[COLOR=FFCCFF90]●[/COLOR] Lime"
+msgstr ""
+
+msgctxt "#30355"
+msgid "[COLOR=FFA7FFEB]●[/COLOR] Mint"
+msgstr ""
+
+msgctxt "#30356"
+msgid "[COLOR=FF80CBC4]●[/COLOR] Teal"
+msgstr ""
+
+msgctxt "#30357"
+msgid "[COLOR=FF80D8FF]●[/COLOR] Sky blue"
+msgstr ""
+
+msgctxt "#30358"
+msgid "[COLOR=FF40C4FF]●[/COLOR] Azure"
+msgstr ""
+
+msgctxt "#30359"
+msgid "[COLOR=FF8C9EFF]●[/COLOR] Indigo"
+msgstr ""
+
+msgctxt "#30360"
+msgid "[COLOR=FFB388FF]●[/COLOR] Violet"
+msgstr ""
+
+msgctxt "#30361"
+msgid "[COLOR=FFD1C4E9]●[/COLOR] Lavender"
+msgstr ""
+
+msgctxt "#30362"
+msgid "[COLOR=FFEA80FC]●[/COLOR] Magenta"
+msgstr ""
+
+msgctxt "#30363"
+msgid "[COLOR=FFF48FB1]●[/COLOR] Fuchsia"
+msgstr ""
+
+msgctxt "#30364"
+msgid "[COLOR=FFF06292]●[/COLOR] Rose"
+msgstr ""
+
+msgctxt "#30365"
+msgid "[COLOR=FFFF5252]●[/COLOR] Crimson"
+msgstr ""
+
+msgctxt "#30366"
+msgid "[COLOR=FFBCAAA4]●[/COLOR] Brown"
+msgstr ""
+
+msgctxt "#30367"
+msgid "[COLOR=FFDCE775]●[/COLOR] Olive"
+msgstr ""
+
+msgctxt "#30368"
+msgid "[COLOR=FFB0BEC5]●[/COLOR] Slate"
+msgstr ""
+
+msgctxt "#30369"
+msgid "[COLOR=FFCFD8DC]●[/COLOR] Silver"
+msgstr ""
+
+msgctxt "#30370"
+msgid "[COLOR=FFFFCCBC]●[/COLOR] Peach"
+msgstr ""
+
+msgctxt "#30371"
+msgid "[COLOR=FFFFB74D]●[/COLOR] Tangerine"
+msgstr ""
+
+msgctxt "#30372"
+msgid "[COLOR=FFE4C441]●[/COLOR] Mustard"
+msgstr ""
+
+msgctxt "#30373"
+msgid "[COLOR=FFE6EE9C]●[/COLOR] Chartreuse"
+msgstr ""
+
+msgctxt "#30374"
+msgid "[COLOR=FF81C784]●[/COLOR] Forest"
+msgstr ""
+
+msgctxt "#30375"
+msgid "[COLOR=FF69F0AE]●[/COLOR] Emerald"
+msgstr ""
+
+msgctxt "#30376"
+msgid "[COLOR=FFB2FF59]●[/COLOR] Spring"
+msgstr ""
+
+msgctxt "#30377"
+msgid "[COLOR=FF18FFFF]●[/COLOR] Aqua"
+msgstr ""
+
+msgctxt "#30378"
+msgid "[COLOR=FF64FFDA]●[/COLOR] Turquoise"
+msgstr ""
+
+msgctxt "#30379"
+msgid "[COLOR=FF4FC3F7]●[/COLOR] Cerulean"
+msgstr ""
+
+msgctxt "#30380"
+msgid "[COLOR=FF536DFE]●[/COLOR] Cobalt"
+msgstr ""
+
+msgctxt "#30381"
+msgid "[COLOR=FFB39DDB]●[/COLOR] Periwinkle"
+msgstr ""
+
+msgctxt "#30382"
+msgid "[COLOR=FFCE93D8]●[/COLOR] Plum"
+msgstr ""
+
+msgctxt "#30383"
+msgid "[COLOR=FFBA68C8]●[/COLOR] Orchid"
+msgstr ""
+
+msgctxt "#30384"
+msgid "[COLOR=FFFF4081]●[/COLOR] Raspberry"
+msgstr ""
+
+msgctxt "#30385"
+msgid "[COLOR=FFFF5C8D]●[/COLOR] Watermelon"
+msgstr ""
+
+msgctxt "#30386"
+msgid "[COLOR=FFFF6E40]●[/COLOR] Scarlet"
+msgstr ""
+
+msgctxt "#30387"
+msgid "[COLOR=FFD7CCC8]●[/COLOR] Sand"
+msgstr ""
+
+msgctxt "#30388"
+msgid "[COLOR=FFC5E1A5]●[/COLOR] Pistachio"
+msgstr ""
+
+msgctxt "#30389"
+msgid "[COLOR=FF90A4AE]●[/COLOR] Cadet"
+msgstr ""
+
+msgctxt "#30390"
+msgid "[COLOR=FF2A2E33]●[/COLOR] Charcoal (Default)"
+msgstr ""
+
+msgctxt "#30391"
+msgid "[COLOR=FF000000]●[/COLOR] Black"
+msgstr ""
+
+msgctxt "#30392"
+msgid "[COLOR=FF3A1414]●[/COLOR] Dark red"
+msgstr ""
+
+msgctxt "#30393"
+msgid "[COLOR=FF3A2A12]●[/COLOR] Dark orange"
+msgstr ""
+
+msgctxt "#30394"
+msgid "[COLOR=FF3A360F]●[/COLOR] Dark yellow"
+msgstr ""
+
+msgctxt "#30395"
+msgid "[COLOR=FF123A12]●[/COLOR] Dark green"
+msgstr ""
+
+msgctxt "#30396"
+msgid "[COLOR=FF0F3A3A]●[/COLOR] Dark cyan"
+msgstr ""
+
+msgctxt "#30397"
+msgid "[COLOR=FF12203A]●[/COLOR] Dark blue"
+msgstr ""
+
+msgctxt "#30398"
+msgid "[COLOR=FF26123A]●[/COLOR] Dark purple"
+msgstr ""
+
+msgctxt "#30399"
+msgid "[COLOR=FF444444]●[/COLOR] Dark gray"
+msgstr ""
+
+msgctxt "#30400"
+msgid "[COLOR=FF0F3A36]●[/COLOR] Dark teal"
+msgstr ""
+
+msgctxt "#30401"
+msgid "[COLOR=FF0F2A3A]●[/COLOR] Dark sky"
+msgstr ""
+
+msgctxt "#30402"
+msgid "[COLOR=FF1E2240]●[/COLOR] Dark indigo"
+msgstr ""
+
+msgctxt "#30403"
+msgid "[COLOR=FF2E1E40]●[/COLOR] Dark violet"
+msgstr ""
+
+msgctxt "#30404"
+msgid "[COLOR=FF3A1E3A]●[/COLOR] Dark magenta"
+msgstr ""
+
+msgctxt "#30405"
+msgid "[COLOR=FF3A1E2C]●[/COLOR] Dark pink"
+msgstr ""
+
+msgctxt "#30406"
+msgid "[COLOR=FF3A1E24]●[/COLOR] Dark rose"
+msgstr ""
+
+msgctxt "#30407"
+msgid "[COLOR=FF3A2A1E]●[/COLOR] Dark brown"
+msgstr ""
+
+msgctxt "#30408"
+msgid "[COLOR=FF2A2E12]●[/COLOR] Dark olive"
+msgstr ""
+
+msgctxt "#30409"
+msgid "[COLOR=FF223A12]●[/COLOR] Dark lime"
+msgstr ""
+
+msgctxt "#30410"
+msgid "[COLOR=FF123A28]●[/COLOR] Dark mint"
+msgstr ""
+
+msgctxt "#30411"
+msgid "[COLOR=FF12303A]●[/COLOR] Dark azure"
+msgstr ""
+
+msgctxt "#30412"
+msgid "[COLOR=FF222E33]●[/COLOR] Dark slate"
+msgstr ""
+
+msgctxt "#30413"
+msgid "[COLOR=FF12182E]●[/COLOR] Dark navy"
+msgstr ""
+
+msgctxt "#30414"
+msgid "[COLOR=FF3A1212]●[/COLOR] Dark maroon"
+msgstr ""
+
+msgctxt "#30415"
+msgid "[COLOR=FF1A1A2A]●[/COLOR] Midnight"
+msgstr ""
+
+msgctxt "#30416"
+msgid "[COLOR=FF2E2418]●[/COLOR] Espresso"
+msgstr ""
+
+msgctxt "#30417"
+msgid "[COLOR=FF1E1E1E]●[/COLOR] Onyx"
+msgstr ""
+
+msgctxt "#30418"
+msgid "[COLOR=FF2C2C30]●[/COLOR] Graphite"
+msgstr ""
+
+msgctxt "#30419"
+msgid "[COLOR=FF2E343A]●[/COLOR] Steel"
+msgstr ""
+
+msgctxt "#30420"
+msgid "[COLOR=FF3E2820]●[/COLOR] Dark peach"
+msgstr ""
+
+msgctxt "#30421"
+msgid "[COLOR=FF3E2C10]●[/COLOR] Dark tangerine"
+msgstr ""
+
+msgctxt "#30422"
+msgid "[COLOR=FF383010]●[/COLOR] Dark mustard"
+msgstr ""
+
+msgctxt "#30423"
+msgid "[COLOR=FF303814]●[/COLOR] Dark chartreuse"
+msgstr ""
+
+msgctxt "#30424"
+msgid "[COLOR=FF1C3420]●[/COLOR] Dark forest"
+msgstr ""
+
+msgctxt "#30425"
+msgid "[COLOR=FF143424]●[/COLOR] Dark emerald"
+msgstr ""
+
+msgctxt "#30426"
+msgid "[COLOR=FF203814]●[/COLOR] Dark spring"
+msgstr ""
+
+msgctxt "#30427"
+msgid "[COLOR=FF143838]●[/COLOR] Dark aqua"
+msgstr ""
+
+msgctxt "#30428"
+msgid "[COLOR=FF143830]●[/COLOR] Dark turquoise"
+msgstr ""
+
+msgctxt "#30429"
+msgid "[COLOR=FF142C3E]●[/COLOR] Dark cerulean"
+msgstr ""
+
+msgctxt "#30430"
+msgid "[COLOR=FF1C2040]●[/COLOR] Dark cobalt"
+msgstr ""
+
+msgctxt "#30431"
+msgid "[COLOR=FF2A2040]●[/COLOR] Dark periwinkle"
+msgstr ""
+
+msgctxt "#30432"
+msgid "[COLOR=FF341E38]●[/COLOR] Dark plum"
+msgstr ""
+
+msgctxt "#30433"
+msgid "[COLOR=FF301C34]●[/COLOR] Dark orchid"
+msgstr ""
+
+msgctxt "#30434"
+msgid "[COLOR=FF3E1428]●[/COLOR] Dark raspberry"
+msgstr ""
+
+msgctxt "#30435"
+msgid "[COLOR=FF3E1424]●[/COLOR] Dark watermelon"
+msgstr ""
+
+msgctxt "#30436"
+msgid "[COLOR=FF3E1C14]●[/COLOR] Dark scarlet"
+msgstr ""
+
+msgctxt "#30437"
+msgid "[COLOR=FF342E28]●[/COLOR] Dark sand"
+msgstr ""
+
+msgctxt "#30438"
+msgid "[COLOR=FF28341C]●[/COLOR] Dark pistachio"
+msgstr ""
+
+msgctxt "#30439"
+msgid "[COLOR=FF242E34]●[/COLOR] Dark cadet"
+msgstr ""
+
+msgctxt "#30440"
+msgid "[COLOR=FF000000]●[/COLOR] Black (Default)"
+msgstr ""
+
+msgctxt "#30441"
+msgid "[COLOR=FFFFFFFF]●[/COLOR] White"
+msgstr ""
+
+msgctxt "#30442"
+msgid "Custom"
+msgstr ""
+
+msgctxt "#30443"
+msgid "HEX color"
+msgstr ""
+
+msgctxt "#30444"
+msgid "Enter your own 6-digit HEX color using the keyboard."
+msgstr ""
+
+msgctxt "#30445"
+msgid "Enter a 6-digit HEX color (e.g. FF5733)"
+msgstr ""
+
+msgctxt "#30446"
+msgid "Invalid HEX color - using the default color"
+msgstr ""
+
+msgctxt "#30447"
+msgid "Custom color applied"
+msgstr ""
+
+msgctxt "#30448"
+msgid "Preview"
+msgstr ""
+
+msgctxt "#30449"
+msgid "Show OSD preview (3 seconds)"
+msgstr ""
+
+msgctxt "#30450"
+msgid "Shows the OSD with sample data for 3 seconds, so a color or position change can be checked without needing something to be playing."
+msgstr ""
+
+msgctxt "#30451"
+msgid "OSD preview"
+msgstr ""

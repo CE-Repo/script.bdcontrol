@@ -46,6 +46,649 @@
       </group>
     </category>
 
+    <category id="appearance" label="30270">
+      <group id="1" label="30271">
+        <setting id="osd_position_y" type="integer" label="30272" help="30273">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="2" label="30275">
+        <setting id="osd_panel_color" type="integer" label="30275" help="30276">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30390">0</option>
+              <option label="30391">1</option>
+              <option label="30392">2</option>
+              <option label="30393">3</option>
+              <option label="30394">4</option>
+              <option label="30395">5</option>
+              <option label="30396">6</option>
+              <option label="30397">7</option>
+              <option label="30398">8</option>
+              <option label="30399">9</option>
+              <option label="30400">10</option>
+              <option label="30401">11</option>
+              <option label="30402">12</option>
+              <option label="30403">13</option>
+              <option label="30404">14</option>
+              <option label="30405">15</option>
+              <option label="30406">16</option>
+              <option label="30407">17</option>
+              <option label="30408">18</option>
+              <option label="30409">19</option>
+              <option label="30410">20</option>
+              <option label="30411">21</option>
+              <option label="30412">22</option>
+              <option label="30413">23</option>
+              <option label="30414">24</option>
+              <option label="30415">25</option>
+              <option label="30416">26</option>
+              <option label="30417">27</option>
+              <option label="30418">28</option>
+              <option label="30419">29</option>
+              <option label="30420">30</option>
+              <option label="30421">31</option>
+              <option label="30422">32</option>
+              <option label="30423">33</option>
+              <option label="30424">34</option>
+              <option label="30425">35</option>
+              <option label="30426">36</option>
+              <option label="30427">37</option>
+              <option label="30428">38</option>
+              <option label="30429">39</option>
+              <option label="30430">40</option>
+              <option label="30431">41</option>
+              <option label="30432">42</option>
+              <option label="30433">43</option>
+              <option label="30434">44</option>
+              <option label="30435">45</option>
+              <option label="30436">46</option>
+              <option label="30437">47</option>
+              <option label="30438">48</option>
+              <option label="30439">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_panel_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_panel_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_panel_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_panel_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>98</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="3" label="30279">
+        <setting id="osd_dim_color" type="integer" label="30279" help="30280">
+          <level>0</level>
+          <default>1</default>
+          <constraints>
+            <options>
+              <option label="30390">0</option>
+              <option label="30391">1</option>
+              <option label="30392">2</option>
+              <option label="30393">3</option>
+              <option label="30394">4</option>
+              <option label="30395">5</option>
+              <option label="30396">6</option>
+              <option label="30397">7</option>
+              <option label="30398">8</option>
+              <option label="30399">9</option>
+              <option label="30400">10</option>
+              <option label="30401">11</option>
+              <option label="30402">12</option>
+              <option label="30403">13</option>
+              <option label="30404">14</option>
+              <option label="30405">15</option>
+              <option label="30406">16</option>
+              <option label="30407">17</option>
+              <option label="30408">18</option>
+              <option label="30409">19</option>
+              <option label="30410">20</option>
+              <option label="30411">21</option>
+              <option label="30412">22</option>
+              <option label="30413">23</option>
+              <option label="30414">24</option>
+              <option label="30415">25</option>
+              <option label="30416">26</option>
+              <option label="30417">27</option>
+              <option label="30418">28</option>
+              <option label="30419">29</option>
+              <option label="30420">30</option>
+              <option label="30421">31</option>
+              <option label="30422">32</option>
+              <option label="30423">33</option>
+              <option label="30424">34</option>
+              <option label="30425">35</option>
+              <option label="30426">36</option>
+              <option label="30427">37</option>
+              <option label="30428">38</option>
+              <option label="30429">39</option>
+              <option label="30430">40</option>
+              <option label="30431">41</option>
+              <option label="30432">42</option>
+              <option label="30433">43</option>
+              <option label="30434">44</option>
+              <option label="30435">45</option>
+              <option label="30436">46</option>
+              <option label="30437">47</option>
+              <option label="30438">48</option>
+              <option label="30439">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_dim_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_dim_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_dim_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_dim_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>47</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="4" label="30283">
+        <setting id="osd_title_color" type="integer" label="30283" help="30284">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_title_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_title_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_title_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_title_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="5" label="30285">
+        <setting id="osd_text_color" type="integer" label="30285" help="30286">
+          <level>0</level>
+          <default>1</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_text_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_text_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_text_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_text_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="6" label="30287">
+        <setting id="osd_progress_color" type="integer" label="30287" help="30288">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_progress_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_progress_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_progress_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_progress_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="7" label="30289">
+        <setting id="osd_focus_color" type="integer" label="30289" help="30290">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_focus_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_focus_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_focus_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_focus_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="8" label="30291">
+        <setting id="osd_focus_text_color" type="integer" label="30291" help="30292">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30440">0</option>
+              <option label="30441">1</option>
+              <option label="30341">2</option>
+              <option label="30342">3</option>
+              <option label="30343">4</option>
+              <option label="30344">5</option>
+              <option label="30345">6</option>
+              <option label="30346">7</option>
+              <option label="30347">8</option>
+              <option label="30348">9</option>
+              <option label="30349">10</option>
+              <option label="30350">11</option>
+              <option label="30351">12</option>
+              <option label="30352">13</option>
+              <option label="30353">14</option>
+              <option label="30354">15</option>
+              <option label="30355">16</option>
+              <option label="30356">17</option>
+              <option label="30357">18</option>
+              <option label="30358">19</option>
+              <option label="30359">20</option>
+              <option label="30360">21</option>
+              <option label="30361">22</option>
+              <option label="30362">23</option>
+              <option label="30363">24</option>
+              <option label="30364">25</option>
+              <option label="30365">26</option>
+              <option label="30366">27</option>
+              <option label="30367">28</option>
+              <option label="30368">29</option>
+              <option label="30369">30</option>
+              <option label="30370">31</option>
+              <option label="30371">32</option>
+              <option label="30372">33</option>
+              <option label="30373">34</option>
+              <option label="30374">35</option>
+              <option label="30375">36</option>
+              <option label="30376">37</option>
+              <option label="30377">38</option>
+              <option label="30378">39</option>
+              <option label="30379">40</option>
+              <option label="30380">41</option>
+              <option label="30381">42</option>
+              <option label="30382">43</option>
+              <option label="30383">44</option>
+              <option label="30384">45</option>
+              <option label="30385">46</option>
+              <option label="30386">47</option>
+              <option label="30387">48</option>
+              <option label="30388">49</option>
+              <option label="30389">50</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_focus_text_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_focus_text_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_focus_text_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_focus_text_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="9" label="30448">
+        <setting id="osd_preview" type="action" label="30449" help="30450">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=previewosd)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+      </group>
+    </category>
+
     <category id="keymap" label="30210">
       <group id="1">
         <setting id="keymap_enabled" type="boolean" label="30211" help="30261">

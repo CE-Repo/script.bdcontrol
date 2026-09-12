@@ -2,7 +2,7 @@
 """Argument handling for RunScript(script.bdcontrol, ...)."""
 import xbmcgui
 
-from . import actions, dialog, keymap, kodiutils, learn, player, tools
+from . import actions, dialog, keymap, kodiutils, learn, player, theme, tools
 from .kodiutils import localize, log
 
 
@@ -62,6 +62,7 @@ HANDLERS = {
     'auto': auto_action,
     'toggle': dialog.toggle,
     'show': dialog.show,
+    'previewosd': dialog.preview,
     'osd': actions.kodi_osd,
     'menu': main_menu,
     'discmenu': actions.disc_menu,
@@ -92,6 +93,10 @@ def run(argv):
 
     if action == 'assign':
         learn.assign(args.get('slot', 'osd'))
+        return
+
+    if action == 'customcolor':
+        theme.custom_color(args.get('id', ''))
         return
 
     if action == 'seek':
