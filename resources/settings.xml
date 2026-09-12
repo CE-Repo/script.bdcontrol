@@ -6,7 +6,7 @@
       <group id="1">
         <setting id="show_hint" type="boolean" label="30201">
           <level>0</level>
-          <default>true</default>
+          <default>false</default>
           <control type="toggle"/>
         </setting>
         <setting id="auto_open" type="boolean" label="30202" help="30262">

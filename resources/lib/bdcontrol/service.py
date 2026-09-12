@@ -134,7 +134,7 @@ class Service(object):
             # Run as a separate script so the service loop stays responsive
             # while the modal OSD is up.
             execute_builtin('RunScript(script.bdcontrol)')
-        elif kodiutils.get_setting_bool('show_hint', True):
+        elif kodiutils.get_setting_bool('show_hint', False):
             kodiutils.notify(localize(30058), time=7000)
 
     # -- main loop --------------------------------------------------------
