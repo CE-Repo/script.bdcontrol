@@ -150,7 +150,7 @@ msgid "Open Kodi's own player OSD, which the disc menu blocks"
 msgstr ""
 
 msgctxt "#30050"
-msgid "Open Kodi's video settings for this stream"
+msgid "Open video settings for this stream"
 msgstr ""
 
 msgctxt "#30051"
@@ -518,11 +518,11 @@ msgid "Write debug messages to the Kodi log"
 msgstr ""
 
 msgctxt "#30261"
-msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
+msgid "The keymap only changes fullscreen video playback. The rest of Kodi is untouched."
 msgstr ""
 
 msgctxt "#30263"
-msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
+msgid "Needs a build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
 msgstr ""
 
 msgctxt "#30264"
@@ -1098,9 +1098,9 @@ msgid "Open the disc's top/root menu"
 msgstr ""
 
 msgctxt "#30461"
-msgid "Open Kodi's audio settings for this stream"
+msgid "Open audio settings for this stream"
 msgstr ""
 
 msgctxt "#30462"
-msgid "Open Kodi's subtitle settings for this stream"
+msgid "Open subtitle settings for this stream"
 msgstr ""
