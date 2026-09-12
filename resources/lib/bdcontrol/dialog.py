@@ -34,6 +34,11 @@ BUTTON_CHAPTER_PREV = 204
 BUTTON_CHAPTER_NEXT = 205
 BUTTON_SEEK_BACK = 206
 BUTTON_SEEK_FORWARD = 207
+# Shown instead of BUTTON_DISC_MENU, as the first row-1 buttons, when the
+# "Popup- und Hauptmenü anzeigen" setting (extended_disc_menus) is on - see
+# script-bdcontrol-osd.xml's <visible> conditions on 201/208/209.
+BUTTON_DISC_POPUP_MENU = 208
+BUTTON_DISC_TOP_MENU = 209
 
 BUTTON_KODI_OSD = 301
 BUTTON_AUDIO = 302
@@ -84,9 +89,15 @@ def _build_commands():
         BUTTON_CHAPTER_NEXT: Command(30024, 30044, actions.chapter_next),
         BUTTON_SEEK_BACK: Command(30025, 30045, actions.seek_backward),
         BUTTON_SEEK_FORWARD: Command(30027, 30046, actions.seek_forward),
+        BUTTON_DISC_POPUP_MENU: Command(30114, 30459, actions.disc_popup_menu,
+                                        closes=True),
+        BUTTON_DISC_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
+                                      closes=True),
         BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
-        BUTTON_AUDIO: Command(30030, 30048, actions.choose_audio),
-        BUTTON_SUBTITLES: Command(30031, 30049, actions.choose_subtitle),
+        BUTTON_AUDIO: Command(30035, 30461, actions.audio_settings,
+                              closes=True),
+        BUTTON_SUBTITLES: Command(30036, 30462, actions.subtitle_settings,
+                                  closes=True),
         BUTTON_VIDEO_SETTINGS: Command(30029, 30050, actions.video_settings,
                                        closes=True),
         BUTTON_CODEC_INFO: Command(30051, 30052, actions.process_info,
@@ -116,6 +127,8 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self._apply_position()
+        home_property('BDControl.ExtendedDiscMenus',
+                      '1' if actions.extended_disc_menus() else '0')
         for control_id, command in self.commands.items():
             self._set_label(control_id, command.label)
         if self.preview_mode:
@@ -315,6 +328,9 @@ def fallback():
     """
     commands = _build_commands()
     order = list(FALLBACK_ORDER)
+    if actions.extended_disc_menus():
+        index = order.index(BUTTON_DISC_MENU)
+        order[index:index + 1] = [BUTTON_DISC_POPUP_MENU, BUTTON_DISC_TOP_MENU]
     labels = []
     for control_id in order:
         command = commands[control_id]

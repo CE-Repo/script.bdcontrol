@@ -80,19 +80,46 @@
         <itemgap>12</itemgap>
         <ondown>9010</ondown>
         <onup>9010</onup>
-        <control type="button" id="201">
-          <width>240</width>
+        <!-- Shown instead of 201 when "Popup- und Hauptmenü anzeigen"
+             (extended_disc_menus) is on, so both are the first buttons. -->
+        <control type="button" id="208">
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
           <aligny>center</aligny>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ExtendedDiscMenus),1)</visible>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="button" id="209">
+          <width>208</width>
+          <height>76</height>
+          <font>font13</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ExtendedDiscMenus),1)</visible>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="button" id="201">
+          <width>208</width>
+          <height>76</height>
+          <font>font13</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!String.IsEqual(Window(10000).Property(BDControl.ExtendedDiscMenus),1)</visible>
           <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
           <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
           <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="202">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
@@ -103,7 +130,7 @@
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="203">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
@@ -114,7 +141,7 @@
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="204">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
@@ -125,7 +152,7 @@
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="205">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
@@ -136,7 +163,7 @@
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="206">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>
@@ -147,7 +174,7 @@
           <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
         </control>
         <control type="button" id="207">
-          <width>240</width>
+          <width>208</width>
           <height>76</height>
           <font>font13</font>
           <align>center</align>

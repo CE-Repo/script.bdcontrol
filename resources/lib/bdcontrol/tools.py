@@ -269,15 +269,11 @@ def more_menu(closer=None):
     window or take over playback call it first so they are not stacked on top
     of our own OSD.
     """
-    entries = []
-    if actions.extended_disc_menus():
-        # Only builds that accept ShowVideoMenu(popup|top) can tell the two
-        # apart; elsewhere the single "Disc menu" button covers both.
-        entries.append((localize(30114), actions.disc_popup_menu, True))
-        entries.append((localize(30115), actions.disc_top_menu, True))
-    entries += [
-        (localize(30035), actions.audio_settings, True),
-        (localize(30036), actions.subtitle_settings, True),
+    # The popup/top disc-menu buttons live directly in the OSD instead of
+    # here once extended_disc_menus is on - see dialog._build_commands().
+    entries = [
+        (localize(30030), actions.choose_audio, False),
+        (localize(30031), actions.choose_subtitle, False),
         (localize(30037), actions.toggle_subtitles, True),
         (localize(30038), actions.next_audio_language, True),
         (localize(30033), actions.disc_playback_mode, False),

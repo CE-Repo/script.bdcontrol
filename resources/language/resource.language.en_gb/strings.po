@@ -98,11 +98,11 @@ msgid "Diagnostics"
 msgstr ""
 
 msgctxt "#30035"
-msgid "Kodi audio settings"
+msgid "Audio settings"
 msgstr ""
 
 msgctxt "#30036"
-msgid "Kodi subtitle settings"
+msgid "Subtitle settings"
 msgstr ""
 
 msgctxt "#30037"
@@ -147,14 +147,6 @@ msgstr ""
 
 msgctxt "#30047"
 msgid "Open Kodi's own player OSD, which the disc menu blocks"
-msgstr ""
-
-msgctxt "#30048"
-msgid "Choose an audio track"
-msgstr ""
-
-msgctxt "#30049"
-msgid "Choose a subtitle track or turn subtitles off"
 msgstr ""
 
 msgctxt "#30050"
@@ -1095,4 +1087,20 @@ msgstr ""
 
 msgctxt "#30458"
 msgid "Text color of the unfocused buttons."
+msgstr ""
+
+msgctxt "#30459"
+msgid "Open the disc's in-movie popup menu"
+msgstr ""
+
+msgctxt "#30460"
+msgid "Open the disc's top/root menu"
+msgstr ""
+
+msgctxt "#30461"
+msgid "Open Kodi's audio settings for this stream"
+msgstr ""
+
+msgctxt "#30462"
+msgid "Open Kodi's subtitle settings for this stream"
 msgstr ""

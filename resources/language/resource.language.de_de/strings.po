@@ -98,12 +98,12 @@ msgid "Diagnostics"
 msgstr "Diagnose"
 
 msgctxt "#30035"
-msgid "Kodi audio settings"
-msgstr "Kodi-Toneinstellungen"
+msgid "Audio settings"
+msgstr "Toneinstellungen"
 
 msgctxt "#30036"
-msgid "Kodi subtitle settings"
-msgstr "Kodi-Untertiteleinstellungen"
+msgid "Subtitle settings"
+msgstr "Untertiteleinstellungen"
 
 msgctxt "#30037"
 msgid "Turn subtitles on or off"
@@ -148,14 +148,6 @@ msgstr "Um die eingestellte Schrittweite vorspulen"
 msgctxt "#30047"
 msgid "Open Kodi's own player OSD, which the disc menu blocks"
 msgstr "Das Kodi-eigene OSD öffnen, das vom Disc-Menü blockiert wird"
-
-msgctxt "#30048"
-msgid "Choose an audio track"
-msgstr "Eine Tonspur auswählen"
-
-msgctxt "#30049"
-msgid "Choose a subtitle track or turn subtitles off"
-msgstr "Untertitelspur wählen oder Untertitel ausschalten"
 
 msgctxt "#30050"
 msgid "Open Kodi's video settings for this stream"
@@ -1096,3 +1088,19 @@ msgstr "Unfokussierte Schaltfläche (Text)"
 msgctxt "#30458"
 msgid "Text color of the unfocused buttons."
 msgstr "Textfarbe der unfokussierten Schaltflächen."
+
+msgctxt "#30459"
+msgid "Open the disc's in-movie popup menu"
+msgstr "Das Popup-Menü der Disc öffnen"
+
+msgctxt "#30460"
+msgid "Open the disc's top/root menu"
+msgstr "Das Hauptmenü der Disc öffnen"
+
+msgctxt "#30461"
+msgid "Open Kodi's audio settings for this stream"
+msgstr "Kodi-Toneinstellungen für diesen Stream öffnen"
+
+msgctxt "#30462"
+msgid "Open Kodi's subtitle settings for this stream"
+msgstr "Kodi-Untertiteleinstellungen für diesen Stream öffnen"
