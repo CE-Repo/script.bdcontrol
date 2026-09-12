@@ -12,12 +12,14 @@ below deliberately use two different mechanisms:
   the BD Control dialog has closed.  Those commands are marked `closes=True`
   in the command table and the dialog closes itself before running them.
 """
+import xbmcaddon
 import xbmcgui
 
 from . import kodiutils, player
 from .kodiutils import execute_builtin, jsonrpc, localize, log
 
 DISC_PLAYBACK_SETTING = 'disc.playback'
+TINYPPI_ADDON_ID = 'script.tinyppi'
 
 
 # --- playback -------------------------------------------------------------
@@ -96,8 +98,25 @@ def subtitle_settings():
     execute_builtin('ActivateWindow(osdsubtitlesettings)')
 
 
+def _tinyppi_installed():
+    """Whether the TinyPPI addon (script.tinyppi) is installed."""
+    try:
+        xbmcaddon.Addon(TINYPPI_ADDON_ID)
+        return True
+    except Exception:  # pylint: disable=broad-except
+        return False
+
+
 def process_info():
-    """The codec/HDR overlay - handy for verifying a UHD disc plays as UHD."""
+    """The codec/HDR overlay - handy for verifying a UHD disc plays as UHD.
+
+    Prefers TinyPPI's own process info window when it is installed, since it
+    shows Dolby Vision/HDR10+ details Kodi's own window does not; falls back
+    to Kodi's playerprocessinfo otherwise.
+    """
+    if _tinyppi_installed():
+        execute_builtin('RunScript(%s)' % TINYPPI_ADDON_ID)
+        return
     execute_builtin('ActivateWindow(playerprocessinfo)')
 
 

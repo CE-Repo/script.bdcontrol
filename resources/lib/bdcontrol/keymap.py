@@ -233,10 +233,13 @@ def sync(notify=False):
     return True
 
 
-def clear_assignments():
-    """Forget every assigned button and delete the keymap."""
-    for entry in SLOTS:
-        entry.clear()
+def clear_assignment(name):
+    """Forget the button assigned to one slot and update the keymap."""
+    entry = slot(name)
+    if entry is None:
+        kodiutils.log_error('unknown keymap slot "%s"' % name)
+        return
+    entry.clear()
     sync()
     kodiutils.notify(localize(30071))
 

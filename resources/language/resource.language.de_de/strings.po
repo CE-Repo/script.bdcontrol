@@ -497,10 +497,6 @@ msgctxt "#30211"
 msgid "Install the BD Control keymap"
 msgstr "BD-Control-Tastenbelegung installieren"
 
-msgctxt "#30221"
-msgid "Assigned buttons"
-msgstr "Zugewiesene Tasten"
-
 msgctxt "#30227"
 msgid "Assign the button for BD Control"
 msgstr "Taste für BD Control zuweisen"
@@ -509,17 +505,9 @@ msgctxt "#30228"
 msgid "Assign the button for the disc menu"
 msgstr "Taste für das Disc-Menü zuweisen"
 
-msgctxt "#30229"
-msgid "Clear all assignments"
-msgstr "Alle Zuweisungen löschen"
-
 msgctxt "#30223"
 msgid "Separate popup and top menu entries"
-msgstr "Getrennte Einträge für Popup- und Hauptmenü"
-
-msgctxt "#30226"
-msgid "Show recent key presses from the log"
-msgstr "Zuletzt gedrückte Tasten aus dem Log anzeigen"
+msgstr "Popup- und Hauptmenü anzeigen"
 
 msgctxt "#30230"
 msgid "Tools"
@@ -627,7 +615,7 @@ msgstr "Hintergrundfarbe der fokussierten Schaltfläche."
 
 msgctxt "#30291"
 msgid "Focused button text"
-msgstr "Text der fokussierten Schaltfläche"
+msgstr "Fokussierte Schaltfläche (Text)"
 
 msgctxt "#30292"
 msgid "Text color of the focused button."
@@ -1080,3 +1068,31 @@ msgstr "Zeigt das OSD 3 Sekunden lang mit Beispieldaten an, damit eine Farb- ode
 msgctxt "#30451"
 msgid "OSD preview"
 msgstr "OSD-Vorschau"
+
+msgctxt "#30452"
+msgid "Button for BD Control"
+msgstr "Taste für BD Control"
+
+msgctxt "#30453"
+msgid "Button for the disc menu"
+msgstr "Taste für das Disc-Menü"
+
+msgctxt "#30454"
+msgid "Clear this assignment"
+msgstr "Diese Zuweisung löschen"
+
+msgctxt "#30455"
+msgid "Unfocused button"
+msgstr "Unfokussierte Schaltfläche"
+
+msgctxt "#30456"
+msgid "Background color of the unfocused buttons."
+msgstr "Hintergrundfarbe der unfokussierten Schaltflächen."
+
+msgctxt "#30457"
+msgid "Unfocused button (Text)"
+msgstr "Unfokussierte Schaltfläche (Text)"
+
+msgctxt "#30458"
+msgid "Text color of the unfocused buttons."
+msgstr "Textfarbe der unfokussierten Schaltflächen."

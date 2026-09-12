@@ -226,7 +226,7 @@
         </setting>
         <setting id="osd_dim_color_opacity" type="integer" label="30277" help="30278">
           <level>0</level>
-          <default>47</default>
+          <default>0</default>
           <constraints>
             <minimum>0</minimum>
             <step>1</step>
@@ -501,7 +501,183 @@
           </control>
         </setting>
       </group>
-      <group id="7" label="30289">
+      <group id="7" label="30455">
+        <setting id="osd_nofocus_color" type="integer" label="30455" help="30456">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_nofocus_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_nofocus_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_nofocus_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_nofocus_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>66</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="8" label="30457">
+        <setting id="osd_nofocus_text_color" type="integer" label="30457" help="30458">
+          <level>0</level>
+          <default>0</default>
+          <constraints>
+            <options>
+              <option label="30340">0</option>
+              <option label="30341">1</option>
+              <option label="30342">2</option>
+              <option label="30343">3</option>
+              <option label="30344">4</option>
+              <option label="30345">5</option>
+              <option label="30346">6</option>
+              <option label="30347">7</option>
+              <option label="30348">8</option>
+              <option label="30349">9</option>
+              <option label="30350">10</option>
+              <option label="30351">11</option>
+              <option label="30352">12</option>
+              <option label="30353">13</option>
+              <option label="30354">14</option>
+              <option label="30355">15</option>
+              <option label="30356">16</option>
+              <option label="30357">17</option>
+              <option label="30358">18</option>
+              <option label="30359">19</option>
+              <option label="30360">20</option>
+              <option label="30361">21</option>
+              <option label="30362">22</option>
+              <option label="30363">23</option>
+              <option label="30364">24</option>
+              <option label="30365">25</option>
+              <option label="30366">26</option>
+              <option label="30367">27</option>
+              <option label="30368">28</option>
+              <option label="30369">29</option>
+              <option label="30370">30</option>
+              <option label="30371">31</option>
+              <option label="30372">32</option>
+              <option label="30373">33</option>
+              <option label="30374">34</option>
+              <option label="30375">35</option>
+              <option label="30376">36</option>
+              <option label="30377">37</option>
+              <option label="30378">38</option>
+              <option label="30379">39</option>
+              <option label="30380">40</option>
+              <option label="30381">41</option>
+              <option label="30382">42</option>
+              <option label="30383">43</option>
+              <option label="30384">44</option>
+              <option label="30385">45</option>
+              <option label="30386">46</option>
+              <option label="30387">47</option>
+              <option label="30388">48</option>
+              <option label="30389">49</option>
+              <option label="30442">999</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+        <setting id="osd_nofocus_text_color_custom_btn" type="string" label="30443" help="30444">
+          <level>0</level>
+          <constraints>
+            <allowempty>true</allowempty>
+          </constraints>
+          <dependencies>
+            <dependency type="visible">
+              <condition operator="is" setting="osd_nofocus_text_color">999</condition>
+            </dependency>
+          </dependencies>
+          <control type="button" format="action">
+            <data>RunScript(script.bdcontrol,action=customcolor,id=osd_nofocus_text_color)</data>
+          </control>
+        </setting>
+        <setting id="osd_nofocus_text_color_opacity" type="integer" label="30277" help="30278">
+          <level>0</level>
+          <default>100</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>100</maximum>
+          </constraints>
+          <control type="slider" format="percentage">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+      <group id="9" label="30289">
         <setting id="osd_focus_color" type="integer" label="30289" help="30290">
           <level>0</level>
           <default>0</default>
@@ -589,7 +765,7 @@
           </control>
         </setting>
       </group>
-      <group id="8" label="30291">
+      <group id="10" label="30291">
         <setting id="osd_focus_text_color" type="integer" label="30291" help="30292">
           <level>0</level>
           <default>0</default>
@@ -678,7 +854,7 @@
           </control>
         </setting>
       </group>
-      <group id="9" label="30448">
+      <group id="11" label="30448">
         <setting id="osd_preview" type="action" label="30449" help="30450">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=previewosd)</data>
@@ -697,7 +873,7 @@
           <control type="toggle"/>
         </setting>
       </group>
-      <group id="2" label="30221">
+      <group id="2" label="30452">
         <setting id="assign_osd" type="action" label="30227" help="30264">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=assign,slot=osd)</data>
@@ -724,7 +900,15 @@
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-
+        <setting id="clear_osd" type="action" label="30454">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=clearkey,slot=osd)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+      </group>
+      <group id="3" label="30453">
         <setting id="assign_discmenu" type="action" label="30228">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=assign,slot=discmenu)</data>
@@ -751,18 +935,9 @@
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-      </group>
-      <group id="3">
-        <setting id="show_keylog" type="action" label="30226">
+        <setting id="clear_discmenu" type="action" label="30454">
           <level>0</level>
-          <data>RunScript(script.bdcontrol,action=keylog)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-        <setting id="clear_keys" type="action" label="30229">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=clearkeys)</data>
+          <data>RunScript(script.bdcontrol,action=clearkey,slot=discmenu)</data>
           <control type="button" format="action">
             <close>false</close>
           </control>

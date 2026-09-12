@@ -146,7 +146,8 @@ _DEFAULT_COLOR_INDEX = {
 # Opacity slider defaults (percent), mirroring the settings.xml <default>.
 _DEFAULT_OPACITY = {
     'osd_panel_color_opacity': 98,  # matches TinyPPI's dialog_background_color
-    'osd_dim_color_opacity': 47,
+    'osd_dim_color_opacity': 0,
+    'osd_nofocus_color_opacity': 66,
 }
 
 # Custom HEX colors (8-digit ARGB), keyed by setting id, persisted as JSON in
@@ -168,6 +169,8 @@ _PROPERTIES = (
     ('BDControl.TitleColor', _TEXT_COLORS, 'osd_title_color'),
     ('BDControl.TextColor', _TEXT_COLORS, 'osd_text_color'),
     ('BDControl.ProgressColor', _TEXT_COLORS, 'osd_progress_color'),
+    ('BDControl.NoFocusColor', _TEXT_COLORS, 'osd_nofocus_color'),
+    ('BDControl.NoFocusTextColor', _TEXT_COLORS, 'osd_nofocus_text_color'),
     ('BDControl.FocusColor', _FOCUS_COLORS, 'osd_focus_color'),
     ('BDControl.FocusTextColor', _FOCUS_TEXT_COLORS, 'osd_focus_text_color'),
 )
@@ -241,6 +244,13 @@ def apply_theme():
         value = _resolve(palette, color_id, custom)
         alpha = _opacity_alpha(color_id + '_opacity')
         kodiutils.home_property(prop_name, alpha + value[2:])
+    # The full-screen dim is the one element whose "off" state (0% opacity)
+    # must be unmistakably absent rather than merely transparent, since it
+    # would otherwise cover the whole screen. A dedicated flag keeps that gate
+    # independent of how the skin engine resolves a fully-zero-alpha color.
+    dim_opacity = kodiutils.get_setting_int(
+        'osd_dim_color_opacity', _DEFAULT_OPACITY.get('osd_dim_color_opacity', 0))
+    kodiutils.home_property('BDControl.DimVisible', '1' if dim_opacity > 0 else '0')
 
 
 def custom_color(setting_id):

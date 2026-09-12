@@ -497,10 +497,6 @@ msgctxt "#30211"
 msgid "Install the BD Control keymap"
 msgstr ""
 
-msgctxt "#30221"
-msgid "Assigned buttons"
-msgstr ""
-
 msgctxt "#30227"
 msgid "Assign the button for BD Control"
 msgstr ""
@@ -509,16 +505,8 @@ msgctxt "#30228"
 msgid "Assign the button for the disc menu"
 msgstr ""
 
-msgctxt "#30229"
-msgid "Clear all assignments"
-msgstr ""
-
 msgctxt "#30223"
 msgid "Separate popup and top menu entries"
-msgstr ""
-
-msgctxt "#30226"
-msgid "Show recent key presses from the log"
 msgstr ""
 
 msgctxt "#30230"
@@ -1079,4 +1067,32 @@ msgstr ""
 
 msgctxt "#30451"
 msgid "OSD preview"
+msgstr ""
+
+msgctxt "#30452"
+msgid "Button for BD Control"
+msgstr ""
+
+msgctxt "#30453"
+msgid "Button for the disc menu"
+msgstr ""
+
+msgctxt "#30454"
+msgid "Clear this assignment"
+msgstr ""
+
+msgctxt "#30455"
+msgid "Unfocused button"
+msgstr ""
+
+msgctxt "#30456"
+msgid "Background color of the unfocused buttons."
+msgstr ""
+
+msgctxt "#30457"
+msgid "Unfocused button (Text)"
+msgstr ""
+
+msgctxt "#30458"
+msgid "Text color of the unfocused buttons."
 msgstr ""

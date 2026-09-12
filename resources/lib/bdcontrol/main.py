@@ -77,8 +77,6 @@ HANDLERS = {
     'titles': actions.browse_titles,
     'discmode': actions.disc_playback_mode,
     'eject': actions.eject,
-    'keylog': learn.show_recent_keys,
-    'clearkeys': keymap.clear_assignments,
     'diagnostics': tools.show_diagnostics,
     'logdiagnostics': tools.copy_diagnostics_to_log,
 
@@ -93,6 +91,10 @@ def run(argv):
 
     if action == 'assign':
         learn.assign(args.get('slot', 'osd'))
+        return
+
+    if action == 'clearkey':
+        keymap.clear_assignment(args.get('slot', 'osd'))
         return
 
     if action == 'customcolor':
