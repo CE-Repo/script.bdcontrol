@@ -146,8 +146,8 @@ msgid "Fast forward by the configured step"
 msgstr "Um die eingestellte Schrittweite vorspulen"
 
 msgctxt "#30047"
-msgid "Open Kodi's own player OSD, which the disc menu blocks"
-msgstr "Das Kodi-eigene OSD öffnen, das vom Disc-Menü blockiert wird"
+msgid "Open the skin's own OSD, which is blocked by the disc menu"
+msgstr "Das Skin-eigene OSD öffnen, das vom Disc-Menü blockiert wird"
 
 msgctxt "#30050"
 msgid "Open video settings for this stream"

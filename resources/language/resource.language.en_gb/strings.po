@@ -146,7 +146,7 @@ msgid "Fast forward by the configured step"
 msgstr ""
 
 msgctxt "#30047"
-msgid "Open Kodi's own player OSD, which the disc menu blocks"
+msgid "Open the skin's own OSD, which is blocked by the disc menu"
 msgstr ""
 
 msgctxt "#30050"
