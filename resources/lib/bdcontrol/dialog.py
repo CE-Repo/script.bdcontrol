@@ -11,6 +11,7 @@ from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
                         PROP_OSD_TRIGGERED, home_property, localize, log)
 
 XML_FILE = 'script-bdcontrol-osd.xml'
+XML_FILE_COMPACT = 'script-bdcontrol-osd-compact.xml'
 SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
@@ -20,11 +21,16 @@ LABEL_TITLE = 100
 LABEL_STATUS = 101
 LABEL_HINT = 103
 
-# Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
-# position" slider - bottom-anchored by default, sliding up to a small margin
-# below the top edge.
-PANEL_TOP_BOTTOM = 860
-PANEL_TOP_TOP = 50
+# Where the panel group sits, per size: left edge, then <top> at 0% and at
+# 100% of the "vertical position" slider - bottom-anchored by default,
+# sliding up to a small margin below the top edge. The compact panel is
+# shorter, so its 0% value is lower by the difference: both sizes then rest
+# their lower edge on the same line and switching size does not move the OSD.
+# The numbers mirror the profiles in tools/genskin.py.
+PANEL_LAYOUT = {
+    False: (50, 860, 50),
+    True: (278, 902, 50),
+}
 
 BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
@@ -107,6 +113,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._last_input = time.time()
         self._timeout = max(kodiutils.get_setting_int('osd_timeout', 10), 0)
         self._closing = False
+        # Which of the two window files this instance was built from - the
+        # panel geometry differs, so _apply_position has to know.
+        self._compact = compact_mode()
         # Set by preview() before doModal(): shows sample data and auto-closes
         # after PREVIEW_SECONDS instead of following real playback.
         self.preview_mode = False
@@ -182,11 +191,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         0% keeps the skin's default bottom-anchored position; 100% moves it
         to a small margin below the top edge.
         """
+        left, bottom, ceiling = PANEL_LAYOUT[self._compact]
         percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 0)))
-        top = PANEL_TOP_BOTTOM - round(
-            (PANEL_TOP_BOTTOM - PANEL_TOP_TOP) * percent / 100)
+        top = bottom - round((bottom - ceiling) * percent / 100)
         try:
-            self.getControl(GROUP_PANEL).setPosition(50, top)
+            self.getControl(GROUP_PANEL).setPosition(left, top)
         except Exception:  # pylint: disable=broad-except
             pass
 
@@ -276,6 +285,20 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             self._refresh()
 
 
+def compact_mode():
+    """True when the OSD should be drawn at the smaller size - the default.
+
+    The fallback matches settings.xml: a profile written before this setting
+    existed has no value stored for it, and should still open compact.
+    """
+    return kodiutils.get_setting_bool('osd_compact', True)
+
+
+def xml_file():
+    """The window file matching the selected size."""
+    return XML_FILE_COMPACT if compact_mode() else XML_FILE
+
+
 def is_open():
     return home_property(PROP_OSD_OPEN) == '1'
 
@@ -324,8 +347,8 @@ def show():
         return
     theme.apply_theme()
     try:
-        dialog = BDControlDialog(XML_FILE, kodiutils.addon_path(), SKIN_FOLDER,
-                                 SKIN_RESOLUTION)
+        dialog = BDControlDialog(xml_file(), kodiutils.addon_path(),
+                                 SKIN_FOLDER, SKIN_RESOLUTION)
     except Exception as exc:  # pylint: disable=broad-except
         kodiutils.log_error('could not create the OSD window: %s' % exc)
         fallback()
@@ -356,7 +379,7 @@ def preview():
     """
     theme.apply_theme()
     try:
-        preview_dialog = BDControlDialog(XML_FILE, kodiutils.addon_path(),
+        preview_dialog = BDControlDialog(xml_file(), kodiutils.addon_path(),
                                          SKIN_FOLDER, SKIN_RESOLUTION)
     except Exception as exc:  # pylint: disable=broad-except
         kodiutils.log_error('could not create the preview OSD window: %s' % exc)

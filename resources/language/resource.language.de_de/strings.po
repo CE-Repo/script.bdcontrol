@@ -293,6 +293,14 @@ msgctxt "#30224"
 msgid "Whether the four OSD buttons show their icon, their label, or both."
 msgstr "Ob die vier OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen."
 
+msgctxt "#30225"
+msgid "Compact mode"
+msgstr "Kompaktmodus"
+
+msgctxt "#30226"
+msgid "Draw the OSD at about three quarters the size: a shorter panel with smaller text, icons and buttons."
+msgstr "Das OSD auf etwa drei Viertel der Größe zeichnen: niedrigeres Panel mit kleinerer Schrift, kleineren Symbolen und Schaltflächen."
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr "Werkzeuge"

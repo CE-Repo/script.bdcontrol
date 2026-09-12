@@ -43,6 +43,11 @@
           </constraints>
           <control type="list" format="string"/>
         </setting>
+        <setting id="osd_compact" type="boolean" label="30225" help="30226">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
       </group>
       <group id="1" label="30271">
         <setting id="osd_position_y" type="integer" label="30272" help="30273">
