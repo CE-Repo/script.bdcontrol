@@ -294,11 +294,11 @@ msgid "Whether the four OSD buttons show their icon, their label, or both."
 msgstr ""
 
 msgctxt "#30225"
-msgid "Compact mode"
+msgid "Layout"
 msgstr ""
 
 msgctxt "#30226"
-msgid "Draw the OSD at about three quarters the size: a shorter panel with smaller text, icons and buttons."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. Sidebar stacks the buttons in a bar that slides out from the left edge."
 msgstr ""
 
 msgctxt "#30227"
@@ -306,7 +306,11 @@ msgid "Horizontal position"
 msgstr ""
 
 msgctxt "#30228"
-msgid "Compact mode only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The full size panel spans the screen and has nowhere to move."
+msgid "Compact layout only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The other layouts are anchored and have nowhere to move."
+msgstr ""
+
+msgctxt "#30229"
+msgid "Full size"
 msgstr ""
 
 msgctxt "#30230"
@@ -315,6 +319,14 @@ msgstr ""
 
 msgctxt "#30231"
 msgid "Open the BD Control OSD"
+msgstr ""
+
+msgctxt "#30232"
+msgid "Compact"
+msgstr ""
+
+msgctxt "#30233"
+msgid "Sidebar"
 msgstr ""
 
 msgctxt "#30240"

@@ -294,20 +294,24 @@ msgid "Whether the four OSD buttons show their icon, their label, or both."
 msgstr "Ob die vier OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen."
 
 msgctxt "#30225"
-msgid "Compact mode"
-msgstr "Kompaktmodus"
+msgid "Layout"
+msgstr "Layout"
 
 msgctxt "#30226"
-msgid "Draw the OSD at about three quarters the size: a shorter panel with smaller text, icons and buttons."
-msgstr "Das OSD auf etwa drei Viertel der Größe zeichnen: niedrigeres Panel mit kleinerer Schrift, kleineren Symbolen und Schaltflächen."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. Sidebar stacks the buttons in a bar that slides out from the left edge."
+msgstr "Vollgröße spannt sich unten über den Bildschirm. Kompakt ist dasselbe Panel auf etwa drei Viertel. Seitenleiste stellt die Schaltflächen untereinander in eine Leiste, die vom linken Rand herausfährt."
 
 msgctxt "#30227"
 msgid "Horizontal position"
 msgstr "Horizontale Position"
 
 msgctxt "#30228"
-msgid "Compact mode only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The full size panel spans the screen and has nowhere to move."
-msgstr "Nur im Kompaktmodus: 50 % zentriert das OSD, 0 % schiebt es an den linken Rand und 100 % an den rechten. Das große Panel füllt die Breite und hat keinen Spielraum."
+msgid "Compact layout only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The other layouts are anchored and have nowhere to move."
+msgstr "Nur im Layout Kompakt: 50 % zentriert das OSD, 0 % schiebt es an den linken Rand und 100 % an den rechten. Die anderen Layouts sind verankert und haben keinen Spielraum."
+
+msgctxt "#30229"
+msgid "Full size"
+msgstr "Vollgröße"
 
 msgctxt "#30230"
 msgid "Tools"
@@ -316,6 +320,14 @@ msgstr "Werkzeuge"
 msgctxt "#30231"
 msgid "Open the BD Control OSD"
 msgstr "BD-Control-OSD öffnen"
+
+msgctxt "#30232"
+msgid "Compact"
+msgstr "Kompakt"
+
+msgctxt "#30233"
+msgid "Sidebar"
+msgstr "Seitenleiste"
 
 msgctxt "#30240"
 msgid "Advanced"

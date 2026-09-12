@@ -10,8 +10,16 @@ from . import actions, kodiutils, player, theme, tools
 from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
                         PROP_OSD_TRIGGERED, home_property, localize, log)
 
-XML_FILE = 'script-bdcontrol-osd.xml'
-XML_FILE_COMPACT = 'script-bdcontrol-osd-compact.xml'
+# The three layouts, and the window file each is drawn from.
+MODE_NORMAL = 0
+MODE_COMPACT = 1
+MODE_SIDEBAR = 2
+
+XML_FILES = {
+    MODE_NORMAL: 'script-bdcontrol-osd.xml',
+    MODE_COMPACT: 'script-bdcontrol-osd-compact.xml',
+    MODE_SIDEBAR: 'script-bdcontrol-osd-sidebar.xml',
+}
 SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
@@ -21,23 +29,40 @@ LABEL_TITLE = 100
 LABEL_STATUS = 101
 LABEL_HINT = 103
 
-# Where the panel group sits, per size: left edge, then <top> at 100% and at
-# 0% of the "vertical position" slider. The slider reads as how far down the
-# screen the OSD sits, so 100% is the bottom - and the default. The compact
-# panel is shorter, so its bottom value is lower by the difference: both
-# sizes then rest their lower edge on the same line and switching size does
-# not move the OSD. The numbers mirror the profiles in tools/genskin.py.
-PANEL_LAYOUT = {
-    False: (50, 860, 50),
-    True: (278, 902, 50),
+# The panel of each mode, as the skin files draw it - the one thing here
+# that has to be kept in step with the profiles in tools/genskin.py.
+PANEL_SIZE = {
+    MODE_NORMAL: (1820, 170),
+    MODE_COMPACT: (1365, 128),
+    MODE_SIDEBAR: (330, 528),
 }
 
-# How far the compact panel may travel sideways: from the screen margin the
-# full size panel keeps, to the same margin on the right (1920 - 1365 - 50).
-# The midpoint of that range is where the compact panel is centred, so 50%
-# leaves it exactly where it sits with no setting at all.
-COMPACT_LEFT_MIN = 50
-COMPACT_LEFT_MAX = 505
+# The margin every mode keeps to the screen edge, matching the one the full
+# size panel is drawn with.
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
+SCREEN_MARGIN = 50
+
+
+def panel_bounds(mode):
+    """(left, top at 100%, top at 0%) for a mode's panel.
+
+    Everything is derived from the panel's own size rather than written down
+    a second time: these numbers went stale the moment a panel was resized,
+    which is how the sidebar came to stop short of the bottom of the screen.
+    """
+    width, height = PANEL_SIZE[mode]
+    if mode == MODE_COMPACT:
+        left = (SCREEN_WIDTH - width) // 2
+    else:
+        left = SCREEN_MARGIN
+    return left, SCREEN_HEIGHT - height - SCREEN_MARGIN, SCREEN_MARGIN
+
+
+def compact_left_range():
+    """How far the compact panel may travel sideways, margin to margin."""
+    width = PANEL_SIZE[MODE_COMPACT][0]
+    return SCREEN_MARGIN, SCREEN_WIDTH - width - SCREEN_MARGIN
 
 BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
@@ -51,8 +76,9 @@ BUTTON_STREAM = 205
 PAIR_LABEL_OFFSET = 100
 PAIR_FOCUS_LABEL_OFFSET = 200
 
-# Buttons the skin file lays out square and icon-only, whatever the selected
-# button style - they have no label of either kind to fill in.
+# Buttons the wide layouts draw square and icon-only, whatever the selected
+# button style - they have no label of either kind to fill in. The sidebar
+# stacks them all alike and singles none of them out.
 ICON_ONLY_BUTTONS = (BUTTON_DIAGNOSTICS,)
 
 # Left to right, matching the skin file and the plain-list fallback. The ids
@@ -120,9 +146,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._last_input = time.time()
         self._timeout = max(kodiutils.get_setting_int('osd_timeout', 10), 0)
         self._closing = False
-        # Which of the two window files this instance was built from - the
-        # panel geometry differs, so _apply_position has to know.
-        self._compact = compact_mode()
+        # Which of the window files this instance was built from - the panel
+        # geometry differs per mode, so _apply_position has to know.
+        self._mode = osd_mode()
         # Set by preview() before doModal(): shows sample data and auto-closes
         # after PREVIEW_SECONDS instead of following real playback.
         self.preview_mode = False
@@ -199,14 +225,14 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         small margin below the top edge. Sideways only the compact panel can
         move: the full size one spans the screen and has nowhere to go.
         """
-        left, bottom, ceiling = PANEL_LAYOUT[self._compact]
+        left, bottom, ceiling = panel_bounds(self._mode)
         percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 100)))
         top = ceiling + round((bottom - ceiling) * percent / 100)
-        if self._compact:
+        if self._mode == MODE_COMPACT:
             across = max(0, min(100,
                                 kodiutils.get_setting_int('osd_position_x', 50)))
-            left = COMPACT_LEFT_MIN + round(
-                (COMPACT_LEFT_MAX - COMPACT_LEFT_MIN) * across / 100)
+            leftmost, rightmost = compact_left_range()
+            left = leftmost + round((rightmost - leftmost) * across / 100)
         try:
             self.getControl(GROUP_PANEL).setPosition(left, top)
         except Exception:  # pylint: disable=broad-except
@@ -223,6 +249,14 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         needs neither.
         """
         style = theme.button_style()
+        wordless = style == theme.STYLE_ICONS
+        if self._mode == MODE_SIDEBAR:
+            # Stacked, the icon is an overlay on the left and the button
+            # draws its own centred label, so one label carries both text
+            # styles and there is no grouplist pair to fill.
+            for control_id, command in self.commands.items():
+                self._set_label(control_id, '' if wordless else command.label)
+            return
         for control_id, command in self.commands.items():
             if control_id in ICON_ONLY_BUTTONS:
                 # Square and wordless in every style, icon only - no label of
@@ -298,18 +332,19 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             self._refresh()
 
 
-def compact_mode():
-    """True when the OSD should be drawn at the smaller size - the default.
+def osd_mode():
+    """The selected layout, falling back to compact - the default.
 
-    The fallback matches settings.xml: a profile written before this setting
-    existed has no value stored for it, and should still open compact.
+    An unknown value means a settings file from a newer version than this
+    code, so it is treated as the default rather than crashing the OSD.
     """
-    return kodiutils.get_setting_bool('osd_compact', True)
+    mode = kodiutils.get_setting_int('osd_mode', MODE_COMPACT)
+    return mode if mode in XML_FILES else MODE_COMPACT
 
 
 def xml_file():
-    """The window file matching the selected size."""
-    return XML_FILE_COMPACT if compact_mode() else XML_FILE
+    """The window file matching the selected layout."""
+    return XML_FILES[osd_mode()]
 
 
 def is_open():

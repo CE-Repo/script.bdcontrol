@@ -43,10 +43,17 @@
           </constraints>
           <control type="list" format="string"/>
         </setting>
-        <setting id="osd_compact" type="boolean" label="30225" help="30226">
+        <setting id="osd_mode" type="integer" label="30225" help="30226">
           <level>0</level>
-          <default>true</default>
-          <control type="toggle"/>
+          <default>1</default>
+          <constraints>
+            <options>
+              <option label="30229">0</option>
+              <option label="30232">1</option>
+              <option label="30233">2</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
         </setting>
       </group>
       <group id="1" label="30271">
@@ -72,7 +79,7 @@
           </constraints>
           <dependencies>
             <dependency type="enable">
-              <condition operator="is" setting="osd_compact">true</condition>
+              <condition operator="is" setting="osd_mode">1</condition>
             </dependency>
           </dependencies>
           <control type="slider" format="percentage">
