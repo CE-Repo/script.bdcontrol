@@ -313,14 +313,6 @@ msgctxt "#30229"
 msgid "Full size"
 msgstr "Vollgröße"
 
-msgctxt "#30230"
-msgid "Tools"
-msgstr "Werkzeuge"
-
-msgctxt "#30231"
-msgid "Open the BD Control OSD"
-msgstr "BD-Control-OSD öffnen"
-
 msgctxt "#30232"
 msgid "Compact"
 msgstr "Kompakt"
@@ -333,9 +325,9 @@ msgctxt "#30234"
 msgid "Sidebar (right)"
 msgstr "Seitenleiste (rechts)"
 
-msgctxt "#30240"
-msgid "Advanced"
-msgstr "Erweitert"
+msgctxt "#30235"
+msgid "Buttons and position"
+msgstr "Schaltflächen und Position"
 
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"

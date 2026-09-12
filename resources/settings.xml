@@ -26,11 +26,23 @@
             <popup>false</popup>
           </control>
         </setting>
+        <setting id="open_diagnostics" type="action" label="30034">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=diagnostics)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+        <setting id="debug_log" type="boolean" label="30241">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
       </group>
     </category>
 
-    <category id="appearance" label="30270">
-      <group id="12" label="30219">
+    <category id="layout" label="30235">
+      <group id="1" label="30219">
         <setting id="osd_button_style" type="integer" label="30220" help="30224">
           <level>0</level>
           <default>2</default>
@@ -62,7 +74,7 @@
           <control type="list" format="string"/>
         </setting>
       </group>
-      <group id="1" label="30271">
+      <group id="2" label="30271">
         <setting id="osd_position_y" type="integer" label="30272" help="30273">
           <level>0</level>
           <default>100</default>
@@ -93,6 +105,9 @@
           </control>
         </setting>
       </group>
+    </category>
+
+    <category id="appearance" label="30270">
       <group id="2" label="30275">
         <setting id="osd_panel_color" type="integer" label="30275" help="30276">
           <level>0</level>
@@ -805,35 +820,6 @@
           <control type="button" format="action">
             <close>false</close>
           </control>
-        </setting>
-      </group>
-    </category>
-
-    <category id="tools" label="30230">
-      <group id="1">
-        <setting id="open_osd" type="action" label="30231">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol)</data>
-          <control type="button" format="action">
-            <close>true</close>
-          </control>
-        </setting>
-        <setting id="open_diagnostics" type="action" label="30034">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=diagnostics)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-      </group>
-    </category>
-
-    <category id="advanced" label="30240">
-      <group id="1">
-        <setting id="debug_log" type="boolean" label="30241">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
         </setting>
       </group>
     </category>

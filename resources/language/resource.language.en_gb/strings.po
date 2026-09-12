@@ -313,14 +313,6 @@ msgctxt "#30229"
 msgid "Full size"
 msgstr ""
 
-msgctxt "#30230"
-msgid "Tools"
-msgstr ""
-
-msgctxt "#30231"
-msgid "Open the BD Control OSD"
-msgstr ""
-
 msgctxt "#30232"
 msgid "Compact"
 msgstr ""
@@ -333,8 +325,8 @@ msgctxt "#30234"
 msgid "Sidebar (right)"
 msgstr ""
 
-msgctxt "#30240"
-msgid "Advanced"
+msgctxt "#30235"
+msgid "Buttons and position"
 msgstr ""
 
 msgctxt "#30241"
