@@ -17,7 +17,6 @@ PLAYER_PROPERTIES = [
     'speed',
     'time',
     'totaltime',
-    'percentage',
     'chapter',
     'chaptercount',
     'currentaudiostream',
@@ -63,6 +62,18 @@ def playing_file():
 
 def is_playing_video():
     return bool(xbmc.getCondVisibility('Player.HasVideo'))
+
+
+def is_fullscreen_video():
+    """True while the fullscreen video window is the active one.
+
+    The OSD is a fullscreen-video overlay. A Blu-ray can still be technically
+    "playing" - and therefore pass is_bluray_playback() - after the user has
+    left that window for the home screen, a file browser or another addon,
+    with playback merely continuing in the background; opening the OSD there
+    would show player controls over the wrong screen.
+    """
+    return bool(xbmc.getCondVisibility('Window.IsActive(fullscreenvideo)'))
 
 
 def is_disc_playback(path=None):
@@ -191,18 +202,20 @@ def disc_label(path=None):
 
 
 def format_time(seconds):
-    """Format a number of seconds as H:MM:SS (or M:SS below an hour)."""
+    """Format a number of seconds always as H:MM:SS."""
     try:
         seconds = int(seconds)
     except (TypeError, ValueError):
-        return '--:--'
+        return '--:--:--'
+
     if seconds < 0:
         seconds = 0
+
     hours, remainder = divmod(seconds, 3600)
     minutes, secs = divmod(remainder, 60)
-    if hours:
-        return '%d:%02d:%02d' % (hours, minutes, secs)
-    return '%d:%02d' % (minutes, secs)
+
+    return '%d:%02d:%02d' % (hours, minutes, secs)
+
 
 
 def time_dict_to_seconds(value):
@@ -211,6 +224,26 @@ def time_dict_to_seconds(value):
     return (value.get('hours', 0) * 3600
             + value.get('minutes', 0) * 60
             + value.get('seconds', 0))
+
+
+def _infolabel_seconds(name):
+    """Parse a Kodi H:MM:SS / MM:SS info label into seconds, or 0."""
+    parts = (xbmc.getInfoLabel(name) or '').split(':')
+    try:
+        parts = [int(part) for part in parts]
+    except ValueError:
+        return 0
+    seconds = 0
+    for part in parts:
+        seconds = seconds * 60 + part
+    return seconds
+
+
+def _infolabel_int(name):
+    try:
+        return int(xbmc.getInfoLabel(name) or 0)
+    except (TypeError, ValueError):
+        return 0
 
 
 class PlayerState(object):
@@ -222,11 +255,20 @@ class PlayerState(object):
         self.path = playing_file()
         self.playing = self.player_id is not None
         self.paused = self.properties.get('speed', 1) == 0
-        self.position = time_dict_to_seconds(self.properties.get('time'))
-        self.duration = time_dict_to_seconds(self.properties.get('totaltime'))
-        self.percentage = self.properties.get('percentage', 0) or 0
-        self.chapter = self.properties.get('chapter', 0) or 0
-        self.chapter_count = self.properties.get('chaptercount', 0) or 0
+        # Player.GetProperties reports 0 for time/chapter fields while a
+        # Blu-ray or DVD menu structure is loaded - a known Kodi limitation
+        # that does not affect the equivalent GUI info labels, which read the
+        # same values through a different path and stay correct throughout
+        # disc playback. The JSON-RPC value is used first since it needs no
+        # string parsing; the info label only fills the gap it leaves on
+        # discs.
+        self.position = (time_dict_to_seconds(self.properties.get('time'))
+                         or _infolabel_seconds('Player.Time'))
+        self.duration = (time_dict_to_seconds(self.properties.get('totaltime'))
+                         or _infolabel_seconds('Player.Duration'))
+        self.chapter = self.properties.get('chapter') or _infolabel_int('VideoPlayer.Chapter')
+        self.chapter_count = (self.properties.get('chaptercount')
+                              or _infolabel_int('VideoPlayer.ChapterCount'))
         self.can_seek = bool(self.properties.get('canseek', False))
         self.has_menu = has_disc_menu()
         self.in_menu = is_menu_active()

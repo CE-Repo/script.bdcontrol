@@ -33,14 +33,14 @@
         <left>0</left>
         <top>0</top>
         <width>1820</width>
-        <height>228</height>
+        <height>200</height>
         <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
       </control>
 
       <!-- Title of the disc / current item -->
       <control type="label" id="100">
         <left>30</left>
-        <top>18</top>
+        <top>16</top>
         <width>1180</width>
         <height>34</height>
         <font>font16</font>
@@ -53,7 +53,7 @@
       <!-- Position, chapter and disc-menu state -->
       <control type="label" id="101">
         <left>30</left>
-        <top>18</top>
+        <top>16</top>
         <width>1760</width>
         <height>34</height>
         <font>font13</font>
@@ -66,7 +66,7 @@
       <!-- 201: set from dialog.py -->
       <control type="button" id="201">
         <left>30</left>
-        <top>88</top>
+        <top>64</top>
         <width>425</width>
         <height>76</height>
         <font>font13</font>
@@ -83,7 +83,7 @@
       </control>
       <control type="image">
         <left>222</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -92,7 +92,7 @@
       </control>
       <control type="image">
         <left>222</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -101,7 +101,7 @@
       </control>
       <control type="image">
         <left>70</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -110,7 +110,7 @@
       </control>
       <control type="image">
         <left>70</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -121,7 +121,7 @@
       <!-- 202: set from dialog.py -->
       <control type="button" id="202">
         <left>475</left>
-        <top>88</top>
+        <top>64</top>
         <width>425</width>
         <height>76</height>
         <font>font13</font>
@@ -138,7 +138,7 @@
       </control>
       <control type="image">
         <left>667</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -147,7 +147,7 @@
       </control>
       <control type="image">
         <left>667</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -156,7 +156,7 @@
       </control>
       <control type="image">
         <left>515</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -165,7 +165,7 @@
       </control>
       <control type="image">
         <left>515</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -176,7 +176,7 @@
       <!-- 203: set from dialog.py -->
       <control type="button" id="203">
         <left>920</left>
-        <top>88</top>
+        <top>64</top>
         <width>425</width>
         <height>76</height>
         <font>font13</font>
@@ -193,7 +193,7 @@
       </control>
       <control type="image">
         <left>1112</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -202,7 +202,7 @@
       </control>
       <control type="image">
         <left>1112</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -211,7 +211,7 @@
       </control>
       <control type="image">
         <left>960</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -220,7 +220,7 @@
       </control>
       <control type="image">
         <left>960</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -231,7 +231,7 @@
       <!-- 204: set from dialog.py -->
       <control type="button" id="204">
         <left>1365</left>
-        <top>88</top>
+        <top>64</top>
         <width>425</width>
         <height>76</height>
         <font>font13</font>
@@ -248,7 +248,7 @@
       </control>
       <control type="image">
         <left>1557</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -257,7 +257,7 @@
       </control>
       <control type="image">
         <left>1557</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -266,7 +266,7 @@
       </control>
       <control type="image">
         <left>1405</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -275,7 +275,7 @@
       </control>
       <control type="image">
         <left>1405</left>
-        <top>106</top>
+        <top>82</top>
         <width>40</width>
         <height>40</height>
         <aspectratio>keep</aspectratio>
@@ -287,7 +287,7 @@
            and icons+text already show the label itself. -->
       <control type="label" id="103">
         <left>30</left>
-        <top>176</top>
+        <top>152</top>
         <width>1760</width>
         <height>34</height>
         <font>font13</font>

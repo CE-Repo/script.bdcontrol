@@ -276,6 +276,12 @@ def show():
         # on its first refresh.
         kodiutils.notify(localize(30139))
         return
+    if not player.is_fullscreen_video():
+        # The disc plays on, but the user has left the video screen for the
+        # home screen, a file browser or another addon - not somewhere the
+        # OSD belongs.
+        kodiutils.notify(localize(30156))
+        return
     theme.apply_theme()
     try:
         dialog = BDControlDialog(XML_FILE, kodiutils.addon_path(), SKIN_FOLDER,

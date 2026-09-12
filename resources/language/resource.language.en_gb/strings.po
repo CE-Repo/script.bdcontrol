@@ -201,6 +201,10 @@ msgctxt "#30154"
 msgid "Recognised as a Blu-ray"
 msgstr ""
 
+msgctxt "#30156"
+msgid "Only available on the video screen"
+msgstr ""
+
 msgctxt "#30200"
 msgid "General"
 msgstr ""

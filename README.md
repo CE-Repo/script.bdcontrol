@@ -56,6 +56,34 @@ screen.
 > Kodi's own **Video OSD** button, or map the portable
 > `PlayerControl(ShowVideoMenu)` to a remote button directly.
 
+### When the OSD can be opened
+
+Two conditions have to hold, and both are checked every time:
+
+1. **A Blu-ray has to be playing.** Recognising it is done in two steps,
+   because the path Kodi reports for the playing item is not dependable on its
+   own — it varies with the source and with Kodi's Blu-ray playback mode, and
+   can be anything from `bluray://…` to a path inside `BDMV`, a mounted
+   folder, a disc image or a bare device node. A path that says Blu-ray counts
+   immediately; otherwise Kodi reporting a **disc menu** driving the input
+   counts, with a DVD excluded explicitly since it sets the same flag. The
+   second step cannot be decided when playback starts — libbluray needs a
+   moment — so the service keeps checking, and once a disc has been recognised
+   it stays recognised until playback ends.
+
+2. **The video screen has to be the active window.** A disc keeps playing when
+   you leave fullscreen video for the home screen, a file browser or another
+   addon, so "a Blu-ray is playing" alone is not enough — the OSD would end up
+   over the wrong screen. Outside `fullscreenvideo` it refuses and says so.
+
+The other commands (`osd`, `popupmenu`, `topmenu`, `diagnostics`) need the
+Blu-ray but not the video screen: they are plain player builtins and a report,
+not an overlay, and **Settings → Tools** has to be able to reach them.
+
+Both the recognition and every refusal are written to `kodi.log` at info level,
+naming the path and how it was classified, so a misdetection shows up there
+rather than as silence.
+
 ### Button style
 
 The four buttons can be shown three ways, under **Settings → Appearance →
@@ -190,7 +218,9 @@ CoreELEC:
 ## Scripting
 
 These are all the commands BD Control provides. Each one is reachable from a
-keymap, a skin button or another addon:
+keymap, a skin button or another addon, and all of them follow the rules
+[above](#when-the-osd-can-be-opened) — they show a notification and do nothing
+otherwise:
 
 ```
 RunScript(script.bdcontrol)
