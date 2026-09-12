@@ -1,0 +1,458 @@
+# Kodi Media Center language file
+# Addon Name: BD Control
+# Addon id: script.bdcontrol
+# Addon Provider: jamal2362
+msgid ""
+msgstr ""
+"Project-Id-Version: script.bdcontrol\n"
+"Report-Msgid-Bugs-To: https://github.com/CE-Repo/script.bdcontrol\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Kodi Translation Team\n"
+"Language-Team: English (United Kingdom) (http://www.transifex.com/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_GB\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+msgctxt "#30000"
+msgid "BD Control"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Open the BD Control OSD"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Install keymap"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Remove keymap"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Chapter %d/%d"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Disc menu active"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Disc menu"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Pause"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Stop"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Prev. chapter"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Next chapter"
+msgstr ""
+
+msgctxt "#30025"
+msgid "- %d s"
+msgstr ""
+
+msgctxt "#30026"
+msgid "More..."
+msgstr ""
+
+msgctxt "#30027"
+msgid "+ %d s"
+msgstr ""
+
+msgctxt "#30028"
+msgid "Kodi OSD"
+msgstr ""
+
+msgctxt "#30029"
+msgid "Video settings"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Audio track"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Subtitles"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Titles"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Blu-ray playback mode"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Diagnostics"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Kodi audio settings"
+msgstr ""
+
+msgctxt "#30036"
+msgid "Kodi subtitle settings"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Turn subtitles on or off"
+msgstr ""
+
+msgctxt "#30038"
+msgid "Next audio language"
+msgstr ""
+
+msgctxt "#30039"
+msgid "Eject disc"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Go back to the disc's own menu"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Pause or resume playback"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Stop playback and leave the disc"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Jump to the previous chapter"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Jump to the next chapter"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Rewind by the configured step"
+msgstr ""
+
+msgctxt "#30046"
+msgid "Fast forward by the configured step"
+msgstr ""
+
+msgctxt "#30047"
+msgid "Open Kodi's own player OSD, which the disc menu blocks"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Choose an audio track"
+msgstr ""
+
+msgctxt "#30049"
+msgid "Choose a subtitle track or turn subtitles off"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Open Kodi's video settings for this stream"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Codec info"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Show decoder, resolution and HDR information"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Play a single title without the disc menu"
+msgstr ""
+
+msgctxt "#30054"
+msgid "More tools, disc settings and diagnostics"
+msgstr ""
+
+msgctxt "#30055"
+msgid "The command failed - see the Kodi log"
+msgstr ""
+
+msgctxt "#30056"
+msgid "Play"
+msgstr ""
+
+msgctxt "#30057"
+msgid "Unknown action \"%s\""
+msgstr ""
+
+msgctxt "#30058"
+msgid "Blu-ray menu playback - open BD Control for player controls"
+msgstr ""
+
+msgctxt "#30059"
+msgid "Blu-ray menu playback - hold OK for player controls"
+msgstr ""
+
+msgctxt "#30060"
+msgid "This disc does not allow seeking here"
+msgstr ""
+
+msgctxt "#30061"
+msgid "No audio tracks reported"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Disabled"
+msgstr ""
+
+msgctxt "#30063"
+msgid "This disc reports no subtitle tracks"
+msgstr ""
+
+msgctxt "#30064"
+msgid "No Blu-ray disc is playing"
+msgstr ""
+
+msgctxt "#30065"
+msgid "No titles found on this disc"
+msgstr ""
+
+msgctxt "#30066"
+msgid "Kodi did not report a Blu-ray playback mode"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Playback mode changed - it applies the next time a disc starts"
+msgstr ""
+
+msgctxt "#30070"
+msgid "Keymap installed"
+msgstr ""
+
+msgctxt "#30071"
+msgid "Keymap removed"
+msgstr ""
+
+msgctxt "#30072"
+msgid "No trigger buttons are enabled"
+msgstr ""
+
+msgctxt "#30073"
+msgid "The keymap is switched off"
+msgstr ""
+
+msgctxt "#30074"
+msgid "long press"
+msgstr ""
+
+msgctxt "#30080"
+msgid "yes"
+msgstr ""
+
+msgctxt "#30081"
+msgid "no"
+msgstr ""
+
+msgctxt "#30090"
+msgid "System"
+msgstr ""
+
+msgctxt "#30091"
+msgid "Device name"
+msgstr ""
+
+msgctxt "#30092"
+msgid "Optical drive"
+msgstr ""
+
+msgctxt "#30093"
+msgid "Device nodes"
+msgstr ""
+
+msgctxt "#30094"
+msgid "Disc inserted"
+msgstr ""
+
+msgctxt "#30095"
+msgid "Blu-ray libraries"
+msgstr ""
+
+msgctxt "#30096"
+msgid "libaacs and a KEYDB.cfg are required for encrypted retail discs."
+msgstr ""
+
+msgctxt "#30097"
+msgid "Kodi disc settings"
+msgstr ""
+
+msgctxt "#30098"
+msgid "Blu-ray playback mode"
+msgstr ""
+
+msgctxt "#30099"
+msgid "Keymap"
+msgstr ""
+
+msgctxt "#30100"
+msgid "Keymap file"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Playback"
+msgstr ""
+
+msgctxt "#30102"
+msgid "Nothing is playing"
+msgstr ""
+
+msgctxt "#30103"
+msgid "Title"
+msgstr ""
+
+msgctxt "#30104"
+msgid "Path"
+msgstr ""
+
+msgctxt "#30105"
+msgid "Optical disc"
+msgstr ""
+
+msgctxt "#30106"
+msgid "Disc menu in control"
+msgstr ""
+
+msgctxt "#30107"
+msgid "Seeking allowed"
+msgstr ""
+
+msgctxt "#30108"
+msgid "Chapter"
+msgstr ""
+
+msgctxt "#30109"
+msgid "Audio tracks"
+msgstr ""
+
+msgctxt "#30110"
+msgid "Subtitle tracks"
+msgstr ""
+
+msgctxt "#30111"
+msgid "Resolution"
+msgstr ""
+
+msgctxt "#30112"
+msgid "Diagnostics written to the Kodi log"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Write diagnostics to the Kodi log"
+msgstr ""
+
+msgctxt "#30200"
+msgid "General"
+msgstr ""
+
+msgctxt "#30201"
+msgid "Show a hint when a disc menu takes over"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Open BD Control automatically"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Close the OSD after (seconds, 0 = never)"
+msgstr ""
+
+msgctxt "#30204"
+msgid "Seek step (seconds)"
+msgstr ""
+
+msgctxt "#30210"
+msgid "Keymap"
+msgstr ""
+
+msgctxt "#30211"
+msgid "Install the BD Control keymap"
+msgstr ""
+
+msgctxt "#30212"
+msgid "Long press OK (recommended)"
+msgstr ""
+
+msgctxt "#30213"
+msgid "Menu / Title button"
+msgstr ""
+
+msgctxt "#30214"
+msgid "Info button"
+msgstr ""
+
+msgctxt "#30215"
+msgid "Context menu button (C)"
+msgstr ""
+
+msgctxt "#30216"
+msgid "Long press Back"
+msgstr ""
+
+msgctxt "#30217"
+msgid "Display button opens the Kodi OSD directly"
+msgstr ""
+
+msgctxt "#30218"
+msgid "Stop button stops playback"
+msgstr ""
+
+msgctxt "#30219"
+msgid "Install keymap now"
+msgstr ""
+
+msgctxt "#30220"
+msgid "Remove keymap"
+msgstr ""
+
+msgctxt "#30221"
+msgid "Trigger buttons"
+msgstr ""
+
+msgctxt "#30230"
+msgid "Tools"
+msgstr ""
+
+msgctxt "#30231"
+msgid "Open the BD Control OSD"
+msgstr ""
+
+msgctxt "#30240"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "#30241"
+msgid "Write debug messages to the Kodi log"
+msgstr ""
+
+msgctxt "#30260"
+msgid "A short press still reaches the disc menu, so navigating the menu keeps working. Holding OK opens BD Control."
+msgstr ""
+
+msgctxt "#30261"
+msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
+msgstr ""
+
+msgctxt "#30262"
+msgid "Opens the OSD by itself whenever a disc menu takes over the remote."
+msgstr ""

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.bdcontrol"
+       name="BD Control"
+       version="1.0.0"
+       provider-name="jamal2362">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_gb">Player controls for Blu-ray and UHD Blu-ray disc menus</summary>
+    <summary lang="de_de">Wiedergabesteuerung für Blu-ray- und UHD-Blu-ray-Disc-Menüs</summary>
+    <description lang="en_gb">Playing a Blu-ray or UHD Blu-ray with full disc menus hands the remote over to the disc: the OK button no longer opens Kodi's OSD, so pause, stop, seek, audio and subtitle selection become unreachable while only chapter skip keeps working.
+
+BD Control puts those controls back. It adds its own on-screen display that opens on a spare remote button (a long press of OK by default), from which you can reach the Kodi OSD, pause, stop, seek, switch audio and subtitle tracks, jump back into the disc menu, play a single title without menus and eject the disc. A keymap generator wires the trigger buttons up for you, and a diagnostics page checks the pieces a UHD Blu-ray needs on CoreELEC.</description>
+    <description lang="de_de">Bei der Wiedergabe einer Blu-ray oder UHD Blu-ray mit vollständigen Disc-Menüs übernimmt die Disc die Fernbedienung: Die OK-Taste öffnet das Kodi-OSD nicht mehr, dadurch sind Pause, Stopp, Spulen sowie Ton- und Untertitelauswahl nicht mehr erreichbar – nur das Kapitelspringen funktioniert weiterhin.
+
+BD Control bringt diese Steuerung zurück. Das Addon bietet ein eigenes On-Screen-Display, das über eine freie Taste der Fernbedienung geöffnet wird (standardmäßig langes Drücken von OK). Von dort erreichst du das Kodi-OSD, Pause, Stopp, Spulen, Ton- und Untertitelspuren, das Disc-Menü, die Wiedergabe eines einzelnen Titels ohne Menü und das Auswerfen der Disc. Ein Keymap-Generator legt die Auslösetasten für dich an, und eine Diagnoseseite prüft, was eine UHD Blu-ray unter CoreELEC benötigt.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <language>en de</language>
+    <source>https://github.com/CE-Repo/script.bdcontrol</source>
+    <news>v1.0.0
+- First release: BD Control OSD, keymap generator, disc tools and diagnostics.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+    </assets>
+  </extension>
+</addon>

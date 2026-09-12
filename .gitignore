@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# Created by tools/smoke_test.py when it exercises the keymap round trip.
+.profile/

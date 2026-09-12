@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings version="1">
+  <section id="script.bdcontrol">
+
+    <category id="general" label="30200">
+      <group id="1">
+        <setting id="show_hint" type="boolean" label="30201">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="auto_open" type="boolean" label="30202" help="30262">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="osd_timeout" type="integer" label="30203">
+          <level>0</level>
+          <default>10</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>1</step>
+            <maximum>60</maximum>
+          </constraints>
+          <control type="slider" format="integer">
+            <popup>false</popup>
+          </control>
+        </setting>
+        <setting id="seek_step" type="integer" label="30204">
+          <level>0</level>
+          <default>30</default>
+          <constraints>
+            <minimum>5</minimum>
+            <step>5</step>
+            <maximum>300</maximum>
+          </constraints>
+          <control type="slider" format="integer">
+            <popup>false</popup>
+          </control>
+        </setting>
+      </group>
+    </category>
+
+    <category id="keymap" label="30210">
+      <group id="1">
+        <setting id="keymap_enabled" type="boolean" label="30211" help="30261">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+        </setting>
+      </group>
+      <group id="2" label="30221">
+        <setting id="km_longpress_ok" type="boolean" label="30212" help="30260">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_menu" type="boolean" label="30213">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_info" type="boolean" label="30214">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_contextmenu" type="boolean" label="30215">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_longpress_back" type="boolean" label="30216">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_osd_direct" type="boolean" label="30217">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_stop" type="boolean" label="30218">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+      </group>
+      <group id="3">
+        <setting id="install_keymap" type="action" label="30219">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=install_keymap)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+        <setting id="remove_keymap" type="action" label="30220">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=remove_keymap)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+      </group>
+    </category>
+
+    <category id="tools" label="30230">
+      <group id="1">
+        <setting id="open_osd" type="action" label="30231">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=show)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
+        </setting>
+        <setting id="open_disc_mode" type="action" label="30033">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=discmode)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+        <setting id="open_diagnostics" type="action" label="30034">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=diagnostics)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+        <setting id="log_diagnostics" type="action" label="30113">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=logdiagnostics)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+      </group>
+    </category>
+
+    <category id="advanced" label="30240">
+      <group id="1">
+        <setting id="debug_log" type="boolean" label="30241">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+      </group>
+    </category>
+
+  </section>
+</settings>
