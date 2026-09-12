@@ -10,16 +10,22 @@ from . import actions, kodiutils, player, theme, tools
 from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
                         PROP_OSD_TRIGGERED, home_property, localize, log)
 
-# The three layouts, and the window file each is drawn from.
+# The layouts, and the window file each is drawn from.
 MODE_NORMAL = 0
 MODE_COMPACT = 1
-MODE_SIDEBAR = 2
+MODE_SIDEBAR_LEFT = 2
+MODE_SIDEBAR_RIGHT = 3
 
 XML_FILES = {
     MODE_NORMAL: 'script-bdcontrol-osd.xml',
     MODE_COMPACT: 'script-bdcontrol-osd-compact.xml',
-    MODE_SIDEBAR: 'script-bdcontrol-osd-sidebar.xml',
+    MODE_SIDEBAR_LEFT: 'script-bdcontrol-osd-sidebar-left.xml',
+    MODE_SIDEBAR_RIGHT: 'script-bdcontrol-osd-sidebar-right.xml',
 }
+
+# Both bars are the same stack of buttons; they differ only in which edge
+# they rest against and travel from.
+SIDEBAR_MODES = (MODE_SIDEBAR_LEFT, MODE_SIDEBAR_RIGHT)
 SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
@@ -34,7 +40,8 @@ LABEL_HINT = 103
 PANEL_SIZE = {
     MODE_NORMAL: (1820, 170),
     MODE_COMPACT: (1365, 128),
-    MODE_SIDEBAR: (330, 528),
+    MODE_SIDEBAR_LEFT: (330, 528),
+    MODE_SIDEBAR_RIGHT: (330, 528),
 }
 
 # The margin every mode keeps to the screen edge, matching the one the full
@@ -54,6 +61,8 @@ def panel_bounds(mode):
     width, height = PANEL_SIZE[mode]
     if mode == MODE_COMPACT:
         left = (SCREEN_WIDTH - width) // 2
+    elif mode == MODE_SIDEBAR_RIGHT:
+        left = SCREEN_WIDTH - width - SCREEN_MARGIN
     else:
         left = SCREEN_MARGIN
     return left, SCREEN_HEIGHT - height - SCREEN_MARGIN, SCREEN_MARGIN
@@ -248,9 +257,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         control has no colour of its own to switch. The icons-only style
         needs neither.
         """
-        style = theme.button_style()
+        style = effective_button_style(self._mode)
         wordless = style == theme.STYLE_ICONS
-        if self._mode == MODE_SIDEBAR:
+        if self._mode in SIDEBAR_MODES:
             # Stacked, the icon is an overlay on the left and the button
             # draws its own centred label, so one label carries both text
             # styles and there is no grouplist pair to fill.
@@ -332,6 +341,20 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             self._refresh()
 
 
+def effective_button_style(mode):
+    """The button style a layout draws with.
+
+    The sidebars prescribe icons with text and ignore the setting: their
+    buttons are as wide as the bar, which leaves an icon alone stranded in a
+    corner and a label alone with an empty stripe beside it. The setting is
+    greyed out for those layouts, and this is what makes that true rather
+    than merely advertised.
+    """
+    if mode in SIDEBAR_MODES:
+        return theme.STYLE_ICONS_AND_TEXT
+    return theme.button_style()
+
+
 def osd_mode():
     """The selected layout, falling back to compact - the default.
 
@@ -393,7 +416,7 @@ def show():
         # OSD belongs.
         kodiutils.notify(localize(30156))
         return
-    theme.apply_theme()
+    theme.apply_theme(effective_button_style(osd_mode()))
     try:
         dialog = BDControlDialog(xml_file(), kodiutils.addon_path(),
                                  SKIN_FOLDER, SKIN_RESOLUTION)
@@ -425,7 +448,7 @@ def preview():
     without needing something to be playing, or disturbing real playback if
     there is.
     """
-    theme.apply_theme()
+    theme.apply_theme(effective_button_style(osd_mode()))
     try:
         preview_dialog = BDControlDialog(xml_file(), kodiutils.addon_path(),
                                          SKIN_FOLDER, SKIN_RESOLUTION)

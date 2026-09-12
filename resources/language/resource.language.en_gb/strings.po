@@ -290,7 +290,7 @@ msgid "Icons and text"
 msgstr ""
 
 msgctxt "#30224"
-msgid "Whether the four OSD buttons show their icon, their label, or both."
+msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar layouts always use icons with text."
 msgstr ""
 
 msgctxt "#30225"
@@ -298,7 +298,7 @@ msgid "Layout"
 msgstr ""
 
 msgctxt "#30226"
-msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. Sidebar stacks the buttons in a bar that slides out from the left edge."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick."
 msgstr ""
 
 msgctxt "#30227"
@@ -326,7 +326,11 @@ msgid "Compact"
 msgstr ""
 
 msgctxt "#30233"
-msgid "Sidebar"
+msgid "Sidebar (left)"
+msgstr ""
+
+msgctxt "#30234"
+msgid "Sidebar (right)"
 msgstr ""
 
 msgctxt "#30240"

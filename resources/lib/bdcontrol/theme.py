@@ -250,10 +250,13 @@ def button_style():
     return value
 
 
-def apply_theme():
+def apply_theme(style=None):
     """Read the appearance settings and publish them as Home-window
     properties. Call before opening the OSD so the skin can resolve every
-    color as soon as the window appears."""
+    color as soon as the window appears.
+
+    `style` overrides the stored button style, for a layout that prescribes
+    one of its own."""
     custom = _load_custom()
     for prop_name, palette, color_id in _PROPERTIES:
         value = _resolve(palette, color_id, custom)
@@ -269,7 +272,9 @@ def apply_theme():
     # Whether each button shows its icon, its label or both. The skin file
     # switches the icon images on this; dialog.py clears the labels for the
     # icons-only style.
-    kodiutils.home_property('BDControl.ButtonStyle', str(button_style()))
+    if style is None:
+        style = button_style()
+    kodiutils.home_property('BDControl.ButtonStyle', str(style))
 
 
 def custom_color(setting_id):

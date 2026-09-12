@@ -290,16 +290,16 @@ msgid "Icons and text"
 msgstr "Icons + Text"
 
 msgctxt "#30224"
-msgid "Whether the four OSD buttons show their icon, their label, or both."
-msgstr "Ob die vier OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen."
+msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar layouts always use icons with text."
+msgstr "Ob die OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen. Die Seitenleisten nutzen immer Icons und Text."
 
 msgctxt "#30225"
 msgid "Layout"
 msgstr "Layout"
 
 msgctxt "#30226"
-msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. Sidebar stacks the buttons in a bar that slides out from the left edge."
-msgstr "Vollgröße spannt sich unten über den Bildschirm. Kompakt ist dasselbe Panel auf etwa drei Viertel. Seitenleiste stellt die Schaltflächen untereinander in eine Leiste, die vom linken Rand herausfährt."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick."
+msgstr "Vollgröße spannt sich unten über den Bildschirm. Kompakt ist dasselbe Panel auf etwa drei Viertel. Die Seitenleisten stellen die Schaltflächen untereinander in eine Leiste, die vom gewählten Rand herausfährt."
 
 msgctxt "#30227"
 msgid "Horizontal position"
@@ -326,8 +326,12 @@ msgid "Compact"
 msgstr "Kompakt"
 
 msgctxt "#30233"
-msgid "Sidebar"
-msgstr "Seitenleiste"
+msgid "Sidebar (left)"
+msgstr "Seitenleiste (links)"
+
+msgctxt "#30234"
+msgid "Sidebar (right)"
+msgstr "Seitenleiste (rechts)"
 
 msgctxt "#30240"
 msgid "Advanced"

@@ -41,6 +41,11 @@
               <option label="30223">2</option>
             </options>
           </constraints>
+          <dependencies>
+            <dependency type="enable">
+              <condition operator="lt" setting="osd_mode">2</condition>
+            </dependency>
+          </dependencies>
           <control type="list" format="string"/>
         </setting>
         <setting id="osd_mode" type="integer" label="30225" help="30226">
@@ -51,6 +56,7 @@
               <option label="30229">0</option>
               <option label="30232">1</option>
               <option label="30233">2</option>
+              <option label="30234">3</option>
             </options>
           </constraints>
           <control type="list" format="string"/>
