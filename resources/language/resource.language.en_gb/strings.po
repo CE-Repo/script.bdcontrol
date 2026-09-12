@@ -165,6 +165,18 @@ msgctxt "#30116"
 msgid "Chapters"
 msgstr ""
 
+msgctxt "#30117"
+msgid "Stream"
+msgstr ""
+
+msgctxt "#30118"
+msgid "Audio track"
+msgstr ""
+
+msgctxt "#30119"
+msgid "Subtitles"
+msgstr ""
+
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr ""
@@ -215,6 +227,30 @@ msgstr ""
 
 msgctxt "#30158"
 msgid "This disc does not report any chapters"
+msgstr ""
+
+msgctxt "#30160"
+msgid "No audio tracks reported"
+msgstr ""
+
+msgctxt "#30161"
+msgid "No subtitle tracks reported"
+msgstr ""
+
+msgctxt "#30162"
+msgid "Off"
+msgstr ""
+
+msgctxt "#30163"
+msgid "Track %d"
+msgstr ""
+
+msgctxt "#30164"
+msgid "Back"
+msgstr ""
+
+msgctxt "#30165"
+msgid "The player did not apply the change"
 msgstr ""
 
 msgctxt "#30200"
@@ -823,4 +859,8 @@ msgstr ""
 
 msgctxt "#30461"
 msgid "Pick a chapter from a list"
+msgstr ""
+
+msgctxt "#30462"
+msgid "Choose the audio track, subtitles or a chapter"
 msgstr ""

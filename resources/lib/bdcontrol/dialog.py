@@ -30,7 +30,7 @@ BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
 BUTTON_KODI_OSD = 203
 BUTTON_DIAGNOSTICS = 204
-BUTTON_CHAPTERS = 205
+BUTTON_STREAM = 205
 
 # The icons+text style draws its label inside a grouplist next to the icon
 # rather than on the button; the skin file numbers those id + offset, one for
@@ -39,10 +39,10 @@ PAIR_LABEL_OFFSET = 100
 PAIR_FOCUS_LABEL_OFFSET = 200
 
 # Left to right, matching the skin file and the plain-list fallback. The
-# chapter list was added last but sits fourth on screen, so the ids are not
+# stream button was added last but sits fourth on screen, so the ids are not
 # in order here.
 BUTTON_ORDER = (BUTTON_POPUP_MENU, BUTTON_TOP_MENU, BUTTON_KODI_OSD,
-                BUTTON_CHAPTERS, BUTTON_DIAGNOSTICS)
+                BUTTON_STREAM, BUTTON_DIAGNOSTICS)
 
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
@@ -85,8 +85,8 @@ def _build_commands():
         BUTTON_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
                                  closes=True),
         BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
-        BUTTON_CHAPTERS: Command(30116, 30461, actions.chapter_list,
-                                 closes=True),
+        BUTTON_STREAM: Command(30117, 30462, actions.stream_menu,
+                               closes=True),
         BUTTON_DIAGNOSTICS: Command(30034, 30048, tools.show_diagnostics,
                                     closes=True),
     }

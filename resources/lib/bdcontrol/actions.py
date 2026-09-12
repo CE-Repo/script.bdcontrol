@@ -14,7 +14,7 @@ below deliberately use two different mechanisms:
 import xbmc
 import xbmcgui
 
-from . import kodiutils, player
+from . import kodiutils, maps, player
 from .player import format_time
 from .kodiutils import execute_builtin, jsonrpc, localize
 
@@ -27,6 +27,11 @@ CHAPTER_STEP_LIMIT = 200
 # How long a chapter step is given to register before the next one is sent.
 CHAPTER_STEP_WAIT = 0.2
 
+# A stream change is not instant: the player has to reopen the stream, so
+# it is given a moment before its answer is believed.
+SWITCH_CONFIRM_TRIES = 6
+SWITCH_CONFIRM_WAIT = 0.25
+
 
 # --- Kodi windows ---------------------------------------------------------
 
@@ -37,6 +42,197 @@ def kodi_osd():
     name bypasses the disc's grip on the OK button entirely.
     """
     execute_builtin('ActivateWindow(videoosd)')
+
+
+def _codec_name(codec, subtitle=False):
+    """(format name, extension) for a codec id; either half may be empty."""
+    codec = (codec or '').strip().lower()
+    if not codec:
+        return '', ''
+    table = maps.SUBTITLE_CODEC_MAP if subtitle else maps.AUDIO_CODEC_MAP
+    name = table.get(codec)
+    if name is None:
+        # An unmapped id still reads acceptably in capitals - "WMAPRO" rather
+        # than a blank where the format should be.
+        return codec.replace('_', ' ').upper(), ''
+    if isinstance(name, tuple):
+        return name
+    return name, ''
+
+
+def _language_label(language):
+    """A language code as a short uppercase tag: "ger" and "de" both -> "DE".
+
+    Discs are inconsistent about which ISO 639 form they use, so the code is
+    put through Kodi's own language table to reach the two letter form. That
+    table does not know every code and answers with an empty string when it
+    does not, which is when the code is used as it came.
+    """
+    language = (language or '').strip()
+    if not language:
+        return ''
+    try:
+        short = xbmc.convertLanguage(language, xbmc.ISO_639_1)
+    except Exception:  # pylint: disable=broad-except
+        short = ''
+    return (short or language).upper()
+
+
+def stream_menu():
+    """The Stream button: choose what to change, then open that chooser.
+
+    The choosers come back with True when the user asked to step back out of
+    them, which is what makes this a menu rather than a one-way door.
+    """
+    entries = [(localize(30118), audio_menu),
+               (localize(30119), subtitle_menu),
+               (localize(30116), chapter_list)]
+    preselect = 0
+    while True:
+        choice = xbmcgui.Dialog().select(localize(30117),
+                                         [label for label, _ in entries],
+                                         preselect=preselect)
+        if choice < 0:
+            return
+        preselect = choice
+        if not entries[choice][1]():
+            return
+
+
+def _channel_label(channels):
+    """A channel count as its layout, e.g. 8 -> 7.1.
+
+    An unlisted count keeps the bare number, which is still true even if it
+    is not a layout anyone names.
+    """
+    try:
+        channels = int(channels)
+    except (TypeError, ValueError):
+        return ''
+    if channels < 1:
+        return ''
+    return maps.CHANNELS_MAP.get(channels, '%dch' % channels)
+
+
+def _stream_label(stream, fallback_number, subtitle=False):
+    """Name one audio or subtitle stream as compactly as it allows.
+
+    What Kodi fills in varies with the source - a disc often gives a language
+    code and nothing else, a remux a full name - so the parts are collected
+    and whatever is missing simply leaves no gap. The language code is the
+    one part that is always shorthand, so it is set in capitals to read as
+    the tag it is rather than as a word.
+    """
+    parts = []
+    language = _language_label(stream.get('language'))
+    if language:
+        parts.append(language)
+    name = (stream.get('name') or '').strip()
+    if name and name.upper() not in [part.upper() for part in parts]:
+        parts.append(name)
+    codec, extension = _codec_name(stream.get('codec'), subtitle)
+    detail = ' '.join(part for part in
+                      (codec, _channel_label(stream.get('channels'))) if part)
+    if extension:
+        # After the layout, not welded to the format name: "Dolby TrueHD 7.1
+        # (Atmos)" says which bed carries the objects.
+        detail = ('%s (%s)' % (detail, extension)).strip()
+    if detail:
+        parts.append(detail)
+    return '  -  '.join(parts) or localize(30163, fallback_number)
+
+
+def _selected_index(streams, index):
+    """Where `index` sits in `streams`, or 0 when it is not among them."""
+    for position, stream in enumerate(streams):
+        if stream.get('index') == index:
+            return position
+    return 0
+
+
+def _choose(heading, labels, preselect):
+    """Show a chooser whose first entry steps back to the Stream menu.
+
+    Returns the picked entry's position in `labels`, or None when the user
+    left the chooser - by picking that first entry or by backing out of the
+    dialog, which differ only in where they land afterwards.
+    """
+    choice = xbmcgui.Dialog().select(heading, [localize(30164)] + labels,
+                                     preselect=preselect + 1)
+    if choice < 0:
+        return None, False
+    if choice == 0:
+        return None, True
+    return choice - 1, True
+
+
+def _confirm_switch(what, wanted, read_current):
+    """Check that a stream change actually took, and say so when it did not.
+
+    A player that will not change streams answers the request with a plain
+    OK and then carries on as before - which is how this looked like nothing
+    happening at all. Reading the value back turns that silence into
+    something the user and the log can see.
+    """
+    monitor = xbmc.Monitor()
+    for _ in range(SWITCH_CONFIRM_TRIES):
+        if monitor.waitForAbort(SWITCH_CONFIRM_WAIT):
+            return True
+        if read_current() == wanted:
+            return True
+    kodiutils.log_error('%s stream %s was accepted but never applied'
+                        % (what, wanted))
+    kodiutils.notify(localize(30165))
+    return False
+
+
+def audio_menu():
+    """Pick the audio track. True when the Stream menu should come back."""
+    state = player.PlayerState()
+    streams = state.audio_streams
+    if not streams:
+        kodiutils.notify(localize(30160))
+        return True
+    labels = [_stream_label(stream, number)
+              for number, stream in enumerate(streams, 1)]
+    choice, back = _choose(localize(30118), labels,
+                           _selected_index(streams, state.current_audio_index))
+    if choice is None or state.player_id is None:
+        return back
+    wanted = streams[choice].get('index', choice)
+    jsonrpc('Player.SetAudioStream', playerid=state.player_id, stream=wanted)
+    _confirm_switch('audio', wanted,
+                    lambda: player.PlayerState().current_audio_index)
+    return False
+
+
+def subtitle_menu():
+    """Pick the subtitle track or switch it off. True to return to Stream."""
+    state = player.PlayerState()
+    streams = state.subtitles
+    if not streams:
+        kodiutils.notify(localize(30161))
+        return True
+    # "Off" heads the tracks, so a pick is one ahead of the stream list.
+    labels = [localize(30162)] + [_stream_label(stream, number, True)
+                                  for number, stream in enumerate(streams, 1)]
+    preselect = 0
+    if state.subtitles_enabled:
+        preselect = _selected_index(streams, state.current_subtitle_index) + 1
+    choice, back = _choose(localize(30119), labels, preselect)
+    if choice is None or state.player_id is None:
+        return back
+    if choice == 0:
+        jsonrpc('Player.SetSubtitle', playerid=state.player_id, subtitle='off')
+        return False
+    # Picking a track has to turn subtitles on as well: setting the track
+    # alone leaves them hidden if they were switched off.
+    wanted = streams[choice - 1].get('index', choice - 1)
+    jsonrpc('Player.SetSubtitle', playerid=state.player_id, subtitle=wanted,
+            enable=True)
+    _confirm_switch('subtitle', wanted,
+                    lambda: player.PlayerState().current_subtitle_index)
+    return False
 
 
 def chapter_labels(marks, count, duration):
@@ -55,7 +251,7 @@ def chapter_labels(marks, count, duration):
 
 
 def chapter_list():
-    """Let the user pick a chapter from a list, and jump to it.
+    """Pick a chapter and jump to it. True to return to the Stream menu.
 
     Two different jumps hide behind the one list. When Kodi publishes the
     chapter marks, the entries are those marks and picking one seeks straight
@@ -67,16 +263,16 @@ def chapter_list():
     marks = player.chapter_marks(state.chapter_count) if state.duration else []
     if not marks and state.chapter_count < 2:
         kodiutils.notify(localize(30158))
-        return
+        return True
     labels = chapter_labels(marks, state.chapter_count, state.duration)
-    choice = xbmcgui.Dialog().select(localize(30116), labels,
-                                     preselect=max(state.chapter - 1, 0))
-    if choice < 0:
-        return
+    choice, back = _choose(localize(30116), labels, max(state.chapter - 1, 0))
+    if choice is None:
+        return back
     if marks:
         seek_percentage(marks[choice])
     else:
         seek_chapter(choice + 1)
+    return False
 
 
 def seek_percentage(percent):

@@ -165,6 +165,18 @@ msgctxt "#30116"
 msgid "Chapters"
 msgstr "Kapitel"
 
+msgctxt "#30117"
+msgid "Stream"
+msgstr "Stream"
+
+msgctxt "#30118"
+msgid "Audio track"
+msgstr "Tonspur"
+
+msgctxt "#30119"
+msgid "Subtitles"
+msgstr "Untertitel"
+
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr "Debug-Logging"
@@ -216,6 +228,30 @@ msgstr "Kapitel-Quellen"
 msgctxt "#30158"
 msgid "This disc does not report any chapters"
 msgstr "Diese Disc meldet keine Kapitel"
+
+msgctxt "#30160"
+msgid "No audio tracks reported"
+msgstr "Keine Tonspuren gemeldet"
+
+msgctxt "#30161"
+msgid "No subtitle tracks reported"
+msgstr "Keine Untertitel gemeldet"
+
+msgctxt "#30162"
+msgid "Off"
+msgstr "Aus"
+
+msgctxt "#30163"
+msgid "Track %d"
+msgstr "Spur %d"
+
+msgctxt "#30164"
+msgid "Back"
+msgstr "Zurück"
+
+msgctxt "#30165"
+msgid "The player did not apply the change"
+msgstr "Der Player hat die Änderung nicht übernommen"
 
 msgctxt "#30200"
 msgid "General"
@@ -824,3 +860,7 @@ msgstr "Das Hauptmenü der Disc öffnen"
 msgctxt "#30461"
 msgid "Pick a chapter from a list"
 msgstr "Ein Kapitel aus einer Liste wählen"
+
+msgctxt "#30462"
+msgid "Choose the audio track, subtitles or a chapter"
+msgstr "Tonspur, Untertitel oder Kapitel wählen"
