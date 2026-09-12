@@ -52,7 +52,7 @@
       <group id="1" label="30271">
         <setting id="osd_position_y" type="integer" label="30272" help="30273">
           <level>0</level>
-          <default>0</default>
+          <default>100</default>
           <constraints>
             <minimum>0</minimum>
             <step>1</step>

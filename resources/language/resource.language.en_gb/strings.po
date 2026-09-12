@@ -334,7 +334,7 @@ msgid "Vertical position"
 msgstr ""
 
 msgctxt "#30273"
-msgid "0% keeps the OSD at the bottom of the screen; 100% moves it to the top."
+msgid "100% keeps the OSD at the bottom of the screen; 0% moves it to the top."
 msgstr ""
 
 msgctxt "#30275"

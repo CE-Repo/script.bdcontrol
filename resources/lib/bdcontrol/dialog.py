@@ -21,12 +21,12 @@ LABEL_TITLE = 100
 LABEL_STATUS = 101
 LABEL_HINT = 103
 
-# Where the panel group sits, per size: left edge, then <top> at 0% and at
-# 100% of the "vertical position" slider - bottom-anchored by default,
-# sliding up to a small margin below the top edge. The compact panel is
-# shorter, so its 0% value is lower by the difference: both sizes then rest
-# their lower edge on the same line and switching size does not move the OSD.
-# The numbers mirror the profiles in tools/genskin.py.
+# Where the panel group sits, per size: left edge, then <top> at 100% and at
+# 0% of the "vertical position" slider. The slider reads as how far down the
+# screen the OSD sits, so 100% is the bottom - and the default. The compact
+# panel is shorter, so its bottom value is lower by the difference: both
+# sizes then rest their lower edge on the same line and switching size does
+# not move the OSD. The numbers mirror the profiles in tools/genskin.py.
 PANEL_LAYOUT = {
     False: (50, 860, 50),
     True: (278, 902, 50),
@@ -188,12 +188,12 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
     def _apply_position(self):
         """Move the panel to the configured vertical position.
 
-        0% keeps the skin's default bottom-anchored position; 100% moves it
-        to a small margin below the top edge.
+        100% is the bottom of the screen and the default; 0% moves it to a
+        small margin below the top edge.
         """
         left, bottom, ceiling = PANEL_LAYOUT[self._compact]
-        percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 0)))
-        top = bottom - round((bottom - ceiling) * percent / 100)
+        percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 100)))
+        top = ceiling + round((bottom - ceiling) * percent / 100)
         try:
             self.getControl(GROUP_PANEL).setPosition(left, top)
         except Exception:  # pylint: disable=broad-except

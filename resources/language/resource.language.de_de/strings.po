@@ -335,7 +335,7 @@ msgstr "Vertikale Position"
 
 msgctxt "#30273"
 msgid "0% keeps the OSD at the bottom of the screen; 100% moves it to the top."
-msgstr "0 % lässt das OSD unten auf dem Bildschirm; 100 % verschiebt es nach oben."
+msgstr "100 % lässt das OSD unten auf dem Bildschirm; 0 % verschiebt es nach oben."
 
 msgctxt "#30275"
 msgid "Panel background"
