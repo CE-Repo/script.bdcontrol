@@ -119,8 +119,17 @@ def ok_dialog(message, heading=None):
     xbmcgui.Dialog().ok(heading or localize(30000), message)
 
 
-def yes_no(message, heading=None):
-    return xbmcgui.Dialog().yesno(heading or localize(30000), message)
+def yes_no(message, heading=None, yeslabel=None, nolabel=None):
+    heading = heading or localize(30000)
+    if yeslabel or nolabel:
+        try:
+            return xbmcgui.Dialog().yesno(heading, message,
+                                          nolabel=nolabel or '',
+                                          yeslabel=yeslabel or '')
+        except TypeError:
+            # Older signatures take the labels positionally.
+            pass
+    return xbmcgui.Dialog().yesno(heading, message)
 
 
 def select(heading, options):

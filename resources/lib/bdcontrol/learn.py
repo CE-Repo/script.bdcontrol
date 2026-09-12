@@ -5,8 +5,9 @@ Long press mappings only fire when the input driver reports a held key, and
 not every remote on CoreELEC does.  Rather than guessing, these two tools let
 the user pin the trigger down:
 
-* `learn_button()` captures the button code of a real key press and stores it,
-  so the keymap can bind that exact code with `<key id="...">`.
+* `assign()` captures the button code of a real key press, asks whether it
+  should need a long press, and stores both so the keymap can bind that exact
+  code with `<key id="...">`.
 * `recent_keys()` reads the same `HandleKey:` lines out of kodi.log that the
   manual procedure asks people to look for over SSH.
 
@@ -82,36 +83,72 @@ class LearnDialog(xbmcgui.WindowXMLDialog):
             pass
 
 
-def learn_button():
-    """Ask the user to press a button, then offer to use it as the trigger."""
+def _capture():
+    """Show the "press a button" dialog and return its code, or 0."""
     try:
         dialog = LearnDialog(XML_FILE, kodiutils.addon_path(), SKIN_FOLDER,
                              SKIN_RESOLUTION)
     except Exception as exc:  # pylint: disable=broad-except
         kodiutils.log_error('could not create the learn window: %s' % exc)
-        kodiutils.ok_dialog(localize(30120))
         return 0
     dialog.doModal()
-    code = dialog.button_code
-    cancelled = dialog.cancelled
+    code = 0 if dialog.cancelled else dialog.button_code
     del dialog
+    return code
 
-    if cancelled:
-        return 0
-    if not code:
-        kodiutils.ok_dialog(localize(30120))
-        return 0
 
-    if not kodiutils.yes_no('%s\n\n%s' % (localize(30119, code), localize(30123))):
-        return 0
+def _ask_longpress(code):
+    """The question asked once a button has been picked.
 
-    # Import here: keymap imports nothing from this module, and this keeps the
-    # dependency one-directional.
+    Returns True for a long press binding, False for a normal one, and None
+    when the user backed out.
+    """
+    message = '%s\n\n%s' % (localize(30119, code), localize(30142))
+    return kodiutils.yes_no(message,
+                            yeslabel=localize(30143),
+                            nolabel=localize(30144))
+
+
+def assign(slot_name):
+    """Assign a button to one of the keymap slots.
+
+    Asks for the button first and for the kind of press afterwards, then
+    writes the keymap straight away so the binding is live without a restart.
+    """
     from . import keymap
-    kodiutils.set_setting('km_custom_code', str(code))
-    kodiutils.set_setting_bool('km_custom', True)
+    target = keymap.slot(slot_name)
+    if target is None:
+        kodiutils.log_error('unknown keymap slot "%s"' % slot_name)
+        return 0
+
+    code = _capture()
+    if not code:
+        # A button with no mapping anywhere produces no action at all and
+        # never reaches the dialog; the log still records the press.
+        if not kodiutils.yes_no(localize(30149)):
+            return 0
+        code = _pick_from_log()
+    if not code:
+        return 0
+
+    clash = keymap.assigned_slot_for(code)
+    if clash is not None and clash.name != target.name:
+        kodiutils.ok_dialog(localize(30150, clash.label))
+        return 0
+
+    longpress = _ask_longpress(code)
+    if longpress is None:
+        return 0
+
+    target.assign(code, longpress)
+    if not kodiutils.get_setting_bool('keymap_enabled', True):
+        kodiutils.set_setting_bool('keymap_enabled', True)
     keymap.sync()
-    kodiutils.notify(localize(30070))
+    log_info('assigned button %d to %s (longpress=%s)'
+             % (code, target.name, longpress))
+    kodiutils.notify(target.describe())
+    if longpress:
+        kodiutils.ok_dialog(localize(30151))
     return code
 
 
@@ -163,40 +200,38 @@ def recent_keys(limit=25):
     return entries
 
 
-def show_recent_keys():
-    """Show the key presses from the log, and offer to bind one of them."""
+def _pick_from_log():
+    """Let the user choose one of the key presses recorded in kodi.log."""
     entries = recent_keys()
     if not entries:
         kodiutils.textviewer(localize(30122), localize(30121), monospace=False)
-        return
-
+        return 0
     labels = []
     for name, code, action in entries:
         label = '%s  (id %d)' % (name, code) if code else name
         if action:
             label = '%s  ->  %s' % (label, action)
         labels.append(label)
-
     choice = xbmcgui.Dialog().select(localize(30121), labels)
     if choice < 0:
-        return
-    name, code, _action = entries[choice]
+        return 0
+    code = entries[choice][1]
     if not code:
         kodiutils.ok_dialog(localize(30120))
-        return
-    if not kodiutils.yes_no('%s\n\n%s' % (localize(30119, code),
-                                          localize(30123))):
-        return
-    from . import keymap
-    kodiutils.set_setting('km_custom_code', str(code))
-    kodiutils.set_setting_bool('km_custom', True)
-    keymap.sync()
-    kodiutils.notify(localize(30070))
-
-
-def custom_code():
-    """The button code the user picked, or 0."""
-    try:
-        return int(kodiutils.get_setting('km_custom_code', '0') or '0')
-    except (TypeError, ValueError):
         return 0
+    return code
+
+
+def show_recent_keys():
+    """Read-only view of the key presses in kodi.log."""
+    entries = recent_keys()
+    if not entries:
+        kodiutils.textviewer(localize(30122), localize(30121), monospace=False)
+        return
+    lines = []
+    for name, code, action in entries:
+        line = '%s (id %d)' % (name, code) if code else name
+        if action:
+            line = '%s  ->  %s' % (line, action)
+        lines.append(line)
+    kodiutils.textviewer('\n'.join(lines), localize(30121))

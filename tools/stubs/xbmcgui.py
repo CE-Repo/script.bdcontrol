@@ -13,8 +13,10 @@ class Dialog(object):
     def ok(self, heading, message):
         return True
 
-    def yesno(self, heading, message):
-        return False
+    YESNO_RESULT = False
+
+    def yesno(self, heading, message, nolabel='', yeslabel=''):
+        return Dialog.YESNO_RESULT
 
     def select(self, heading, options, preselect=-1):
         return SELECT_RESULT

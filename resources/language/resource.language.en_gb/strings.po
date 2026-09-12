@@ -25,14 +25,6 @@ msgctxt "#30001"
 msgid "Open the BD Control OSD"
 msgstr ""
 
-msgctxt "#30002"
-msgid "Install keymap"
-msgstr ""
-
-msgctxt "#30003"
-msgid "Remove keymap"
-msgstr ""
-
 msgctxt "#30004"
 msgid "Settings"
 msgstr ""
@@ -198,11 +190,15 @@ msgid "Unknown action \"%s\""
 msgstr ""
 
 msgctxt "#30058"
-msgid "Blu-ray menu playback - open BD Control for player controls"
+msgid "Blu-ray menu playback - assign a button in the BD Control settings"
 msgstr ""
 
 msgctxt "#30059"
-msgid "Blu-ray menu playback - hold OK for player controls"
+msgid "Blu-ray menu playback - hold your BD Control button for player controls"
+msgstr ""
+
+msgctxt "#30152"
+msgid "Blu-ray menu playback - press your BD Control button for player controls"
 msgstr ""
 
 msgctxt "#30060"
@@ -245,16 +241,8 @@ msgctxt "#30071"
 msgid "Keymap removed"
 msgstr ""
 
-msgctxt "#30072"
-msgid "No trigger buttons are enabled"
-msgstr ""
-
 msgctxt "#30073"
 msgid "The keymap is switched off"
-msgstr ""
-
-msgctxt "#30074"
-msgid "long press"
 msgstr ""
 
 msgctxt "#30080"
@@ -370,7 +358,7 @@ msgid "Disc top menu"
 msgstr ""
 
 msgctxt "#30116"
-msgid "Find my button"
+msgid "Assign a button"
 msgstr ""
 
 msgctxt "#30117"
@@ -397,14 +385,6 @@ msgctxt "#30122"
 msgid "No key presses found in the log. Turn on debug logging under Settings > System > Logging, press the button during playback, then look again."
 msgstr ""
 
-msgctxt "#30123"
-msgid "Use this button for BD Control?"
-msgstr ""
-
-msgctxt "#30124"
-msgid "Custom button"
-msgstr ""
-
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr ""
@@ -414,7 +394,7 @@ msgid "Keymap file contents"
 msgstr ""
 
 msgctxt "#30127"
-msgid "Note: long press only fires when the remote driver reports a held key. If nothing happens, use \"Find my button\" and pick a spare button instead."
+msgid "Note: long press only fires when the remote driver reports a held key. If it does not work, assign the button again and choose a short press."
 msgstr ""
 
 msgctxt "#30128"
@@ -449,6 +429,42 @@ msgctxt "#30135"
 msgid "Disabled copies of the BD Control keymap"
 msgstr ""
 
+msgctxt "#30140"
+msgid "Open BD Control"
+msgstr ""
+
+msgctxt "#30141"
+msgid "Open the disc menu"
+msgstr ""
+
+msgctxt "#30142"
+msgid "Should it only trigger on a long press?"
+msgstr ""
+
+msgctxt "#30143"
+msgid "Long press"
+msgstr ""
+
+msgctxt "#30144"
+msgid "Short press"
+msgstr ""
+
+msgctxt "#30146"
+msgid "not assigned"
+msgstr ""
+
+msgctxt "#30149"
+msgid "No button was detected. Pick one from the Kodi log instead?"
+msgstr ""
+
+msgctxt "#30150"
+msgid "That button is already assigned to \"%s\""
+msgstr ""
+
+msgctxt "#30151"
+msgid "Long press only works when the remote driver reports a held key, which not every remote does. If the button does nothing, assign it again and choose a short press."
+msgstr ""
+
 msgctxt "#30136"
 msgid "With this off, saving in Keymap Editor renames every other keymap file to *.xml.bak.N - including this addon's. Turn it on in the Keymap Editor settings, or switch the BD Control keymap off and do the mapping in Keymap Editor instead."
 msgstr ""
@@ -481,60 +497,24 @@ msgctxt "#30211"
 msgid "Install the BD Control keymap"
 msgstr ""
 
-msgctxt "#30212"
-msgid "Long press OK (recommended)"
-msgstr ""
-
-msgctxt "#30213"
-msgid "Menu / Title button"
-msgstr ""
-
-msgctxt "#30214"
-msgid "Info button"
-msgstr ""
-
-msgctxt "#30215"
-msgid "Context menu button (C)"
-msgstr ""
-
-msgctxt "#30216"
-msgid "Long press Back"
-msgstr ""
-
-msgctxt "#30217"
-msgid "Display button opens the Kodi OSD directly"
-msgstr ""
-
-msgctxt "#30218"
-msgid "Stop button stops playback"
-msgstr ""
-
-msgctxt "#30219"
-msgid "Install keymap now"
-msgstr ""
-
-msgctxt "#30220"
-msgid "Remove keymap"
-msgstr ""
-
 msgctxt "#30221"
-msgid "Trigger buttons"
+msgid "Assigned buttons"
 msgstr ""
 
-msgctxt "#30222"
-msgid "Title button opens the disc menu"
+msgctxt "#30227"
+msgid "Assign the button for BD Control"
+msgstr ""
+
+msgctxt "#30228"
+msgid "Assign the button for the disc menu"
+msgstr ""
+
+msgctxt "#30229"
+msgid "Clear all assignments"
 msgstr ""
 
 msgctxt "#30223"
 msgid "Separate popup and top menu entries"
-msgstr ""
-
-msgctxt "#30224"
-msgid "Use a button I pick myself"
-msgstr ""
-
-msgctxt "#30225"
-msgid "Find my button"
 msgstr ""
 
 msgctxt "#30226"
@@ -557,10 +537,6 @@ msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
 msgstr ""
 
-msgctxt "#30260"
-msgid "A short press still reaches the disc menu, so navigating the menu keeps working. Holding OK opens BD Control."
-msgstr ""
-
 msgctxt "#30261"
 msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
 msgstr ""
@@ -570,7 +546,7 @@ msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" a
 msgstr ""
 
 msgctxt "#30264"
-msgid "Binds the exact button code you picked, which works whatever kind of remote sends it and does not need long press support."
+msgid "Press the button you want to use, then choose whether it should need a long press. The exact button code is bound, so it works whatever kind of remote sends it."
 msgstr ""
 
 msgctxt "#30262"

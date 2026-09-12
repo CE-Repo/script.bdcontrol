@@ -70,112 +70,70 @@ on a stock build.
 
 1. Download this repository as a ZIP.
 2. In Kodi: **Add-ons → Install from zip file** and pick the ZIP.
-3. The keymap is installed automatically the first time the service starts.
+3. Open **Settings → Keymap** and assign a button (see below). Nothing is
+   bound until you do.
 
-## Which button opens BD Control?
+## Assigning a button
 
-By default: **hold OK** during playback, or the **Menu** button.
+Nothing is bound until you say so. In **Settings → Keymap** there are two
+assignable buttons:
 
-A *short* press of OK still goes to the disc, so navigating the disc menu is
-unchanged; only holding the button opens BD Control.
-
-> **If holding OK does nothing:** long press only fires when the input driver
-> reports a *held* key, and not every remote on CoreELEC does — Amlogic's IR
-> driver only emits repeats when `repeat_enable` is set in `remote.conf`.
-> Nothing in the addon can work around that, so don't fight it: use
-> **Find my button** (below) and bind a spare button instead.
-
-Additional triggers can be enabled in **Settings → Keymap**:
-
-| Trigger | Default |
+| | |
 | --- | --- |
-| Long press OK | on |
-| Title button → the disc's own menu | on |
-| Menu button | on |
-| Info button | off |
-| Context menu button (C) | off |
-| Long press Back | off |
-| Display button → opens the Kodi OSD directly | off |
-| Stop button → stops playback | off |
+| **Assign the button for BD Control** | opens the BD Control OSD |
+| **Assign the button for the disc menu** | the disc's own popup / top menu |
 
-The generated keymap is written to
-`special://profile/keymaps/script.bdcontrol.xml` and only ever touches the
-`FullscreenVideo` window — navigation everywhere else in Kodi is untouched.
-The Title button entry is the mapping Kodi does not ship itself:
+Pressing either one starts the same short wizard:
+
+1. A dialog asks you to **press the button you want to use**. Back cancels.
+2. It then asks whether it should **only trigger on a long press**, or on a
+   normal short press.
+3. The keymap is written immediately — no restart, no SSH, no XML.
+
+The button is bound by its **raw button code**:
 
 ```xml
 <keymap>
   <FullscreenVideo>
-    <remote>
-      <title>PlayerControl(ShowVideoMenu)</title>
-    </remote>
+    <keyboard>
+      <key id="61517" mod="longpress">RunScript(script.bdcontrol,action=toggle)</key>
+      <key id="61453">PlayerControl(ShowVideoMenu)</key>
+    </keyboard>
   </FullscreenVideo>
 </keymap>
 ```
 
-It is rewritten whenever you change those settings, and removing it (or using
-**Remove keymap**) restores Kodi's stock behaviour.
+Kodi merges every keymap section into one map keyed by that number, so the
+code captured from a real press works whatever kind of device sent it —
+keyboard, IR remote or CEC. There is no list of named buttons to guess from,
+and the mapping only ever touches the `FullscreenVideo` window, so navigation
+everywhere else in Kodi is unchanged.
 
-### Find my button
+> **A note on long press:** it only fires when the input driver reports a
+> *held* key, and not every remote on CoreELEC does — Amlogic's IR driver only
+> emits repeats when `repeat_enable` is set in `remote.conf`. If a long press
+> binding does nothing, assign the button again and choose **short press**.
+> The addon says as much when you pick long press.
 
-**Settings → Keymap → Find my button** (also under *More* in the OSD) opens a
-dialog that waits for one key press and remembers its button code. The keymap
-then binds that exact code:
-
-```xml
-<keyboard>
-  <key id="61517">RunScript(script.bdcontrol,action=toggle)</key>
-</keyboard>
-```
-
-Kodi merges every keymap section into one map keyed by the numeric button
-code, so binding the code directly works whatever kind of remote sends it —
-no long press support needed, and no need to know what the button is called.
-Back cancels the dialog, so Back itself cannot be learned.
-
-If the dialog never sees your press (a button with no mapping anywhere
-produces no action at all), use **Show recent key presses from the log**
-instead. It reads the `HandleKey:` lines out of `kodi.log` — the same thing
-the manual procedure asks you to look for over SSH — and lets you pick one
-from the list. That needs debug logging on:
+**If the dialog never sees your press:** a button with no mapping anywhere
+produces no action at all and never reaches a dialog. The wizard then offers
+to pick from the Kodi log instead, which reads the `HandleKey:` lines out of
+`kodi.log` — the same thing the manual procedure asks you to look for over
+SSH. That needs debug logging on:
 **Settings → System → Logging → Enable debug logging**.
+**Show recent key presses from the log** does the same as a read-only list.
 
-## Using the Keymap Editor addon instead
+**Clear all assignments** removes both bindings and deletes the keymap file.
 
-You can map the trigger with the **Keymap Editor** addon (`script.keymap`)
-rather than with the built-in generator. Two things matter:
+### Keymap Editor
 
-**1. Stop Keymap Editor from disabling this addon's keymap.** When it saves,
-it renames every *other* `*.xml` in `userdata/keymaps` to `*.xml.bak.N` —
-including `script.bdcontrol.xml`. Either:
-
-* turn on **Allow multiple keymap files** in the Keymap Editor settings
-  (`enable_multifile`, off by default) so both files can co-exist, **or**
-* turn off **Install the BD Control keymap** here and let Keymap Editor own
-  the mapping entirely.
-
-If it does happen, the service notices within half a minute, puts the keymap
-back and tells you — and the diagnostics page names the setting. Don't map the
-same button in both files.
-
-**2. Pick the right entry.** In Keymap Editor:
-
-1. **Edit** → context **Fullscreen video**
-2. category **Add-ons** → **Launch BD Control**
-3. press the button you want to use.
-
-That writes `runaddon(script.bdcontrol)`, which starts the addon with no
-arguments. Started that way *during playback* it goes straight to the OSD, so
-the button behaves exactly like the built-in trigger; with nothing playing it
-opens the addon's menu instead.
-
-For the disc menu itself, Keymap Editor has no entry — it only offers the
-actions it ships. Use the built-in **Title button** mapping for that, or add
-the one line from the [HOWTO](#which-button-opens-bd-control) by hand.
-
-Keymap Editor also has a **long press** setting of its own. It runs into the
-same driver limitation described above, so if holding a button does nothing
-there either, that confirms the cause is not this addon.
+If you would rather use the **Keymap Editor** addon (`script.keymap`), note
+that on save it renames every *other* `*.xml` in `userdata/keymaps` to
+`*.xml.bak.N` — including this addon's — unless its **Allow multiple keymap
+files** setting is on. The service notices within half a minute, puts the
+keymap back and tells you; the diagnostics page names the setting. Its
+**Add-ons → Launch BD Control** entry writes `runaddon(script.bdcontrol)`,
+which during playback opens the OSD directly.
 
 ## Settings
 
@@ -201,8 +159,8 @@ CoreELEC:
   retail discs),
 * Kodi's Blu-ray playback mode and whether the extended popup/top menus are
   enabled,
-* which BD Control triggers are active, and the full contents of the generated
-  keymap file,
+* which buttons are assigned and the full contents of the generated keymap
+  file,
 * whether a `remote.conf` is present and what it says about key repeat, which
   is what long press depends on,
 * whether debug logging is on, and the last few key presses from the log,
@@ -233,11 +191,11 @@ RunScript(script.bdcontrol,action=subtitles)
 RunScript(script.bdcontrol,action=titles)
 RunScript(script.bdcontrol,action=discmode)
 RunScript(script.bdcontrol,action=eject)
-RunScript(script.bdcontrol,action=learn)         # find my button
+RunScript(script.bdcontrol,action=assign,slot=osd)       # assign the BD Control button
+RunScript(script.bdcontrol,action=assign,slot=discmenu)  # assign the disc menu button
 RunScript(script.bdcontrol,action=keylog)        # recent key presses from the log
 RunScript(script.bdcontrol,action=diagnostics)
-RunScript(script.bdcontrol,action=install_keymap)
-RunScript(script.bdcontrol,action=remove_keymap)
+RunScript(script.bdcontrol,action=clearkeys)     # clear both assignments
 ```
 
 ## Development

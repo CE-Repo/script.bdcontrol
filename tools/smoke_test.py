@@ -73,37 +73,53 @@ def test_arguments():
 
 def test_keymap():
     section('keymap generation')
+    for entry in keymap.SLOTS:
+        entry.clear()
+    check(keymap.build() == '',
+          'no assignment means no keymap file at all')
+
+    keymap.slot('osd').assign(61517, False)
     content = keymap.build()
     check(content.startswith('<?xml'), 'keymap starts with an XML declaration')
     xml.dom.minidom.parseString(content)
     check(True, 'keymap is well-formed XML')
-    check('mod="longpress"' in content, 'long press modifier is written')
-    check('RunScript(script.bdcontrol,action=toggle)' in content,
-          'the toggle command is wired up')
+    check('<key id="61517">RunScript(script.bdcontrol,action=toggle)</key>'
+          in content, 'the assigned button is bound by its raw code')
+    check('mod="longpress"' not in content,
+          'a short press binding carries no modifier')
     check('<FullscreenVideo>' in content,
           'only the fullscreen video window is touched')
-    check(content.count('<keyboard>') == 1 and content.count('<remote>') == 1,
-          'one keyboard and one remote block')
 
-    check('<title>PlayerControl(ShowVideoMenu)</title>' in content,
-          'the Title button is bound to the disc menu')
+    keymap.slot('osd').assign(61517, True)
+    check('<key id="61517" mod="longpress">' in keymap.build(),
+          'a long press binding carries the modifier')
+
+    keymap.slot('discmenu').assign(61453, False)
+    content = keymap.build()
+    check('<key id="61453">PlayerControl(ShowVideoMenu)</key>' in content,
+          'the disc menu button sends the portable builtin')
+    xml.dom.minidom.parseString(content)
+    check(True, 'two assignments still produce well-formed XML')
 
     # The popup variant is opt-in, because upstream Kodi matches the builtin
     # parameter exactly and would silently ignore the argument.
     xbmcaddon.SETTINGS['extended_disc_menus'] = True
-    check('<title>PlayerControl(ShowVideoMenu(popup))</title>' in keymap.build(),
-          'enabling the extended menus switches the Title button to popup')
+    check('PlayerControl(ShowVideoMenu(popup))' in keymap.build(),
+          'enabling the extended menus switches it to the popup variant')
     xbmcaddon.SETTINGS['extended_disc_menus'] = False
-    check('<title>PlayerControl(ShowVideoMenu)</title>' in keymap.build(),
-          'and switching it back restores the portable builtin')
+    check('<key id="61453">PlayerControl(ShowVideoMenu)</key>'
+          in keymap.build(), 'and switching it back restores the portable one')
 
-    # Turning every trigger off must produce an empty keymap, not a broken one.
-    saved = dict(xbmcaddon.SETTINGS)
-    for setting in ('km_longpress_ok', 'km_menu', 'km_disc_menu'):
-        xbmcaddon.SETTINGS[setting] = False
-    check(keymap.build() == '', 'no triggers means no keymap file')
-    xbmcaddon.SETTINGS.clear()
-    xbmcaddon.SETTINGS.update(saved)
+    check(keymap.assigned_slot_for(61453).name == 'discmenu',
+          'a code can be traced back to its slot')
+    check(keymap.assigned_slot_for(999) is None,
+          'an unassigned code belongs to no slot')
+
+    # A corrupt stored code must not produce a broken keymap.
+    xbmcaddon.SETTINGS['key_osd_code'] = 'nonsense'
+    check(keymap.slot('osd').code == 0, 'a corrupt code reads as none')
+    check('nonsense' not in keymap.build(), 'and is left out of the keymap')
+    keymap.slot('osd').assign(61517, False)
 
     # A full round trip through the profile directory.
     profile_keymaps = keymap.keymap_dir()
@@ -119,7 +135,30 @@ def test_keymap():
     keymap.sync()
     check('Action(reloadkeymaps)' in xbmc.BUILTINS,
           'Kodi is asked to reload its keymaps')
+
+    keymap.clear_assignments()
+    check(not keymap.is_installed() and not keymap.slot('osd').code,
+          'clearing the assignments removes both')
     shutil.rmtree(os.path.dirname(keymap.keymap_dir()), ignore_errors=True)
+
+
+def test_keymap_migration():
+    section('migration from the old settings')
+    for entry in keymap.SLOTS:
+        entry.clear()
+    xbmcaddon.SETTINGS['km_custom_code'] = '61517'
+    xbmcaddon.SETTINGS['km_longpress_ok'] = True
+    check(keymap.migrate_old_settings(), 'an old custom button is migrated')
+    osd = keymap.slot('osd')
+    check(osd.code == 61517 and osd.longpress,
+          'the code and the long press choice carry over')
+    check(keymap.migrate_old_settings() is False,
+          'migrating twice does nothing')
+    osd.clear()
+    xbmcaddon.SETTINGS['km_custom_code'] = ''
+    check(keymap.migrate_old_settings() is False,
+          'nothing to migrate is not an error')
+    del xbmcaddon.SETTINGS['km_longpress_ok']
 
 
 def test_player_helpers():
@@ -317,14 +356,14 @@ def test_more_menu():
 
 
 def test_learn():
-    section('finding the trigger button')
+    section('assigning a button')
     instance = learn.LearnDialog('script-bdcontrol-learn.xml', ROOT, 'default',
                                  '1080i')
     instance.onInit()
     check(instance.getControl(learn.LABEL_HEADING).label.startswith('Press'),
-          'the learn dialog explains itself')
+          'the assign dialog explains itself')
 
-    # Back must cancel rather than being learned as the trigger.
+    # Back must cancel rather than being assigned as the trigger.
     instance.onAction(xbmcgui.Action(learn.ACTION_NAV_BACK, 61448))
     check(instance.cancelled and not instance.button_code,
           'Back cancels instead of being captured')
@@ -338,27 +377,48 @@ def test_learn():
     check(instance.button_code == 61517 and not instance.cancelled,
           'a real press is captured (%d)' % instance.button_code)
 
-    # A learned code must end up in the keymap as a raw <key id="...">.
-    xbmcaddon.SETTINGS['km_custom'] = True
-    xbmcaddon.SETTINGS['km_custom_code'] = '61517'
-    check(learn.custom_code() == 61517, 'the code round-trips through settings')
-    content = keymap.build()
-    check('<key id="61517">RunScript(script.bdcontrol,action=toggle)</key>'
-          in content, 'the learned button is bound by its raw code')
-    xml.dom.minidom.parseString(content)
-    check(True, 'the keymap is still well-formed with a custom key')
-    xbmcaddon.SETTINGS['km_custom'] = False
-    check('<key id=' not in keymap.build(),
-          'turning the custom button off removes it again')
-    xbmcaddon.SETTINGS['km_custom_code'] = ''
+    # The whole flow: capture, ask about long press, write the keymap.
+    for entry in keymap.SLOTS:
+        entry.clear()
+    original_capture = learn._capture  # noqa: SLF001
+    learn._capture = lambda: 61517  # noqa: SLF001
+    xbmcgui.Dialog.YESNO_RESULT = False
+    xbmcgui.NOTIFICATIONS.clear()
+    try:
+        code = learn.assign('osd')
+        check(code == 61517, 'assign returns the captured code')
+        osd = keymap.slot('osd')
+        check(osd.code == 61517 and not osd.longpress,
+              'answering "short press" stores it without long press')
+        check('<key id="61517">' in keymap.read_existing(),
+              'and the keymap is written straight away')
+        check(len(xbmcgui.NOTIFICATIONS) == 1, 'the assignment is confirmed')
 
-    # A nonsense stored code must not produce a broken keymap.
-    xbmcaddon.SETTINGS['km_custom'] = True
-    xbmcaddon.SETTINGS['km_custom_code'] = 'nonsense'
-    check(learn.custom_code() == 0, 'a corrupt code reads as none')
-    check('<key id=' not in keymap.build(), 'and is left out of the keymap')
-    xbmcaddon.SETTINGS['km_custom'] = False
-    xbmcaddon.SETTINGS['km_custom_code'] = ''
+        xbmcgui.Dialog.YESNO_RESULT = True
+        learn.assign('osd')
+        check(keymap.slot('osd').longpress,
+              'answering "long press" stores the modifier')
+        check('mod="longpress"' in keymap.read_existing(),
+              'and it reaches the keymap file')
+
+        # The same button must not end up on two actions.
+        before = keymap.slot('discmenu').code
+        learn.assign('discmenu')
+        check(keymap.slot('discmenu').code == before,
+              'a button already in use is refused')
+
+        # Nothing captured and the log offer declined leaves everything alone.
+        learn._capture = lambda: 0  # noqa: SLF001
+        xbmcgui.Dialog.YESNO_RESULT = False
+        check(learn.assign('discmenu') == 0,
+              'declining the log fallback assigns nothing')
+        check(learn.assign('nosuchslot') == 0, 'an unknown slot is refused')
+    finally:
+        learn._capture = original_capture  # noqa: SLF001
+        xbmcgui.Dialog.YESNO_RESULT = False
+        for entry in keymap.SLOTS:
+            entry.clear()
+        shutil.rmtree(os.path.dirname(keymap.keymap_dir()), ignore_errors=True)
 
 
 def test_key_log():
@@ -419,6 +479,7 @@ def test_keymap_editor_interop():
         xbmc.COND_VISIBILITY['Player.HasVideo'] = True
 
     # Keymap Editor renames other keymap files to *.xml.bak.N when it saves.
+    keymap.slot('osd').assign(61517, False)
     keymap.sync()
     check(keymap.is_installed(), 'our keymap starts out installed')
     victim = keymap.keymap_path()
@@ -463,11 +524,14 @@ def test_keymap_editor_interop():
     check('Keymap Editor: not installed' in tools.diagnostics_text(),
           'a missing Keymap Editor is reported, not an error')
 
+    for entry in keymap.SLOTS:
+        entry.clear()
     shutil.rmtree(os.path.dirname(keymap.keymap_dir()), ignore_errors=True)
 
 
 def test_service():
     section('service')
+    keymap.slot('osd').assign(61517, True)
     instance = service.Service()
     instance.on_playback_started()
     check(instance._pending_path == xbmc.PLAYING_FILE,  # noqa: SLF001
@@ -476,8 +540,22 @@ def test_service():
     instance._process_pending()  # noqa: SLF001
     check(len(xbmcgui.NOTIFICATIONS) == 1,
           'the user is told how to open BD Control')
-    check('hold OK' in xbmcgui.NOTIFICATIONS[0][1],
-          'the hint names the configured trigger: %s'
+    check('hold your BD Control button' in xbmcgui.NOTIFICATIONS[0][1],
+          'the hint matches the assignment: %s' % xbmcgui.NOTIFICATIONS[0][1])
+    keymap.slot('osd').assign(61517, False)
+    xbmcgui.NOTIFICATIONS.clear()
+    other = service.Service()
+    other.on_playback_started()
+    other._process_pending()  # noqa: SLF001
+    check('press your BD Control button' in xbmcgui.NOTIFICATIONS[0][1],
+          'a short press assignment is worded differently')
+    keymap.slot('osd').clear()
+    xbmcgui.NOTIFICATIONS.clear()
+    unset = service.Service()
+    unset.on_playback_started()
+    unset._process_pending()  # noqa: SLF001
+    check('assign a button' in xbmcgui.NOTIFICATIONS[0][1],
+          'with nothing assigned it points at the settings: %s'
           % xbmcgui.NOTIFICATIONS[0][1])
     check(instance._pending_path == '',  # noqa: SLF001
           'the pending check is cleared afterwards')
@@ -589,6 +667,7 @@ def main_test():
     test_localisation()
     test_arguments()
     test_keymap()
+    test_keymap_migration()
     test_player_helpers()
     test_player_state()
     test_actions()

@@ -17,8 +17,6 @@ STRINGS = [
     # --- addon / menus ---------------------------------------------------
     (30000, 'BD Control', 'BD Control'),
     (30001, 'Open the BD Control OSD', 'BD-Control-OSD öffnen'),
-    (30002, 'Install keymap', 'Tastenbelegung installieren'),
-    (30003, 'Remove keymap', 'Tastenbelegung entfernen'),
     (30004, 'Settings', 'Einstellungen'),
 
     # --- status line -----------------------------------------------------
@@ -81,10 +79,17 @@ STRINGS = [
      'Der Befehl ist fehlgeschlagen - siehe Kodi-Log'),
     (30056, 'Play', 'Wiedergabe'),
     (30057, 'Unknown action "%s"', 'Unbekannte Aktion "%s"'),
-    (30058, 'Blu-ray menu playback - open BD Control for player controls',
-     'Blu-ray-Menüwiedergabe - BD Control für die Steuerung öffnen'),
-    (30059, 'Blu-ray menu playback - hold OK for player controls',
-     'Blu-ray-Menüwiedergabe - OK gedrückt halten für die Steuerung'),
+    (30058, 'Blu-ray menu playback - assign a button in the BD Control '
+            'settings',
+     'Blu-ray-Menüwiedergabe - Taste in den BD-Control-Einstellungen '
+     'zuweisen'),
+    (30059, 'Blu-ray menu playback - hold your BD Control button for player '
+            'controls',
+     'Blu-ray-Menüwiedergabe - BD-Control-Taste gedrückt halten für die '
+     'Steuerung'),
+    (30152, 'Blu-ray menu playback - press your BD Control button for player '
+            'controls',
+     'Blu-ray-Menüwiedergabe - BD-Control-Taste drücken für die Steuerung'),
     (30060, 'This disc does not allow seeking here',
      'Diese Disc erlaubt hier kein Spulen'),
     (30061, 'No audio tracks reported', 'Keine Tonspuren gemeldet'),
@@ -103,10 +108,7 @@ STRINGS = [
     # --- keymap ----------------------------------------------------------
     (30070, 'Keymap installed', 'Tastenbelegung installiert'),
     (30071, 'Keymap removed', 'Tastenbelegung entfernt'),
-    (30072, 'No trigger buttons are enabled',
-     'Es ist keine Auslösetaste aktiviert'),
     (30073, 'The keymap is switched off', 'Die Tastenbelegung ist deaktiviert'),
-    (30074, 'long press', 'langer Druck'),
 
     # --- diagnostics -----------------------------------------------------
     (30080, 'yes', 'ja'),
@@ -141,7 +143,7 @@ STRINGS = [
      'Diagnose in das Kodi-Log schreiben'),
     (30114, 'Disc popup menu', 'Popup-Menü der Disc'),
     (30115, 'Disc top menu', 'Hauptmenü der Disc'),
-    (30116, 'Find my button', 'Meine Taste finden'),
+    (30116, 'Assign a button', 'Taste zuweisen'),
     (30117, 'Press the button you want to use for BD Control',
      'Drücke die Taste, die BD Control öffnen soll'),
     (30118, 'Press it now on your remote. Back cancels.',
@@ -157,18 +159,14 @@ STRINGS = [
      'Im Log wurden keine Tastendrücke gefunden. Debug-Logging unter '
      'Einstellungen > System > Protokollierung einschalten, die Taste '
      'während der Wiedergabe drücken und erneut nachsehen.'),
-    (30123, 'Use this button for BD Control?',
-     'Diese Taste für BD Control verwenden?'),
-    (30124, 'Custom button', 'Eigene Taste'),
     (30125, 'Debug logging', 'Debug-Logging'),
     (30126, 'Keymap file contents', 'Inhalt der Tastenbelegungsdatei'),
     (30127, 'Note: long press only fires when the remote driver reports a '
-            'held key. If nothing happens, use "Find my button" and pick a '
-            'spare button instead.',
+            'held key. If it does not work, assign the button again and '
+            'choose a short press.',
      'Hinweis: Langes Drücken funktioniert nur, wenn der '
-     'Fernbedienungstreiber eine gehaltene Taste meldet. Passiert nichts, '
-     'stattdessen "Meine Taste finden" verwenden und eine freie Taste '
-     'wählen.'),
+     'Fernbedienungstreiber eine gehaltene Taste meldet. Falls es nicht '
+     'klappt, die Taste erneut zuweisen und kurzes Drücken wählen.'),
     (30128, 'Remote configuration', 'Fernbedienungs-Konfiguration'),
     (30129, 'no repeat settings found', 'keine Repeat-Einstellungen gefunden'),
     (30130, 'none found', 'keine gefunden'),
@@ -182,6 +180,24 @@ STRINGS = [
      'Mehrere Tastenbelegungsdateien zulassen'),
     (30135, 'Disabled copies of the BD Control keymap',
      'Deaktivierte Kopien der BD-Control-Tastenbelegung'),
+    (30140, 'Open BD Control', 'BD Control öffnen'),
+    (30141, 'Open the disc menu', 'Disc-Menü öffnen'),
+    (30142, 'Should it only trigger on a long press?',
+     'Soll sie erst bei langem Drücken auslösen?'),
+    (30143, 'Long press', 'Langes Drücken'),
+    (30144, 'Short press', 'Kurzes Drücken'),
+    (30146, 'not assigned', 'nicht zugewiesen'),
+    (30149, 'No button was detected. Pick one from the Kodi log instead?',
+     'Es wurde keine Taste erkannt. Stattdessen eine aus dem Kodi-Log '
+     'wählen?'),
+    (30150, 'That button is already assigned to "%s"',
+     'Diese Taste ist bereits "%s" zugewiesen'),
+    (30151, 'Long press only works when the remote driver reports a held '
+            'key, which not every remote does. If the button does nothing, '
+            'assign it again and choose a short press.',
+     'Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine '
+     'gehaltene Taste meldet - das tut nicht jede Fernbedienung. Passiert '
+     'nichts, die Taste erneut zuweisen und kurzes Drücken wählen.'),
     (30136, 'With this off, saving in Keymap Editor renames every other '
             'keymap file to *.xml.bak.N - including this addon\'s. Turn it on '
             'in the Keymap Editor settings, or switch the BD Control keymap '
@@ -204,25 +220,14 @@ STRINGS = [
     (30210, 'Keymap', 'Tastenbelegung'),
     (30211, 'Install the BD Control keymap',
      'BD-Control-Tastenbelegung installieren'),
-    (30212, 'Long press OK (recommended)',
-     'OK lange drücken (empfohlen)'),
-    (30213, 'Menu / Title button', 'Menü-/Titel-Taste'),
-    (30214, 'Info button', 'Info-Taste'),
-    (30215, 'Context menu button (C)', 'Kontextmenü-Taste (C)'),
-    (30216, 'Long press Back', 'Zurück lange drücken'),
-    (30217, 'Display button opens the Kodi OSD directly',
-     'Display-Taste öffnet direkt das Kodi-OSD'),
-    (30218, 'Stop button stops playback', 'Stopp-Taste beendet die Wiedergabe'),
-    (30219, 'Install keymap now', 'Tastenbelegung jetzt installieren'),
-    (30220, 'Remove keymap', 'Tastenbelegung entfernen'),
-    (30221, 'Trigger buttons', 'Auslösetasten'),
-    (30222, 'Title button opens the disc menu',
-     'Title-Taste öffnet das Disc-Menü'),
+    (30221, 'Assigned buttons', 'Zugewiesene Tasten'),
+    (30227, 'Assign the button for BD Control',
+     'Taste für BD Control zuweisen'),
+    (30228, 'Assign the button for the disc menu',
+     'Taste für das Disc-Menü zuweisen'),
+    (30229, 'Clear all assignments', 'Alle Zuweisungen löschen'),
     (30223, 'Separate popup and top menu entries',
      'Getrennte Einträge für Popup- und Hauptmenü'),
-    (30224, 'Use a button I pick myself',
-     'Eine selbst gewählte Taste verwenden'),
-    (30225, 'Find my button', 'Meine Taste finden'),
     (30226, 'Show recent key presses from the log',
      'Zuletzt gedrückte Tasten aus dem Log anzeigen'),
     (30230, 'Tools', 'Werkzeuge'),
@@ -232,11 +237,6 @@ STRINGS = [
      'Debug-Meldungen in das Kodi-Log schreiben'),
 
     # --- settings help ---------------------------------------------------
-    (30260, 'A short press still reaches the disc menu, so navigating the '
-            'menu keeps working. Holding OK opens BD Control.',
-     'Ein kurzer Druck erreicht weiterhin das Disc-Menü, die Navigation '
-     'funktioniert also unverändert. Langes Drücken von OK öffnet '
-     'BD Control.'),
     (30261, 'The keymap only changes fullscreen video playback; the rest of '
             'Kodi is untouched.',
      'Die Tastenbelegung ändert nur die Vollbildwiedergabe; der Rest von '
@@ -249,10 +249,12 @@ STRINGS = [
      'Argumente "popup" und "top" akzeptiert, etwa den CoreELEC-Build von '
      'SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet '
      'lassen und die einzelne Disc-Menü-Taste verwenden.'),
-    (30264, 'Binds the exact button code you picked, which works whatever '
-            'kind of remote sends it and does not need long press support.',
-     'Bindet genau den gewählten Tastencode - unabhängig davon, welche Art '
-     'von Fernbedienung ihn sendet, und ohne Longpress-Unterstützung.'),
+    (30264, 'Press the button you want to use, then choose whether it should '
+            'need a long press. The exact button code is bound, so it works '
+            'whatever kind of remote sends it.',
+     'Die gewünschte Taste drücken und danach wählen, ob sie lange gedrückt '
+     'werden soll. Gebunden wird der exakte Tastencode - das funktioniert '
+     'unabhängig davon, welche Art von Fernbedienung ihn sendet.'),
     (30262, 'Opens the OSD by itself whenever a disc menu takes over the '
             'remote.',
      'Öffnet das OSD automatisch, sobald ein Disc-Menü die Fernbedienung '

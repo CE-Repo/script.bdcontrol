@@ -55,31 +55,25 @@
         </setting>
       </group>
       <group id="2" label="30221">
-        <setting id="km_longpress_ok" type="boolean" label="30212" help="30260">
+        <setting id="assign_osd" type="action" label="30227" help="30264">
           <level>0</level>
-          <default>true</default>
-          <control type="toggle"/>
+          <data>RunScript(script.bdcontrol,action=assign,slot=osd)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
           <dependencies>
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-        <setting id="km_disc_menu" type="boolean" label="30222">
+        <setting id="key_osd_code" type="string" label="30140">
           <level>0</level>
-          <default>true</default>
-          <control type="toggle"/>
+          <default></default>
+          <control type="edit" format="string"/>
           <dependencies>
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-        <setting id="km_menu" type="boolean" label="30213">
-          <level>0</level>
-          <default>true</default>
-          <control type="toggle"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="km_info" type="boolean" label="30214">
+        <setting id="key_osd_longpress" type="boolean" label="30143">
           <level>0</level>
           <default>false</default>
           <control type="toggle"/>
@@ -87,31 +81,26 @@
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-        <setting id="km_contextmenu" type="boolean" label="30215">
+
+        <setting id="assign_discmenu" type="action" label="30228">
           <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
+          <data>RunScript(script.bdcontrol,action=assign,slot=discmenu)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
           <dependencies>
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-        <setting id="km_longpress_back" type="boolean" label="30216">
+        <setting id="key_menu_code" type="string" label="30141">
           <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
+          <default></default>
+          <control type="edit" format="string"/>
           <dependencies>
             <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
           </dependencies>
         </setting>
-        <setting id="km_osd_direct" type="boolean" label="30217">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="km_stop" type="boolean" label="30218">
+        <setting id="key_menu_longpress" type="boolean" label="30143">
           <level>0</level>
           <default>false</default>
           <control type="toggle"/>
@@ -120,30 +109,7 @@
           </dependencies>
         </setting>
       </group>
-      <group id="3" label="30124">
-        <setting id="km_custom" type="boolean" label="30224" help="30264">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="km_custom_code" type="string" label="30124">
-          <level>0</level>
-          <default></default>
-          <control type="edit" format="string"/>
-          <dependencies>
-            <dependency type="enable" setting="km_custom" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="find_button" type="action" label="30225">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=learn)</data>
-          <control type="button" format="action">
-            <close>true</close>
-          </control>
-        </setting>
+      <group id="3">
         <setting id="show_keylog" type="action" label="30226">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=keylog)</data>
@@ -151,18 +117,9 @@
             <close>false</close>
           </control>
         </setting>
-      </group>
-      <group id="4">
-        <setting id="install_keymap" type="action" label="30219">
+        <setting id="clear_keys" type="action" label="30229">
           <level>0</level>
-          <data>RunScript(script.bdcontrol,action=install_keymap)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-        <setting id="remove_keymap" type="action" label="30220">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=remove_keymap)</data>
+          <data>RunScript(script.bdcontrol,action=clearkeys)</data>
           <control type="button" format="action">
             <close>false</close>
           </control>

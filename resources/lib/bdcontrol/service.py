@@ -146,16 +146,17 @@ class Service(object):
             kodiutils.notify(self._hint_text(), time=7000)
 
     def _hint_text(self):
-        """Tell the user which button opens BD Control."""
-        if (kodiutils.get_setting_bool('keymap_enabled', True)
-                and kodiutils.get_setting_bool('km_longpress_ok', True)):
-            return localize(30059)
-        return localize(30058)
+        """Tell the user how to open BD Control, given what is assigned."""
+        osd = keymap.slot('osd')
+        if not kodiutils.get_setting_bool('keymap_enabled', True) or not osd.code:
+            return localize(30058)
+        return localize(30059) if osd.longpress else localize(30152)
 
     # -- main loop --------------------------------------------------------
 
     def run(self):
         log_info('BD Control %s service started' % kodiutils.addon_version())
+        keymap.migrate_old_settings()
         self._sync_keymap()
         while not self.monitor.abortRequested():
             if self.monitor.waitForAbort(TICK_SECONDS):

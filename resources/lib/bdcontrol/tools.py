@@ -282,7 +282,7 @@ def more_menu(closer=None):
         (localize(30038), actions.next_audio_language, True),
         (localize(30033), actions.disc_playback_mode, False),
         (localize(30039), actions.eject, True),
-        (localize(30116), learn.learn_button, False),
+        (localize(30116), lambda: learn.assign('osd'), False),
         (localize(30121), learn.show_recent_keys, False),
         (localize(30034), show_diagnostics, False),
         (localize(30113), copy_diagnostics_to_log, False),

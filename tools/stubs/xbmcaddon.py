@@ -10,18 +10,12 @@ SETTINGS = {
     'osd_timeout': 10,
     'seek_step': 30,
     'keymap_enabled': True,
-    'km_longpress_ok': True,
-    'km_menu': True,
-    'km_disc_menu': True,
     'extended_disc_menus': False,
-    'km_info': False,
-    'km_contextmenu': False,
-    'km_longpress_back': False,
-    'km_osd_direct': False,
-    'km_stop': False,
+    'key_osd_code': '',
+    'key_osd_longpress': False,
+    'key_menu_code': '',
+    'key_menu_longpress': False,
     'debug_log': True,
-    'km_custom': False,
-    'km_custom_code': '',
 }
 
 _PO = re.compile(r'msgctxt "#(\d+)"\nmsgid "((?:[^"\\]|\\.)*)"', re.MULTILINE)

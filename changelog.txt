@@ -32,3 +32,12 @@ v1.0.3
   restores it and says so.
 - Diagnostics report Keymap Editor's version, its file name, whether it is set
   to co-exist, and any disabled copies of the keymap.
+
+v1.0.4
+- The keymap is now built from buttons you assign in the addon settings: press
+  the button, then answer whether it should need a long press.
+- Two assignable buttons - one for the BD Control OSD, one for the disc menu.
+- The fixed list of trigger buttons (long press OK, Menu, Info, context menu,
+  Back, Display, Stop) is gone; a button assigned with an older version is
+  carried over automatically.
+- Nothing is bound until a button is assigned.

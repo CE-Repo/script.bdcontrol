@@ -25,14 +25,6 @@ msgctxt "#30001"
 msgid "Open the BD Control OSD"
 msgstr "BD-Control-OSD öffnen"
 
-msgctxt "#30002"
-msgid "Install keymap"
-msgstr "Tastenbelegung installieren"
-
-msgctxt "#30003"
-msgid "Remove keymap"
-msgstr "Tastenbelegung entfernen"
-
 msgctxt "#30004"
 msgid "Settings"
 msgstr "Einstellungen"
@@ -198,12 +190,16 @@ msgid "Unknown action \"%s\""
 msgstr "Unbekannte Aktion \"%s\""
 
 msgctxt "#30058"
-msgid "Blu-ray menu playback - open BD Control for player controls"
-msgstr "Blu-ray-Menüwiedergabe - BD Control für die Steuerung öffnen"
+msgid "Blu-ray menu playback - assign a button in the BD Control settings"
+msgstr "Blu-ray-Menüwiedergabe - Taste in den BD-Control-Einstellungen zuweisen"
 
 msgctxt "#30059"
-msgid "Blu-ray menu playback - hold OK for player controls"
-msgstr "Blu-ray-Menüwiedergabe - OK gedrückt halten für die Steuerung"
+msgid "Blu-ray menu playback - hold your BD Control button for player controls"
+msgstr "Blu-ray-Menüwiedergabe - BD-Control-Taste gedrückt halten für die Steuerung"
+
+msgctxt "#30152"
+msgid "Blu-ray menu playback - press your BD Control button for player controls"
+msgstr "Blu-ray-Menüwiedergabe - BD-Control-Taste drücken für die Steuerung"
 
 msgctxt "#30060"
 msgid "This disc does not allow seeking here"
@@ -245,17 +241,9 @@ msgctxt "#30071"
 msgid "Keymap removed"
 msgstr "Tastenbelegung entfernt"
 
-msgctxt "#30072"
-msgid "No trigger buttons are enabled"
-msgstr "Es ist keine Auslösetaste aktiviert"
-
 msgctxt "#30073"
 msgid "The keymap is switched off"
 msgstr "Die Tastenbelegung ist deaktiviert"
-
-msgctxt "#30074"
-msgid "long press"
-msgstr "langer Druck"
 
 msgctxt "#30080"
 msgid "yes"
@@ -370,8 +358,8 @@ msgid "Disc top menu"
 msgstr "Hauptmenü der Disc"
 
 msgctxt "#30116"
-msgid "Find my button"
-msgstr "Meine Taste finden"
+msgid "Assign a button"
+msgstr "Taste zuweisen"
 
 msgctxt "#30117"
 msgid "Press the button you want to use for BD Control"
@@ -397,14 +385,6 @@ msgctxt "#30122"
 msgid "No key presses found in the log. Turn on debug logging under Settings > System > Logging, press the button during playback, then look again."
 msgstr "Im Log wurden keine Tastendrücke gefunden. Debug-Logging unter Einstellungen > System > Protokollierung einschalten, die Taste während der Wiedergabe drücken und erneut nachsehen."
 
-msgctxt "#30123"
-msgid "Use this button for BD Control?"
-msgstr "Diese Taste für BD Control verwenden?"
-
-msgctxt "#30124"
-msgid "Custom button"
-msgstr "Eigene Taste"
-
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr "Debug-Logging"
@@ -414,8 +394,8 @@ msgid "Keymap file contents"
 msgstr "Inhalt der Tastenbelegungsdatei"
 
 msgctxt "#30127"
-msgid "Note: long press only fires when the remote driver reports a held key. If nothing happens, use \"Find my button\" and pick a spare button instead."
-msgstr "Hinweis: Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet. Passiert nichts, stattdessen \"Meine Taste finden\" verwenden und eine freie Taste wählen."
+msgid "Note: long press only fires when the remote driver reports a held key. If it does not work, assign the button again and choose a short press."
+msgstr "Hinweis: Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet. Falls es nicht klappt, die Taste erneut zuweisen und kurzes Drücken wählen."
 
 msgctxt "#30128"
 msgid "Remote configuration"
@@ -449,6 +429,42 @@ msgctxt "#30135"
 msgid "Disabled copies of the BD Control keymap"
 msgstr "Deaktivierte Kopien der BD-Control-Tastenbelegung"
 
+msgctxt "#30140"
+msgid "Open BD Control"
+msgstr "BD Control öffnen"
+
+msgctxt "#30141"
+msgid "Open the disc menu"
+msgstr "Disc-Menü öffnen"
+
+msgctxt "#30142"
+msgid "Should it only trigger on a long press?"
+msgstr "Soll sie erst bei langem Drücken auslösen?"
+
+msgctxt "#30143"
+msgid "Long press"
+msgstr "Langes Drücken"
+
+msgctxt "#30144"
+msgid "Short press"
+msgstr "Kurzes Drücken"
+
+msgctxt "#30146"
+msgid "not assigned"
+msgstr "nicht zugewiesen"
+
+msgctxt "#30149"
+msgid "No button was detected. Pick one from the Kodi log instead?"
+msgstr "Es wurde keine Taste erkannt. Stattdessen eine aus dem Kodi-Log wählen?"
+
+msgctxt "#30150"
+msgid "That button is already assigned to \"%s\""
+msgstr "Diese Taste ist bereits \"%s\" zugewiesen"
+
+msgctxt "#30151"
+msgid "Long press only works when the remote driver reports a held key, which not every remote does. If the button does nothing, assign it again and choose a short press."
+msgstr "Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet - das tut nicht jede Fernbedienung. Passiert nichts, die Taste erneut zuweisen und kurzes Drücken wählen."
+
 msgctxt "#30136"
 msgid "With this off, saving in Keymap Editor renames every other keymap file to *.xml.bak.N - including this addon's. Turn it on in the Keymap Editor settings, or switch the BD Control keymap off and do the mapping in Keymap Editor instead."
 msgstr "Ist dies aus, benennt das Speichern im Keymap Editor alle anderen Tastenbelegungsdateien in *.xml.bak.N um - auch die dieses Addons. Entweder in den Keymap-Editor-Einstellungen einschalten oder die BD-Control-Tastenbelegung ausschalten und die Zuordnung im Keymap Editor vornehmen."
@@ -481,61 +497,25 @@ msgctxt "#30211"
 msgid "Install the BD Control keymap"
 msgstr "BD-Control-Tastenbelegung installieren"
 
-msgctxt "#30212"
-msgid "Long press OK (recommended)"
-msgstr "OK lange drücken (empfohlen)"
-
-msgctxt "#30213"
-msgid "Menu / Title button"
-msgstr "Menü-/Titel-Taste"
-
-msgctxt "#30214"
-msgid "Info button"
-msgstr "Info-Taste"
-
-msgctxt "#30215"
-msgid "Context menu button (C)"
-msgstr "Kontextmenü-Taste (C)"
-
-msgctxt "#30216"
-msgid "Long press Back"
-msgstr "Zurück lange drücken"
-
-msgctxt "#30217"
-msgid "Display button opens the Kodi OSD directly"
-msgstr "Display-Taste öffnet direkt das Kodi-OSD"
-
-msgctxt "#30218"
-msgid "Stop button stops playback"
-msgstr "Stopp-Taste beendet die Wiedergabe"
-
-msgctxt "#30219"
-msgid "Install keymap now"
-msgstr "Tastenbelegung jetzt installieren"
-
-msgctxt "#30220"
-msgid "Remove keymap"
-msgstr "Tastenbelegung entfernen"
-
 msgctxt "#30221"
-msgid "Trigger buttons"
-msgstr "Auslösetasten"
+msgid "Assigned buttons"
+msgstr "Zugewiesene Tasten"
 
-msgctxt "#30222"
-msgid "Title button opens the disc menu"
-msgstr "Title-Taste öffnet das Disc-Menü"
+msgctxt "#30227"
+msgid "Assign the button for BD Control"
+msgstr "Taste für BD Control zuweisen"
+
+msgctxt "#30228"
+msgid "Assign the button for the disc menu"
+msgstr "Taste für das Disc-Menü zuweisen"
+
+msgctxt "#30229"
+msgid "Clear all assignments"
+msgstr "Alle Zuweisungen löschen"
 
 msgctxt "#30223"
 msgid "Separate popup and top menu entries"
 msgstr "Getrennte Einträge für Popup- und Hauptmenü"
-
-msgctxt "#30224"
-msgid "Use a button I pick myself"
-msgstr "Eine selbst gewählte Taste verwenden"
-
-msgctxt "#30225"
-msgid "Find my button"
-msgstr "Meine Taste finden"
 
 msgctxt "#30226"
 msgid "Show recent key presses from the log"
@@ -557,10 +537,6 @@ msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
 msgstr "Debug-Meldungen in das Kodi-Log schreiben"
 
-msgctxt "#30260"
-msgid "A short press still reaches the disc menu, so navigating the menu keeps working. Holding OK opens BD Control."
-msgstr "Ein kurzer Druck erreicht weiterhin das Disc-Menü, die Navigation funktioniert also unverändert. Langes Drücken von OK öffnet BD Control."
-
 msgctxt "#30261"
 msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
 msgstr "Die Tastenbelegung ändert nur die Vollbildwiedergabe; der Rest von Kodi bleibt unverändert."
@@ -570,8 +546,8 @@ msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" a
 msgstr "Benötigt einen Kodi-Build, dessen PlayerControl(ShowVideoMenu) die Argumente \"popup\" und \"top\" akzeptiert, etwa den CoreELEC-Build von SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet lassen und die einzelne Disc-Menü-Taste verwenden."
 
 msgctxt "#30264"
-msgid "Binds the exact button code you picked, which works whatever kind of remote sends it and does not need long press support."
-msgstr "Bindet genau den gewählten Tastencode - unabhängig davon, welche Art von Fernbedienung ihn sendet, und ohne Longpress-Unterstützung."
+msgid "Press the button you want to use, then choose whether it should need a long press. The exact button code is bound, so it works whatever kind of remote sends it."
+msgstr "Die gewünschte Taste drücken und danach wählen, ob sie lange gedrückt werden soll. Gebunden wird der exakte Tastencode - das funktioniert unabhängig davon, welche Art von Fernbedienung ihn sendet."
 
 msgctxt "#30262"
 msgid "Opens the OSD by itself whenever a disc menu takes over the remote."
