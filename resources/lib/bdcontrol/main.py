@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Argument handling for RunScript(script.bdcontrol, ...)."""
-from . import actions, dialog, kodiutils, theme, tools
+from . import actions, dialog, kodiutils, player, theme, tools
 from .kodiutils import localize, log
 
 
@@ -37,11 +37,23 @@ HANDLERS = {
     'previewosd': dialog.preview,
 }
 
+# Everything else only runs while a Blu-ray is playing. The two
+# settings-dialog helpers cannot be: they are used with nothing playing at all.
+UNGATED = ('previewosd', 'customcolor')
+
 
 def run(argv):
     args = parse_args(argv)
     action = args.get('action') or 'auto'
     log('run: action=%s args=%s' % (action, args))
+
+    if action not in UNGATED and not player.is_bluray_playback():
+        # Logged at info: when this refuses something the user expected to
+        # work, what was playing and how it was classified is the answer.
+        kodiutils.log_info('refusing "%s" - not a Blu-ray: %s'
+                           % (action, player.describe_playback()))
+        kodiutils.notify(localize(30139))
+        return
 
     if action == 'customcolor':
         # Internal: the HEX colour picker behind each appearance setting.

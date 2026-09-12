@@ -225,6 +225,8 @@ def diagnostics_text():
         lines.append('%s: %s' % (localize(30103), state.title()))
         lines.append('%s: %s' % (localize(30104), state.path))
         lines.append('%s: %s' % (localize(30105), _yes_no(state.is_disc)))
+        lines.append('%s: %s' % (localize(30154),
+                                 _yes_no(player.is_bluray_playback())))
         lines.append('%s: %s' % (localize(30106), _yes_no(state.has_menu)))
         lines.append('%s: %s' % (localize(30107), _yes_no(state.can_seek)))
         lines.append('%s: %d/%d' % (localize(30108), state.chapter,

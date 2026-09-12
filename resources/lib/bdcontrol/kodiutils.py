@@ -15,6 +15,7 @@ HOME_WINDOW = 10000
 
 PROP_OSD_OPEN = 'bdcontrol.osd.open'
 PROP_OSD_CLOSE = 'bdcontrol.osd.close'
+PROP_OSD_TRIGGERED = 'bdcontrol.osd.triggered'
 
 
 def addon():

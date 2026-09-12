@@ -193,6 +193,14 @@ msgctxt "#30138"
 msgid "No keymap entry refers to BD Control - map a button with Keymap Editor"
 msgstr ""
 
+msgctxt "#30139"
+msgid "Only available while a Blu-ray is playing"
+msgstr ""
+
+msgctxt "#30154"
+msgid "Recognised as a Blu-ray"
+msgstr ""
+
 msgctxt "#30200"
 msgid "General"
 msgstr ""

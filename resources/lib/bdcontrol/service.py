@@ -1,16 +1,32 @@
 # -*- coding: utf-8 -*-
-"""Background service: watches for disc playback taking over the remote."""
+"""Background service: says that BD Control is there once a disc menu takes
+over the remote.
+
+That hangs on recognising the Blu-ray, which is not something that can be done
+once when playback starts: libbluray needs a moment before Kodi reports a disc
+menu, and for some sources that report is the only thing that identifies the
+disc at all.  So the check is repeated on every tick until it succeeds, and
+once it has, it stays true until playback ends.
+
+Everything here has to cope with one thing a Blu-ray menu does that no other
+kind of video does: it swaps titles constantly, and every swap produces
+another round of Kodi playback callbacks plus a moment in which Kodi reports
+no video at all.  Treating any of that as "a new item" or as "playback ended"
+makes the service announce itself over and over, so a session begins and ends
+exactly once - see `on_playback_started` and `_evaluate`.
+"""
 import time
 
 import xbmc
 
 from . import dialog, kodiutils, player
-from .kodiutils import execute_builtin, localize, log, log_info
+from .kodiutils import execute_builtin, localize, log_info
 
-# libbluray needs a moment after playback starts before Kodi reports that a
-# disc menu is driving the input, so the check is retried for a few seconds.
-MENU_CHECK_TIMEOUT = 6.0
 TICK_SECONDS = 0.5
+
+# How long Kodi has to report no video before the session counts as over.
+# Title swaps inside a disc menu produce gaps well under a second.
+STOP_GRACE_SECONDS = 5.0
 
 
 class BDPlayer(xbmc.Player):
@@ -46,45 +62,74 @@ class Service(object):
     def __init__(self):
         self.monitor = xbmc.Monitor()
         self.player = BDPlayer(self)
-        self._announced_for = ''
-        self._pending_path = ''
-        self._pending_until = 0.0
+        self._current_path = ''
+        self._announced = False
+        self._is_bluray = False
+        self._idle_since = 0.0
 
     # -- playback ---------------------------------------------------------
 
     def on_playback_started(self):
         path = player.playing_file()
-        if not path or path == self._announced_for:
+        if not path:
             return
-        if not player.is_disc_playback(path):
+        if self._current_path:
+            # A session is already running. Every title a disc menu jumps to
+            # calls back in here again; that is the same disc, not a new item,
+            # and re-announcing on each one is what makes the OSD reappear the
+            # moment the user closes it.
+            self._current_path = path
             return
-        self._announced_for = path
-        self._pending_path = path
-        self._pending_until = time.time() + MENU_CHECK_TIMEOUT
-        log_info('disc playback started: %s' % path)
+        self._current_path = path
+        self._announced = False
+        self._is_bluray = False
+        self._idle_since = 0.0
+        log_info('playback started: %s' % player.describe_playback())
+        self._evaluate()
 
     def on_playback_stopped(self):
-        self._announced_for = ''
-        self._pending_path = ''
+        if self._current_path:
+            log_info('playback stopped')
+        self._current_path = ''
+        self._announced = False
+        self._is_bluray = False
+        self._idle_since = 0.0
         if dialog.is_open():
             dialog.request_close()
 
-    def _process_pending(self):
-        """Announce BD Control once a disc menu has taken over the remote."""
-        if not self._pending_path:
+    def _evaluate(self):
+        """Recognise the Blu-ray, then announce once its menu takes over.
+
+        Only ever latches on: `is_bluray_playback()` partly rests on Kodi
+        reporting a disc menu, and that comes and goes while the disc plays.
+        """
+        if not self._current_path:
             return
         if not player.is_playing_video():
-            self._pending_path = ''
+            # Not necessarily the end: Kodi reports no video for a moment on
+            # every title swap inside a disc menu. Only a sustained gap means
+            # playback really finished without a callback reaching us.
+            now = time.time()
+            if not self._idle_since:
+                self._idle_since = now
+            elif now - self._idle_since > STOP_GRACE_SECONDS:
+                self.on_playback_stopped()
             return
-        if player.has_disc_menu():
-            self._pending_path = ''
+        self._idle_since = 0.0
+        if not self._is_bluray:
+            if not player.is_bluray_playback():
+                return
+            self._is_bluray = True
+            log_info('recognised as a Blu-ray: %s'
+                     % player.describe_playback())
+        if not self._announced and player.has_disc_menu():
+            self._announced = True
             self._announce()
-            return
-        if time.time() > self._pending_until:
-            log('no disc menu reported for this item')
-            self._pending_path = ''
 
     def _announce(self):
+        if dialog.is_open():
+            # Never talk over an OSD the user opened themselves.
+            return
         if kodiutils.get_setting_bool('auto_open', False):
             # Run as a separate script so the service loop stays responsive
             # while the modal OSD is up.
@@ -99,7 +144,7 @@ class Service(object):
         while not self.monitor.abortRequested():
             if self.monitor.waitForAbort(TICK_SECONDS):
                 break
-            self._process_pending()
+            self._evaluate()
         log_info('BD Control service stopped')
 
 

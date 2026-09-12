@@ -78,6 +78,57 @@ def is_disc_playback(path=None):
     return '/bdmv/' in lowered or '/video_ts/' in lowered
 
 
+# A DVD is a disc with menus too, but not what this addon is for, so it has to
+# be told apart from a Blu-ray before falling back on the menu check below.
+DVD_MARKERS = ('dvd://', '/video_ts/', 'video_ts.ifo')
+
+
+def _is_dvd(lowered):
+    return (lowered.startswith('dvd://')
+            or any(marker in lowered for marker in DVD_MARKERS[1:]))
+
+
+def is_bluray_playback(path=None):
+    """True when a Blu-ray is playing, as opposed to any other kind of video.
+
+    The path is checked first, but it is not enough on its own: what Kodi
+    reports as the playing file for a disc it drives through libbluray varies
+    with how playback was started - `bluray://`, a path inside BDMV, a mounted
+    folder, a disc image or a raw device node, depending on the source and on
+    Kodi's Blu-ray playback mode.
+
+    So when the path does not settle it, Kodi's own report of a disc menu
+    driving the input does. A DVD is excluded explicitly, since it sets the
+    same flag. Passing `path` only short-circuits the path half; the menu
+    check always refers to what is playing now.
+    """
+    if path is None:
+        path = playing_file()
+    if not path:
+        return False
+    lowered = path.lower()
+    if lowered.startswith('bluray://') or '/bdmv/' in lowered:
+        return True
+    if _is_dvd(lowered):
+        return False
+    return has_disc_menu()
+
+
+def describe_playback():
+    """One line naming the playing file and how it was classified.
+
+    The mapping is written by the service without anything on screen to show
+    for it, so this is what the log and the diagnostics page report to make a
+    misdetection visible instead of silent.
+    """
+    path = playing_file()
+    if not path:
+        return 'nothing playing'
+    return ('path=%s bluray=%s hasmenu=%s inmenu=%s'
+            % (path, is_bluray_playback(path), has_disc_menu(),
+               is_menu_active()))
+
+
 def has_disc_menu():
     """True when the disc's own menu system is driving playback.
 

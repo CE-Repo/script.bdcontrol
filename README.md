@@ -146,6 +146,9 @@ written.
 * *Show a hint when a disc menu takes over* — a short notification whenever a
   disc menu starts driving playback.
 * *Open BD Control automatically* — show the OSD by itself in that situation.
+  It fires once per disc, and never while an OSD you opened yourself is up: a
+  disc menu jumps between titles constantly, and each jump looks like a fresh
+  start to Kodi's playback callbacks.
 * *Close the OSD after* — idle timeout in seconds; `0` keeps it open.
 
 **Appearance**

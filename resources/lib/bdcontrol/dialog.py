@@ -7,8 +7,8 @@ import xbmc
 import xbmcgui
 
 from . import actions, kodiutils, player, theme, tools
-from .kodiutils import (PROP_OSD_CLOSE, PROP_OSD_OPEN, home_property, localize,
-                        log)
+from .kodiutils import (PROP_OSD_CLOSE, PROP_OSD_OPEN, PROP_OSD_TRIGGERED,
+                        home_property, localize, log)
 
 XML_FILE = 'script-bdcontrol-osd.xml'
 SKIN_FOLDER = 'default'
@@ -45,6 +45,11 @@ TICK_SECONDS = 0.5
 
 # How long the settings "preview" button shows the OSD for.
 PREVIEW_SECONDS = 3
+
+# Triggers arriving closer together than this are treated as one press. An IR
+# remote that repeats while the button is held would otherwise flip the OSD
+# open and shut several times a second.
+DEBOUNCE_SECONDS = 0.5
 
 
 class Command(object):
@@ -275,10 +280,10 @@ def show():
         log('OSD already open - closing it instead')
         request_close()
         return
-    if not player.is_playing_video():
-        # There is nothing to control, and the OSD would close itself again
+    if not player.is_bluray_playback():
+        # There is no disc to control, and the OSD would close itself again
         # on its first refresh.
-        kodiutils.notify(localize(30102))
+        kodiutils.notify(localize(30139))
         return
     theme.apply_theme()
     try:
@@ -328,8 +333,27 @@ def preview():
         del preview_dialog
 
 
+def _repeated_trigger():
+    """True when this trigger follows the last one too closely to be a new one.
+
+    The timestamp lives on the Home window rather than in this process: every
+    key press starts its own copy of the script, so there is nothing else the
+    two could share.
+    """
+    now = time.time()
+    try:
+        last = float(home_property(PROP_OSD_TRIGGERED) or 0)
+    except (TypeError, ValueError):
+        last = 0.0
+    home_property(PROP_OSD_TRIGGERED, '%f' % now)
+    return 0 < now - last < DEBOUNCE_SECONDS
+
+
 def toggle():
     """Open the OSD, or close it when it is already showing."""
+    if _repeated_trigger():
+        log('ignoring a repeated trigger')
+        return
     if is_open():
         request_close()
         return
