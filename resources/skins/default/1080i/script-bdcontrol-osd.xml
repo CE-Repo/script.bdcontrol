@@ -478,7 +478,7 @@
         <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
         <align>center</align>
         <aligny>center</aligny>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) | Control.HasFocus(204)</visible>
+        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0)</visible>
         <label></label>
       </control>
     </control>

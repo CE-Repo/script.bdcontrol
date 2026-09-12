@@ -203,8 +203,8 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         style = theme.button_style()
         for control_id, command in self.commands.items():
             if control_id in ICON_ONLY_BUTTONS:
-                # Square and wordless in every style; its name reaches the
-                # user through the hint line instead.
+                # Square and wordless in every style, icon only - no label of
+                # either kind to fill in.
                 self._set_label(control_id, '')
                 continue
             self._set_label(control_id,
