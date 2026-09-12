@@ -25,8 +25,8 @@ msgctxt "#30010"
 msgid "Chapter %d/%d"
 msgstr ""
 
-msgctxt "#30011"
-msgid "Disc menu active"
+msgctxt "#30012"
+msgid "Chapter %d"
 msgstr ""
 
 msgctxt "#30028"
@@ -161,6 +161,10 @@ msgctxt "#30115"
 msgid "Main menu"
 msgstr ""
 
+msgctxt "#30116"
+msgid "Chapters"
+msgstr ""
+
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr ""
@@ -203,6 +207,14 @@ msgstr ""
 
 msgctxt "#30156"
 msgid "Only available on the video screen"
+msgstr ""
+
+msgctxt "#30157"
+msgid "Chapter sources"
+msgstr ""
+
+msgctxt "#30158"
+msgid "This disc does not report any chapters"
 msgstr ""
 
 msgctxt "#30200"
@@ -807,4 +819,8 @@ msgstr ""
 
 msgctxt "#30460"
 msgid "Open the disc's main menu"
+msgstr ""
+
+msgctxt "#30461"
+msgid "Pick a chapter from a list"
 msgstr ""

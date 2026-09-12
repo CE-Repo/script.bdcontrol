@@ -231,6 +231,15 @@ def diagnostics_text():
         lines.append('%s: %s' % (localize(30107), _yes_no(state.can_seek)))
         lines.append('%s: %d/%d' % (localize(30108), state.chapter,
                                     state.chapter_count))
+        # The raw info labels, so a disc that genuinely reports no chapters
+        # can be told apart from the addon failing to pick them up.
+        lines.append('%s: %s/%s, %d marks'
+                     % (localize(30157),
+                        xbmc.getInfoLabel('Player.Chapter') or '-',
+                        xbmc.getInfoLabel('Player.ChapterCount') or '-',
+                        len(player.chapter_marks(state.chapter_count))))
+        lines.append('  Player.Chapters: %s'
+                     % (xbmc.getInfoLabel('Player.Chapters') or '-'))
         lines.append('%s: %d' % (localize(30109), len(state.audio_streams)))
         lines.append('%s: %d' % (localize(30110), len(state.subtitles)))
         lines.append('%s: %s' % (localize(30111),

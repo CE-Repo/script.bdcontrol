@@ -13,12 +13,14 @@ from .kodiutils import jsonrpc
 # Path prefixes Kodi uses for optical media and disc images.
 DISC_PREFIXES = ('bluray://', 'dvd://', 'udf://', 'iso9660://')
 
+# Only names from Player.Property.Name belong here: Kodi rejects the whole
+# request when one is unknown, so a single bad entry empties every field at
+# once. Chapters have no Player property at all - they come from the
+# Player.Chapter* info labels below.
 PLAYER_PROPERTIES = [
     'speed',
     'time',
     'totaltime',
-    'chapter',
-    'chaptercount',
     'currentaudiostream',
     'audiostreams',
     'currentsubtitle',
@@ -246,6 +248,54 @@ def _infolabel_int(name):
         return 0
 
 
+def chapter_marks(count):
+    """Chapter start positions as percentages of the running time, or [].
+
+    Kodi keeps chapter start times out of both the Python API and JSON-RPC.
+    `Player.Chapters` is the one place it publishes them at all, built for a
+    skin's Ranges control - one range per chapter, reaching from the previous
+    chapter's end to this one's, so the flat list has to be read two values
+    at a time. Read as a row of starts it puts each chapter at roughly half
+    its real position.
+
+    The ranges also stop one short of the chapters: `n` ranges draw `n + 1`
+    boundaries, and the last of them - the end of the final range - is where
+    the last chapter begins. Taking every boundary and keeping as many as
+    Kodi counts chapters covers both, whether or not that final range is
+    published.
+    """
+    raw = xbmc.getInfoLabel('Player.Chapters') or ''
+    values = []
+    for part in raw.replace(';', ',').split(','):
+        try:
+            values.append(float(part))
+        except ValueError:
+            continue
+    if len(values) < 2:
+        return []
+    paired = (len(values) % 2 == 0
+              and all(values[i] == values[i + 1]
+                      for i in range(1, len(values) - 1, 2)))
+    if paired:
+        boundaries = values[0::2] + [values[-1]]
+    else:
+        boundaries = values
+    if count > 0:
+        boundaries = boundaries[:count]
+    return boundaries
+
+
+def _chapter_number(name):
+    """Read a Player.Chapter* info label as a count, or 0.
+
+    Kodi answers -1 rather than 0 when the player has no chapter markers, and
+    an unknown info label comes back as its own name; neither may reach the
+    OSD as a number, so anything that is not positive counts as "unknown".
+    """
+    value = _infolabel_int(name)
+    return value if value > 0 else 0
+
+
 class PlayerState(object):
     """A snapshot of everything the OSD needs to render itself."""
 
@@ -255,7 +305,7 @@ class PlayerState(object):
         self.path = playing_file()
         self.playing = self.player_id is not None
         self.paused = self.properties.get('speed', 1) == 0
-        # Player.GetProperties reports 0 for time/chapter fields while a
+        # Player.GetProperties reports 0 for the time fields while a
         # Blu-ray or DVD menu structure is loaded - a known Kodi limitation
         # that does not affect the equivalent GUI info labels, which read the
         # same values through a different path and stay correct throughout
@@ -266,9 +316,8 @@ class PlayerState(object):
                          or _infolabel_seconds('Player.Time'))
         self.duration = (time_dict_to_seconds(self.properties.get('totaltime'))
                          or _infolabel_seconds('Player.Duration'))
-        self.chapter = self.properties.get('chapter') or _infolabel_int('VideoPlayer.Chapter')
-        self.chapter_count = (self.properties.get('chaptercount')
-                              or _infolabel_int('VideoPlayer.ChapterCount'))
+        self.chapter = _chapter_number('Player.Chapter')
+        self.chapter_count = _chapter_number('Player.ChapterCount')
         self.can_seek = bool(self.properties.get('canseek', False))
         self.has_menu = has_disc_menu()
         self.in_menu = is_menu_active()
@@ -295,22 +344,41 @@ class PlayerState(object):
         return bool(self.properties.get('subtitleenabled', False))
 
     def title(self):
-        label = xbmc.getInfoLabel('VideoPlayer.Title')
-        if label:
-            return label
-        return disc_label(self.path) or kodiutils.localize(30000)
+        """The item's name, with its release year appended when Kodi knows it.
+
+        `VideoPlayer.Year` is only filled for an item Kodi has in its library,
+        which a disc played straight from the drive is not, so the year is
+        treated as a bonus rather than something to leave a gap for.
+        """
+        label = (xbmc.getInfoLabel('VideoPlayer.Title')
+                 or disc_label(self.path)
+                 or kodiutils.localize(30000))
+        year = _infolabel_int('VideoPlayer.Year')
+        if year > 0:
+            label = '%s (%d)' % (label, year)
+        return label
+
+    def chapter_text(self):
+        """The chapter line, or an empty string when there is no chapter.
+
+        Kept out of describe() because the OSD puts it in a line of its own,
+        away from the running time.
+        """
+        if self.chapter_count > 1:
+            return kodiutils.localize(30010, self.chapter, self.chapter_count)
+        if self.chapter:
+            # Menu-driven disc playback often knows which chapter is running
+            # without ever reporting how many there are; dropping the entry
+            # over the missing total left the line looking broken.
+            return kodiutils.localize(30012, self.chapter)
+        return ''
 
     def describe(self):
-        """A short status line: position, duration and chapter."""
+        """A short status line: position and duration."""
         parts = []
         if self.duration:
             parts.append('%s / %s' % (format_time(self.position),
                                       format_time(self.duration)))
         elif self.position:
             parts.append(format_time(self.position))
-        if self.chapter_count:
-            parts.append(kodiutils.localize(30010, self.chapter,
-                                            self.chapter_count))
-        if self.has_menu:
-            parts.append(kodiutils.localize(30011))
         return '  ·  '.join(parts)

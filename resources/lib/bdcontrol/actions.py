@@ -11,9 +11,21 @@ below deliberately use two different mechanisms:
   has to replace our OSD must be run after the BD Control dialog has closed.
   Those commands are marked `closes=True` in the dialog's command table.
 """
-from .kodiutils import execute_builtin, jsonrpc
+import xbmc
+import xbmcgui
+
+from . import kodiutils, player
+from .player import format_time
+from .kodiutils import execute_builtin, jsonrpc, localize
 
 DISC_PLAYBACK_SETTING = 'disc.playback'
+
+# A chapter jump is made of single steps, so it needs a ceiling: without one
+# a disc that stops reporting chapter changes would step for ever.
+CHAPTER_STEP_LIMIT = 200
+
+# How long a chapter step is given to register before the next one is sent.
+CHAPTER_STEP_WAIT = 0.2
 
 
 # --- Kodi windows ---------------------------------------------------------
@@ -25,6 +37,85 @@ def kodi_osd():
     name bypasses the disc's grip on the OK button entirely.
     """
     execute_builtin('ActivateWindow(videoosd)')
+
+
+def chapter_labels(marks, count, duration):
+    """The list entries: numbered chapters, timestamped when the marks allow."""
+    labels = []
+    for number in range(1, (len(marks) or count) + 1):
+        label = localize(30012, number)
+        if marks:
+            # Rounded, not truncated: a mark is a position on a percentage
+            # scale, so cutting the fraction off would read a second early
+            # about half the time.
+            seconds = int(round(marks[number - 1] * duration / 100.0))
+            label = '%s  -  %s' % (label, format_time(seconds))
+        labels.append(label)
+    return labels
+
+
+def chapter_list():
+    """Let the user pick a chapter from a list, and jump to it.
+
+    Two different jumps hide behind the one list. When Kodi publishes the
+    chapter marks, the entries are those marks and picking one seeks straight
+    to its position - exact and immediate. Without them all we have is the
+    chapter count, and the only movement left is the single step the disc
+    menu cannot block, walked one chapter at a time.
+    """
+    state = player.PlayerState()
+    marks = player.chapter_marks(state.chapter_count) if state.duration else []
+    if not marks and state.chapter_count < 2:
+        kodiutils.notify(localize(30158))
+        return
+    labels = chapter_labels(marks, state.chapter_count, state.duration)
+    choice = xbmcgui.Dialog().select(localize(30116), labels,
+                                     preselect=max(state.chapter - 1, 0))
+    if choice < 0:
+        return
+    if marks:
+        seek_percentage(marks[choice])
+    else:
+        seek_chapter(choice + 1)
+
+
+def seek_percentage(percent):
+    """Seek to a position given as a percentage of the running time."""
+    player_id = player.active_video_player_id()
+    if player_id is None:
+        return
+    jsonrpc('Player.Seek', playerid=player_id, value={'percentage': percent})
+
+
+def seek_chapter(target):
+    """Step to chapter `target`.
+
+    Kodi has no "go to chapter N": neither JSON-RPC nor the builtins offer
+    one, and the chapter times that would allow a plain seek are not exposed
+    either. What does work on a disc is the single step that survives the
+    disc menu's grip on the remote - PlayerControl rather than Action, so it
+    reaches the player whatever window has focus.
+
+    So the jump is walked one chapter at a time, re-reading the chapter after
+    each step instead of trusting the count: a step that does not register
+    would otherwise silently shift every following one.
+    """
+    monitor = xbmc.Monitor()
+    for _ in range(CHAPTER_STEP_LIMIT):
+        current = player.PlayerState().chapter
+        if current == target or current == 0:
+            return
+        execute_builtin('PlayerControl(%s)'
+                        % ('Next' if current < target else 'Previous'))
+        if monitor.waitForAbort(CHAPTER_STEP_WAIT):
+            return
+        if player.PlayerState().chapter == current:
+            # The player is not following any more - stop rather than hammer
+            # it with steps that go nowhere.
+            kodiutils.log_error('chapter step from %d towards %d had no effect'
+                                % (current, target))
+            return
+    kodiutils.log_error('gave up stepping to chapter %d' % target)
 
 
 # --- disc ----------------------------------------------------------------

@@ -19,6 +19,7 @@ GROUP_PANEL = 2
 LABEL_TITLE = 100
 LABEL_STATUS = 101
 LABEL_HINT = 103
+LABEL_CHAPTER = 104
 
 # Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
 # position" slider - bottom-anchored by default, sliding up to a small margin
@@ -30,10 +31,19 @@ BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
 BUTTON_KODI_OSD = 203
 BUTTON_DIAGNOSTICS = 204
+BUTTON_CHAPTERS = 205
 
-# Left to right, matching the skin file and the plain-list fallback.
+# The icons+text style draws its label inside a grouplist next to the icon
+# rather than on the button; the skin file numbers those id + offset, one for
+# each focus state.
+PAIR_LABEL_OFFSET = 100
+PAIR_FOCUS_LABEL_OFFSET = 200
+
+# Left to right, matching the skin file and the plain-list fallback. The
+# chapter list was added last but sits fourth on screen, so the ids are not
+# in order here.
 BUTTON_ORDER = (BUTTON_POPUP_MENU, BUTTON_TOP_MENU, BUTTON_KODI_OSD,
-                BUTTON_DIAGNOSTICS)
+                BUTTON_CHAPTERS, BUTTON_DIAGNOSTICS)
 
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
@@ -76,6 +86,8 @@ def _build_commands():
         BUTTON_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
                                  closes=True),
         BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
+        BUTTON_CHAPTERS: Command(30116, 30461, actions.chapter_list,
+                                 closes=True),
         BUTTON_DIAGNOSTICS: Command(30034, 30048, tools.show_diagnostics,
                                     closes=True),
     }
@@ -173,14 +185,22 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             pass
 
     def _apply_labels(self):
-        """Label the buttons, unless the icons-only style is selected.
+        """Put each command's name where the selected button style shows it.
 
-        The icons themselves are part of the skin file and switch on the same
-        BDControl.ButtonStyle property, which theme.apply_theme() publishes.
+        Text on its own is the button's own centred label. Paired with an
+        icon it is a label inside the skin file's grouplist instead, which is
+        what keeps the two a fixed distance apart whatever the word's length;
+        that one comes in a focused and an unfocused copy, since a label
+        control has no colour of its own to switch. The icons-only style
+        needs neither.
         """
-        icons_only = theme.button_style() == theme.STYLE_ICONS
+        style = theme.button_style()
         for control_id, command in self.commands.items():
-            self._set_label(control_id, '' if icons_only else command.label)
+            self._set_label(control_id,
+                            command.label if style == theme.STYLE_TEXT else '')
+            paired = command.label if style == theme.STYLE_ICONS_AND_TEXT else ''
+            self._set_label(control_id + PAIR_LABEL_OFFSET, paired)
+            self._set_label(control_id + PAIR_FOCUS_LABEL_OFFSET, paired)
 
     def _touch(self):
         self._last_input = time.time()
@@ -188,14 +208,22 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
     def _set_label(self, control_id, text):
         try:
             self.getControl(control_id).setLabel(text)
-        except Exception:  # pylint: disable=broad-except
-            # The control is gone once the window closes; nothing to do.
-            pass
+        except Exception as exc:  # pylint: disable=broad-except
+            # Usually the control is gone because the window is closing, and
+            # there is nothing to do - but an empty label with no explanation
+            # anywhere is the one failure this addon cannot afford to hide.
+            if not self._closing:
+                log('could not set label %s: %s' % (control_id, exc))
 
     def _refresh(self):
-        state = player.PlayerState()
+        try:
+            state = player.PlayerState()
+        except Exception as exc:  # pylint: disable=broad-except
+            kodiutils.log_error('could not read the player state: %s' % exc)
+            return
         self._set_label(LABEL_TITLE, state.title())
         self._set_label(LABEL_STATUS, state.describe())
+        self._set_label(LABEL_CHAPTER, state.chapter_text())
         if not state.playing:
             # Playback ended while the OSD was open - there is nothing to
             # control any more.
@@ -208,7 +236,8 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         to be playing.
         """
         self._set_label(LABEL_TITLE, localize(30451))
-        self._set_label(LABEL_STATUS, localize(30010, 3, 24))
+        self._set_label(LABEL_STATUS, '0:42:17 / 1:58:03')
+        self._set_label(LABEL_CHAPTER, localize(30010, 3, 24))
 
     def _preview_loop(self):
         """Close the preview after PREVIEW_SECONDS, unless closed sooner."""

@@ -133,7 +133,10 @@ def jsonrpc(method, **params):
         log_error('JSON-RPC %s failed to decode: %s' % (method, exc))
         return None
     if 'error' in response:
-        log('JSON-RPC %s returned an error: %s' % (method, response['error']))
+        # An error here empties every field the caller asked for, so it is
+        # logged unconditionally rather than only with debug logging on.
+        log_error('JSON-RPC %s returned an error: %s'
+                  % (method, response['error']))
         return None
     return response.get('result')
 
