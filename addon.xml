@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.bdcontrol"
        name="BD Control"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="jamal2362">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
@@ -23,7 +23,11 @@ BD Control bringt diese Steuerung zurück. Das Addon bietet ein eigenes On-Scree
     <license>MIT</license>
     <language>en de</language>
     <source>https://github.com/CE-Repo/script.bdcontrol</source>
-    <news>v1.0.2
+    <news>v1.0.3
+- Works with the Keymap Editor addon: runaddon() opens the OSD during playback.
+- Detects and repairs a keymap disabled by another addon.
+
+v1.0.2
 - Find my button: bind a trigger by its real button code, no long press needed.
 - Read recent key presses straight out of kodi.log.
 

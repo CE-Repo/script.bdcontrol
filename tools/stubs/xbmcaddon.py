@@ -39,11 +39,19 @@ def _load_strings():
 STRINGS = _load_strings()
 
 
+# Addons other than our own that the stub pretends are installed.
+FOREIGN_SETTINGS = {}
+
+
 class Addon(object):
     def __init__(self, addon_id='script.bdcontrol'):
+        if addon_id != 'script.bdcontrol' and addon_id not in FOREIGN_SETTINGS:
+            raise RuntimeError('addon %s is not installed' % addon_id)
         self.id = addon_id
 
     def getAddonInfo(self, key):  # noqa: N802
+        if self.id != 'script.bdcontrol':
+            return FOREIGN_SETTINGS[self.id].get(key, '')
         return {
             'path': ROOT,
             'profile': os.path.join(ROOT, '.profile'),
@@ -56,6 +64,8 @@ class Addon(object):
         return STRINGS.get(string_id, '')
 
     def getSetting(self, setting_id):  # noqa: N802
+        if self.id != 'script.bdcontrol':
+            return FOREIGN_SETTINGS[self.id].get(setting_id, '')
         value = SETTINGS.get(setting_id, '')
         if isinstance(value, bool):
             return 'true' if value else 'false'

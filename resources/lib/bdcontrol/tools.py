@@ -4,6 +4,7 @@ import glob
 import os
 
 import xbmc
+import xbmcaddon
 import xbmcgui
 
 from . import actions, keymap, kodiutils, learn, player
@@ -103,6 +104,30 @@ def _remote_conf_repeat():
     return found
 
 
+KEYMAP_EDITOR_ID = 'script.keymap'
+
+
+def _keymap_editor_status():
+    """Report whether Keymap Editor is installed and set to co-exist.
+
+    Its "enable_multifile" setting decides whether saving renames every other
+    keymap file - ours included - to *.xml.bak.N.  It defaults to off.
+    """
+    try:
+        editor = xbmcaddon.Addon(KEYMAP_EDITOR_ID)
+    except Exception:  # pylint: disable=broad-except
+        return None, False, ''
+    try:
+        multifile = editor.getSetting('enable_multifile') == 'true'
+    except Exception:  # pylint: disable=broad-except
+        multifile = False
+    try:
+        filename = editor.getSetting('keymap_editor_filename') or 'gen'
+    except Exception:  # pylint: disable=broad-except
+        filename = 'gen'
+    return editor.getAddonInfo('version'), multifile, '%s.xml' % filename
+
+
 def _debug_logging():
     value = jsonrpc('Settings.GetSettingValue', setting='debug.showloginfo')
     return bool((value or {}).get('value', False))
@@ -176,6 +201,21 @@ def diagnostics_text():
             if line.strip().startswith('<!--') or line.strip().startswith('-->'):
                 continue
             lines.append('  %s' % line)
+
+    version, multifile, filename = _keymap_editor_status()
+    lines.append('')
+    if version is None:
+        lines.append('%s: %s' % (localize(30132), localize(30133)))
+    else:
+        lines.append('%s: %s (%s)' % (localize(30132), version, filename))
+        lines.append('  %s: %s' % (localize(30134), _yes_no(multifile)))
+        if not multifile:
+            lines.append('  %s' % localize(30136))
+    copies = keymap.disabled_copies()
+    if copies:
+        lines.append('%s:' % localize(30135))
+        for path in copies:
+            lines.append('  %s' % path)
 
     section(localize(30128))  # Remote configuration
     for path, value in _remote_conf_repeat():

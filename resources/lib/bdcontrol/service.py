@@ -11,6 +11,9 @@ from .kodiutils import execute_builtin, localize, log, log_info
 # disc menu is driving the input, so the check is retried for a few seconds.
 MENU_CHECK_TIMEOUT = 6.0
 TICK_SECONDS = 0.5
+# Another addon can rename our keymap out of the way at any time; checking for
+# that is one os.listdir, so half a minute is frequent enough.
+CONFLICT_CHECK_SECONDS = 30.0
 
 
 class BDMonitor(xbmc.Monitor):
@@ -62,6 +65,8 @@ class Service(object):
         self._pending_path = ''
         self._pending_until = 0.0
         self._keymap_dirty = False
+        self._conflict_warned = False
+        self._next_conflict_check = 0.0
 
     # -- keymap -----------------------------------------------------------
 
@@ -74,6 +79,29 @@ class Service(object):
             keymap.sync()
         except Exception as exc:  # pylint: disable=broad-except
             kodiutils.log_error('keymap sync failed: %s' % exc)
+
+    def _check_keymap_conflict(self):
+        """Restore our keymap if another addon renamed it away.
+
+        Keymap Editor moves every other keymap file aside when it saves, which
+        silently takes the BD Control trigger with it.  The setting is the
+        source of truth, so put the file back and say what happened - the
+        diagnostics page explains how to stop it recurring.
+        """
+        if not kodiutils.get_setting_bool('keymap_enabled', True):
+            return
+        if keymap.is_installed():
+            self._conflict_warned = False
+            return
+        copies = keymap.disabled_copies()
+        if not copies:
+            return
+        if not self._conflict_warned:
+            self._conflict_warned = True
+            log_info('keymap was renamed away by another addon: %s'
+                     % ', '.join(copies))
+            kodiutils.notify(localize(30131), time=9000)
+        self._sync_keymap()
 
     # -- playback ---------------------------------------------------------
 
@@ -134,6 +162,10 @@ class Service(object):
                 break
             if self._keymap_dirty:
                 self._sync_keymap()
+            now = time.time()
+            if now >= self._next_conflict_check:
+                self._next_conflict_check = now + CONFLICT_CHECK_SECONDS
+                self._check_keymap_conflict()
             self._process_pending()
         log_info('BD Control service stopped')
 

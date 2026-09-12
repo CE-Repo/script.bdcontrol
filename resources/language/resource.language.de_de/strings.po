@@ -429,6 +429,30 @@ msgctxt "#30130"
 msgid "none found"
 msgstr "keine gefunden"
 
+msgctxt "#30131"
+msgid "The BD Control keymap was disabled by another addon and has been restored"
+msgstr "Die BD-Control-Tastenbelegung wurde von einem anderen Addon deaktiviert und wiederhergestellt"
+
+msgctxt "#30132"
+msgid "Keymap Editor"
+msgstr "Keymap Editor"
+
+msgctxt "#30133"
+msgid "not installed"
+msgstr "nicht installiert"
+
+msgctxt "#30134"
+msgid "Allow multiple keymap files"
+msgstr "Mehrere Tastenbelegungsdateien zulassen"
+
+msgctxt "#30135"
+msgid "Disabled copies of the BD Control keymap"
+msgstr "Deaktivierte Kopien der BD-Control-Tastenbelegung"
+
+msgctxt "#30136"
+msgid "With this off, saving in Keymap Editor renames every other keymap file to *.xml.bak.N - including this addon's. Turn it on in the Keymap Editor settings, or switch the BD Control keymap off and do the mapping in Keymap Editor instead."
+msgstr "Ist dies aus, benennt das Speichern im Keymap Editor alle anderen Tastenbelegungsdateien in *.xml.bak.N um - auch die dieses Addons. Entweder in den Keymap-Editor-Einstellungen einschalten oder die BD-Control-Tastenbelegung ausschalten und die Zuordnung im Keymap Editor vornehmen."
+
 msgctxt "#30200"
 msgid "General"
 msgstr "Allgemein"

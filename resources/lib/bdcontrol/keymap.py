@@ -168,6 +168,23 @@ def is_installed():
     return xbmcvfs.exists(keymap_path())
 
 
+def disabled_copies():
+    """Renamed-away copies of our keymap, newest last.
+
+    Keymap Editor renames every other `*.xml` in the keymaps folder to
+    `*.xml.bak.N` when it saves, unless its "enable_multifile" setting is on.
+    Finding such a file while our keymap is missing is the signature of that
+    having happened.
+    """
+    directory = keymap_dir()
+    if not os.path.isdir(directory):
+        return []
+    prefix = KEYMAP_FILENAME + '.bak'
+    return sorted(os.path.join(directory, name)
+                  for name in os.listdir(directory)
+                  if name.startswith(prefix))
+
+
 def write(content):
     directory = keymap_dir()
     if not xbmcvfs.exists(directory):

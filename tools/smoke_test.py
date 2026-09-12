@@ -393,6 +393,79 @@ def test_key_log():
     check(learn.recent_keys() == [], 'a missing log is not an error')
 
 
+def test_keymap_editor_interop():
+    section('Keymap Editor co-existence')
+    # Keymap Editor's "Add-ons" category writes runaddon(script.bdcontrol),
+    # which starts the script with no arguments at all.
+    check(main.parse_args([]).get('action') is None,
+          'runaddon passes no action')
+    xbmc.BUILTINS.clear()
+    xbmcgui.PROPERTIES.clear()
+    xbmc.COND_VISIBILITY['Player.HasVideo'] = True
+    opened = []
+    original_show = dialog.show
+    dialog.show = lambda: opened.append('osd')
+    try:
+        main.run([])
+        check(opened == ['osd'],
+              'with no arguments during playback it opens the OSD')
+        opened[:] = []
+        xbmc.COND_VISIBILITY['Player.HasVideo'] = False
+        xbmcgui.SELECT_RESULT = -1
+        main.run([])
+        check(not opened, 'and falls back to the menu when nothing is playing')
+    finally:
+        dialog.show = original_show
+        xbmc.COND_VISIBILITY['Player.HasVideo'] = True
+
+    # Keymap Editor renames other keymap files to *.xml.bak.N when it saves.
+    keymap.sync()
+    check(keymap.is_installed(), 'our keymap starts out installed')
+    victim = keymap.keymap_path()
+    os.rename(victim, victim + '.bak.0')
+    check(not keymap.is_installed(), 'and is gone once it is renamed away')
+    copies = keymap.disabled_copies()
+    check(copies == [victim + '.bak.0'],
+          'the renamed copy is recognised (%s)' % copies)
+
+    instance = service.Service()
+    xbmcgui.NOTIFICATIONS.clear()
+    instance._check_keymap_conflict()  # noqa: SLF001
+    check(keymap.is_installed(), 'the service puts the keymap back')
+    check(len(xbmcgui.NOTIFICATIONS) == 1, 'and says so once')
+    instance._check_keymap_conflict()  # noqa: SLF001
+    check(len(xbmcgui.NOTIFICATIONS) == 1, 'without repeating itself')
+
+    # Deliberately removing the keymap must not be undone.
+    xbmcaddon.SETTINGS['keymap_enabled'] = False
+    os.remove(keymap.keymap_path())
+    instance._check_keymap_conflict()  # noqa: SLF001
+    check(not keymap.is_installed(),
+          'a keymap switched off by the user stays off')
+    xbmcaddon.SETTINGS['keymap_enabled'] = True
+
+    # The diagnostics must name the setting that causes the clash.
+    xbmcaddon.FOREIGN_SETTINGS['script.keymap'] = {
+        'version': '1.4.0', 'enable_multifile': 'false',
+        'keymap_editor_filename': 'gen'}
+    text = tools.diagnostics_text()
+    check('Keymap Editor: 1.4.0 (gen.xml)' in text,
+          'Keymap Editor is detected with its file name')
+    check('Allow multiple keymap files: no' in text
+          and 'xml.bak.N' in text,
+          'and the setting behind the clash is explained')
+    xbmcaddon.FOREIGN_SETTINGS['script.keymap']['enable_multifile'] = 'true'
+    text = tools.diagnostics_text()
+    check('Allow multiple keymap files: yes' in text
+          and 'xml.bak.N' not in text,
+          'the warning disappears once it is switched on')
+    del xbmcaddon.FOREIGN_SETTINGS['script.keymap']
+    check('Keymap Editor: not installed' in tools.diagnostics_text(),
+          'a missing Keymap Editor is reported, not an error')
+
+    shutil.rmtree(os.path.dirname(keymap.keymap_dir()), ignore_errors=True)
+
+
 def test_service():
     section('service')
     instance = service.Service()
@@ -524,6 +597,7 @@ def main_test():
     test_more_menu()
     test_learn()
     test_key_log()
+    test_keymap_editor_interop()
     test_service()
     test_skin_ids_match()
     test_dialog()

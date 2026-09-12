@@ -172,6 +172,25 @@ STRINGS = [
     (30128, 'Remote configuration', 'Fernbedienungs-Konfiguration'),
     (30129, 'no repeat settings found', 'keine Repeat-Einstellungen gefunden'),
     (30130, 'none found', 'keine gefunden'),
+    (30131, 'The BD Control keymap was disabled by another addon and has been '
+            'restored',
+     'Die BD-Control-Tastenbelegung wurde von einem anderen Addon deaktiviert '
+     'und wiederhergestellt'),
+    (30132, 'Keymap Editor', 'Keymap Editor'),
+    (30133, 'not installed', 'nicht installiert'),
+    (30134, 'Allow multiple keymap files',
+     'Mehrere Tastenbelegungsdateien zulassen'),
+    (30135, 'Disabled copies of the BD Control keymap',
+     'Deaktivierte Kopien der BD-Control-Tastenbelegung'),
+    (30136, 'With this off, saving in Keymap Editor renames every other '
+            'keymap file to *.xml.bak.N - including this addon\'s. Turn it on '
+            'in the Keymap Editor settings, or switch the BD Control keymap '
+            'off and do the mapping in Keymap Editor instead.',
+     'Ist dies aus, benennt das Speichern im Keymap Editor alle anderen '
+     'Tastenbelegungsdateien in *.xml.bak.N um - auch die dieses Addons. '
+     'Entweder in den Keymap-Editor-Einstellungen einschalten oder die '
+     'BD-Control-Tastenbelegung ausschalten und die Zuordnung im Keymap '
+     'Editor vornehmen.'),
 
     # --- settings --------------------------------------------------------
     (30200, 'General', 'Allgemein'),

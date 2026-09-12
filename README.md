@@ -140,6 +140,43 @@ the manual procedure asks you to look for over SSH — and lets you pick one
 from the list. That needs debug logging on:
 **Settings → System → Logging → Enable debug logging**.
 
+## Using the Keymap Editor addon instead
+
+You can map the trigger with the **Keymap Editor** addon (`script.keymap`)
+rather than with the built-in generator. Two things matter:
+
+**1. Stop Keymap Editor from disabling this addon's keymap.** When it saves,
+it renames every *other* `*.xml` in `userdata/keymaps` to `*.xml.bak.N` —
+including `script.bdcontrol.xml`. Either:
+
+* turn on **Allow multiple keymap files** in the Keymap Editor settings
+  (`enable_multifile`, off by default) so both files can co-exist, **or**
+* turn off **Install the BD Control keymap** here and let Keymap Editor own
+  the mapping entirely.
+
+If it does happen, the service notices within half a minute, puts the keymap
+back and tells you — and the diagnostics page names the setting. Don't map the
+same button in both files.
+
+**2. Pick the right entry.** In Keymap Editor:
+
+1. **Edit** → context **Fullscreen video**
+2. category **Add-ons** → **Launch BD Control**
+3. press the button you want to use.
+
+That writes `runaddon(script.bdcontrol)`, which starts the addon with no
+arguments. Started that way *during playback* it goes straight to the OSD, so
+the button behaves exactly like the built-in trigger; with nothing playing it
+opens the addon's menu instead.
+
+For the disc menu itself, Keymap Editor has no entry — it only offers the
+actions it ships. Use the built-in **Title button** mapping for that, or add
+the one line from the [HOWTO](#which-button-opens-bd-control) by hand.
+
+Keymap Editor also has a **long press** setting of its own. It runs into the
+same driver limitation described above, so if holding a button does nothing
+there either, that confirms the cause is not this addon.
+
 ## Settings
 
 **General**

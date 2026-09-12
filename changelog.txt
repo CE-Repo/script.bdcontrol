@@ -23,3 +23,12 @@ v1.0.2
   kodi.log and lets you bind one, without needing SSH.
 - Diagnostics now include the generated keymap, the remote.conf key-repeat
   settings, whether debug logging is on and the last few key presses.
+
+v1.0.3
+- Started with no arguments - as Keymap Editor's runaddon() does - the addon
+  now opens the OSD during playback instead of its menu.
+- The service notices when another addon renames the BD Control keymap away
+  (Keymap Editor does this on save unless "Allow multiple keymap files" is on),
+  restores it and says so.
+- Diagnostics report Keymap Editor's version, its file name, whether it is set
+  to co-exist, and any disabled copies of the keymap.

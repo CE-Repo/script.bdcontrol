@@ -2,7 +2,7 @@
 """Argument handling for RunScript(script.bdcontrol, ...)."""
 import xbmcgui
 
-from . import actions, dialog, keymap, kodiutils, learn, tools
+from . import actions, dialog, keymap, kodiutils, learn, player, tools
 from .kodiutils import localize, log
 
 
@@ -46,7 +46,22 @@ def main_menu():
     entries[choice][1]()
 
 
+def auto_action():
+    """What starting the addon without arguments should do.
+
+    Keymap Editor's "Add-ons" category writes `runaddon(script.bdcontrol)`,
+    which starts the script with no arguments at all.  A button bound that way
+    is meant to be the trigger, so during playback go straight to the OSD and
+    only fall back to the menu when there is nothing to control.
+    """
+    if player.is_playing_video():
+        dialog.toggle()
+        return
+    main_menu()
+
+
 HANDLERS = {
+    'auto': auto_action,
     'toggle': dialog.toggle,
     'show': dialog.show,
     'osd': actions.kodi_osd,
@@ -75,7 +90,7 @@ HANDLERS = {
 
 def run(argv):
     args = parse_args(argv)
-    action = args.get('action', 'menu')
+    action = args.get('action') or 'auto'
     log('run: action=%s args=%s' % (action, args))
 
     if action == 'seek':

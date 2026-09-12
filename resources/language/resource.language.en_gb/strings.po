@@ -429,6 +429,30 @@ msgctxt "#30130"
 msgid "none found"
 msgstr ""
 
+msgctxt "#30131"
+msgid "The BD Control keymap was disabled by another addon and has been restored"
+msgstr ""
+
+msgctxt "#30132"
+msgid "Keymap Editor"
+msgstr ""
+
+msgctxt "#30133"
+msgid "not installed"
+msgstr ""
+
+msgctxt "#30134"
+msgid "Allow multiple keymap files"
+msgstr ""
+
+msgctxt "#30135"
+msgid "Disabled copies of the BD Control keymap"
+msgstr ""
+
+msgctxt "#30136"
+msgid "With this off, saving in Keymap Editor renames every other keymap file to *.xml.bak.N - including this addon's. Turn it on in the Keymap Editor settings, or switch the BD Control keymap off and do the mapping in Keymap Editor instead."
+msgstr ""
+
 msgctxt "#30200"
 msgid "General"
 msgstr ""
