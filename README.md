@@ -38,14 +38,33 @@ Plus, under **More**: Kodi's audio and subtitle settings, subtitle toggle, next
 audio language, the Blu-ray playback mode, disc eject, and a diagnostics
 report.
 
-Two entries are worth calling out:
+Three entries are worth calling out:
 
 * **Kodi OSD** opens Kodi's own player OSD by name. That bypasses the disc's
   grip on the OK button entirely, so you get the familiar player controls back,
   including the seek bar.
+* **Disc menu** sends `PlayerControl(ShowVideoMenu)`. That builtin goes to the
+  player itself rather than to the focused window, so it works regardless of
+  what is on screen. libbluray tries the in-movie popup menu first and falls
+  back to the root menu, so one button behaves like a standalone player's
+  POPUP MENU / TOP MENU combo.
 * **Titles** lists the playlists on the disc and plays one directly, without
   the disc menu. Kodi is then fully in charge again — OSD, seeking and resume
   all behave as they do with any other video.
+
+### Separate popup and top menus
+
+Some Kodi builds — [SamuriHL's CoreELEC
+build](https://github.com/SamuriHL/coreelec-xbmc) among them — extend the
+builtin so it takes an argument: `PlayerControl(ShowVideoMenu(popup))` opens
+only the in-movie popup menu, `ShowVideoMenu(top)` only the root menu.
+
+Upstream Kodi compares the builtin's parameter exactly, so on a stock build
+the argument form matches nothing and does *silently* nothing. There is no way
+to probe for the patch, so it is a setting: switch on **Separate popup and top
+menu entries** (General) and two extra entries appear under **More**, and the
+Title button sends the popup variant instead of the portable one. Leave it off
+on a stock build.
 
 ## Installation
 
@@ -64,7 +83,8 @@ enabled in **Settings → Keymap**:
 | Trigger | Default |
 | --- | --- |
 | Long press OK | on |
-| Menu / Title button | on |
+| Title button → the disc's own menu | on |
+| Menu button | on |
 | Info button | off |
 | Context menu button (C) | off |
 | Long press Back | off |
@@ -74,6 +94,18 @@ enabled in **Settings → Keymap**:
 The generated keymap is written to
 `special://profile/keymaps/script.bdcontrol.xml` and only ever touches the
 `FullscreenVideo` window — navigation everywhere else in Kodi is untouched.
+The Title button entry is the mapping Kodi does not ship itself:
+
+```xml
+<keymap>
+  <FullscreenVideo>
+    <remote>
+      <title>PlayerControl(ShowVideoMenu)</title>
+    </remote>
+  </FullscreenVideo>
+</keymap>
+```
+
 It is rewritten whenever you change those settings, and removing it (or using
 **Remove keymap**) restores Kodi's stock behaviour.
 
@@ -99,7 +131,8 @@ CoreELEC:
 * the optical drive device nodes and whether a disc is present,
 * `libbluray`, `libaacs`, `libbdplus` and a `KEYDB.cfg` (needed for encrypted
   retail discs),
-* Kodi's Blu-ray playback mode,
+* Kodi's Blu-ray playback mode and whether the extended popup/top menus are
+  enabled,
 * which BD Control triggers are active,
 * the live state of the current playback: whether the disc menu is in control,
   whether seeking is allowed, chapter counters, track counts and the output
@@ -115,7 +148,9 @@ Every command is reachable from a keymap, a skin button or another addon:
 ```
 RunScript(script.bdcontrol,action=toggle)        # open / close the BD Control OSD
 RunScript(script.bdcontrol,action=osd)           # Kodi's own player OSD
-RunScript(script.bdcontrol,action=discmenu)      # back to the disc menu
+RunScript(script.bdcontrol,action=discmenu)      # popup menu, or top menu if there is none
+RunScript(script.bdcontrol,action=popupmenu)     # popup menu only   (patched builds)
+RunScript(script.bdcontrol,action=topmenu)       # top menu only     (patched builds)
 RunScript(script.bdcontrol,action=playpause)
 RunScript(script.bdcontrol,action=stop)
 RunScript(script.bdcontrol,action=nextchapter)

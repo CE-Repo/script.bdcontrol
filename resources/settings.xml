@@ -26,6 +26,11 @@
             <popup>false</popup>
           </control>
         </setting>
+        <setting id="extended_disc_menus" type="boolean" label="30223" help="30263">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
         <setting id="seek_step" type="integer" label="30204">
           <level>0</level>
           <default>30</default>
@@ -51,6 +56,14 @@
       </group>
       <group id="2" label="30221">
         <setting id="km_longpress_ok" type="boolean" label="30212" help="30260">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_disc_menu" type="boolean" label="30222">
           <level>0</level>
           <default>true</default>
           <control type="toggle"/>

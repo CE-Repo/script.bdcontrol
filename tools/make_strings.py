@@ -139,6 +139,8 @@ STRINGS = [
      'Diagnose in das Kodi-Log geschrieben'),
     (30113, 'Write diagnostics to the Kodi log',
      'Diagnose in das Kodi-Log schreiben'),
+    (30114, 'Disc popup menu', 'Popup-Menü der Disc'),
+    (30115, 'Disc top menu', 'Hauptmenü der Disc'),
 
     # --- settings --------------------------------------------------------
     (30200, 'General', 'Allgemein'),
@@ -164,6 +166,10 @@ STRINGS = [
     (30219, 'Install keymap now', 'Tastenbelegung jetzt installieren'),
     (30220, 'Remove keymap', 'Tastenbelegung entfernen'),
     (30221, 'Trigger buttons', 'Auslösetasten'),
+    (30222, 'Title button opens the disc menu',
+     'Title-Taste öffnet das Disc-Menü'),
+    (30223, 'Separate popup and top menu entries',
+     'Getrennte Einträge für Popup- und Hauptmenü'),
     (30230, 'Tools', 'Werkzeuge'),
     (30231, 'Open the BD Control OSD', 'BD-Control-OSD öffnen'),
     (30240, 'Advanced', 'Erweitert'),
@@ -180,6 +186,14 @@ STRINGS = [
             'Kodi is untouched.',
      'Die Tastenbelegung ändert nur die Vollbildwiedergabe; der Rest von '
      'Kodi bleibt unverändert.'),
+    (30263, 'Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts '
+            '"popup" and "top", such as SamuriHL\'s CoreELEC build. Other '
+            'builds ignore the argument, so leave this off there and use the '
+            'single Disc menu button.',
+     'Benötigt einen Kodi-Build, dessen PlayerControl(ShowVideoMenu) die '
+     'Argumente "popup" und "top" akzeptiert, etwa den CoreELEC-Build von '
+     'SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet '
+     'lassen und die einzelne Disc-Menü-Taste verwenden.'),
     (30262, 'Opens the OSD by itself whenever a disc menu takes over the '
             'remote.',
      'Öffnet das OSD automatisch, sobald ein Disc-Menü die Fernbedienung '

@@ -361,6 +361,14 @@ msgctxt "#30113"
 msgid "Write diagnostics to the Kodi log"
 msgstr "Diagnose in das Kodi-Log schreiben"
 
+msgctxt "#30114"
+msgid "Disc popup menu"
+msgstr "Popup-Menü der Disc"
+
+msgctxt "#30115"
+msgid "Disc top menu"
+msgstr "Hauptmenü der Disc"
+
 msgctxt "#30200"
 msgid "General"
 msgstr "Allgemein"
@@ -429,6 +437,14 @@ msgctxt "#30221"
 msgid "Trigger buttons"
 msgstr "Auslösetasten"
 
+msgctxt "#30222"
+msgid "Title button opens the disc menu"
+msgstr "Title-Taste öffnet das Disc-Menü"
+
+msgctxt "#30223"
+msgid "Separate popup and top menu entries"
+msgstr "Getrennte Einträge für Popup- und Hauptmenü"
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr "Werkzeuge"
@@ -452,6 +468,10 @@ msgstr "Ein kurzer Druck erreicht weiterhin das Disc-Menü, die Navigation funkt
 msgctxt "#30261"
 msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
 msgstr "Die Tastenbelegung ändert nur die Vollbildwiedergabe; der Rest von Kodi bleibt unverändert."
+
+msgctxt "#30263"
+msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
+msgstr "Benötigt einen Kodi-Build, dessen PlayerControl(ShowVideoMenu) die Argumente \"popup\" und \"top\" akzeptiert, etwa den CoreELEC-Build von SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet lassen und die einzelne Disc-Menü-Taste verwenden."
 
 msgctxt "#30262"
 msgid "Opens the OSD by itself whenever a disc menu takes over the remote."

@@ -117,6 +117,8 @@ def diagnostics_text():
 
     section(localize(30097))  # Kodi disc settings
     lines.append('%s: %s' % (localize(30098), _disc_playback_mode_label()))
+    lines.append('%s: %s' % (localize(30223),
+                             _yes_no(actions.extended_disc_menus())))
 
     section(localize(30099))  # Keymap
     lines.append('%s: %s' % (localize(30100),
@@ -164,7 +166,13 @@ def more_menu(closer=None):
     window or take over playback call it first so they are not stacked on top
     of our own OSD.
     """
-    entries = [
+    entries = []
+    if actions.extended_disc_menus():
+        # Only builds that accept ShowVideoMenu(popup|top) can tell the two
+        # apart; elsewhere the single "Disc menu" button covers both.
+        entries.append((localize(30114), actions.disc_popup_menu, True))
+        entries.append((localize(30115), actions.disc_top_menu, True))
+    entries += [
         (localize(30035), actions.audio_settings, True),
         (localize(30036), actions.subtitle_settings, True),
         (localize(30037), actions.toggle_subtitles, True),

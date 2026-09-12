@@ -104,12 +104,37 @@ def process_info():
 # --- disc ----------------------------------------------------------------
 
 def disc_menu():
-    """Ask the player to return to the disc menu.
+    """Ask the player to show the disc menu.
 
-    Kodi turns the `showvideomenu` action into libbluray's menu call, so this
-    works for HDMV and BD-J discs alike.
+    `PlayerControl(ShowVideoMenu)` goes straight to the player rather than to
+    the active window, so unlike `Action(showvideomenu)` it does not depend on
+    which window has focus.  Kodi turns it into libbluray's menu call, which
+    tries the in-movie popup menu first and falls back to the root menu, so a
+    single button behaves like a standalone player's POPUP MENU / TOP MENU.
     """
-    execute_builtin('Action(showvideomenu)')
+    execute_builtin('PlayerControl(ShowVideoMenu)')
+
+
+def extended_disc_menus():
+    """True when the user has enabled the popup/top menu variants.
+
+    Upstream Kodi matches the builtin parameter exactly (`paramlow ==
+    "showvideomenu"`), so `ShowVideoMenu(popup)` is silently ignored there.
+    Builds carrying the ShowVideoMenu(popup|top) patch - SamuriHL's CoreELEC
+    build among them - accept the argument.  There is no way to probe for it,
+    hence the setting.
+    """
+    return kodiutils.get_setting_bool('extended_disc_menus', False)
+
+
+def disc_popup_menu():
+    """Open the in-movie popup menu only (no fallback to the root menu)."""
+    execute_builtin('PlayerControl(ShowVideoMenu(popup))')
+
+
+def disc_top_menu():
+    """Open the disc's top/root menu only."""
+    execute_builtin('PlayerControl(ShowVideoMenu(top))')
 
 
 def eject():

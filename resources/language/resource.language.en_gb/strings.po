@@ -361,6 +361,14 @@ msgctxt "#30113"
 msgid "Write diagnostics to the Kodi log"
 msgstr ""
 
+msgctxt "#30114"
+msgid "Disc popup menu"
+msgstr ""
+
+msgctxt "#30115"
+msgid "Disc top menu"
+msgstr ""
+
 msgctxt "#30200"
 msgid "General"
 msgstr ""
@@ -429,6 +437,14 @@ msgctxt "#30221"
 msgid "Trigger buttons"
 msgstr ""
 
+msgctxt "#30222"
+msgid "Title button opens the disc menu"
+msgstr ""
+
+msgctxt "#30223"
+msgid "Separate popup and top menu entries"
+msgstr ""
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr ""
@@ -451,6 +467,10 @@ msgstr ""
 
 msgctxt "#30261"
 msgid "The keymap only changes fullscreen video playback; the rest of Kodi is untouched."
+msgstr ""
+
+msgctxt "#30263"
+msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
 msgstr ""
 
 msgctxt "#30262"

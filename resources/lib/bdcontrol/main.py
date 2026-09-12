@@ -50,6 +50,8 @@ HANDLERS = {
     'osd': actions.kodi_osd,
     'menu': main_menu,
     'discmenu': actions.disc_menu,
+    'popupmenu': actions.disc_popup_menu,
+    'topmenu': actions.disc_top_menu,
     'playpause': actions.play_pause,
     'stop': actions.stop,
     'nextchapter': actions.chapter_next,

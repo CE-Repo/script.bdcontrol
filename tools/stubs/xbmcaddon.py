@@ -12,6 +12,8 @@ SETTINGS = {
     'keymap_enabled': True,
     'km_longpress_ok': True,
     'km_menu': True,
+    'km_disc_menu': True,
+    'extended_disc_menus': False,
     'km_info': False,
     'km_contextmenu': False,
     'km_longpress_back': False,

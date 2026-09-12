@@ -22,6 +22,8 @@ KEYMAP_FILENAME = 'script.bdcontrol.xml'
 
 TOGGLE = 'RunScript(script.bdcontrol,action=toggle)'
 KODI_OSD = 'RunScript(script.bdcontrol,action=osd)'
+DISC_MENU = 'PlayerControl(ShowVideoMenu)'
+DISC_POPUP_MENU = 'PlayerControl(ShowVideoMenu(popup))'
 
 HEADER = """<?xml version="1.0" encoding="UTF-8"?>
 <!--
@@ -48,11 +50,30 @@ class Mapping(object):
         self.setting = setting
         self.keyboard = keyboard
         self.remote = remote
-        self.command = command
+        self._command = command
         self.longpress = longpress
+
+    @property
+    def command(self):
+        """The builtin to write; may depend on other settings."""
+        if callable(self._command):
+            return self._command()
+        return self._command
 
     def enabled(self):
         return kodiutils.get_setting_bool(self.setting, False)
+
+
+def _disc_menu_command():
+    """The disc-menu builtin the Title button should send.
+
+    `PlayerControl(ShowVideoMenu)` is understood by every Kodi build; the
+    popup variant only by builds carrying the ShowVideoMenu(popup|top) patch,
+    so it is opt-in.
+    """
+    if kodiutils.get_setting_bool('extended_disc_menus', False):
+        return DISC_POPUP_MENU
+    return DISC_MENU
 
 
 # The default trigger is a long press of OK: a short press still reaches the
@@ -61,7 +82,10 @@ class Mapping(object):
 MAPPINGS = (
     Mapping('km_longpress_ok', keyboard=('return',), remote=('select',),
             longpress=True),
-    Mapping('km_menu', keyboard=('menu',), remote=('menu', 'title')),
+    Mapping('km_menu', keyboard=('menu',), remote=('menu',)),
+    # The Title / Top Menu button most CEC remotes send is the natural home
+    # for the disc's own menu, and Kodi ships no remote binding for it.
+    Mapping('km_disc_menu', remote=('title',), command=_disc_menu_command),
     Mapping('km_info', keyboard=('i',), remote=('info',)),
     # Kodi's remote section has no context-menu button, so this one is
     # keyboard only (the 'C' key, and remotes that emit it).
@@ -85,7 +109,7 @@ def keymap_path():
 
 def _element(name, command, longpress):
     modifier = ' mod="longpress"' if longpress else ''
-    return '        <%s%s>%s</%s>\n' % (name, modifier, command, name)
+    return '      <%s%s>%s</%s>\n' % (name, modifier, command, name)
 
 
 def build():
@@ -103,9 +127,9 @@ def build():
         return ''
     body = ''
     if keyboard:
-        body += '      <keyboard>\n%s      </keyboard>\n' % ''.join(keyboard)
+        body += '    <keyboard>\n%s    </keyboard>\n' % ''.join(keyboard)
     if remote:
-        body += '      <remote>\n%s      </remote>\n' % ''.join(remote)
+        body += '    <remote>\n%s    </remote>\n' % ''.join(remote)
     return HEADER + body + FOOTER
 
 

@@ -85,9 +85,21 @@ def test_keymap():
     check(content.count('<keyboard>') == 1 and content.count('<remote>') == 1,
           'one keyboard and one remote block')
 
+    check('<title>PlayerControl(ShowVideoMenu)</title>' in content,
+          'the Title button is bound to the disc menu')
+
+    # The popup variant is opt-in, because upstream Kodi matches the builtin
+    # parameter exactly and would silently ignore the argument.
+    xbmcaddon.SETTINGS['extended_disc_menus'] = True
+    check('<title>PlayerControl(ShowVideoMenu(popup))</title>' in keymap.build(),
+          'enabling the extended menus switches the Title button to popup')
+    xbmcaddon.SETTINGS['extended_disc_menus'] = False
+    check('<title>PlayerControl(ShowVideoMenu)</title>' in keymap.build(),
+          'and switching it back restores the portable builtin')
+
     # Turning every trigger off must produce an empty keymap, not a broken one.
     saved = dict(xbmcaddon.SETTINGS)
-    for setting in ('km_longpress_ok', 'km_menu'):
+    for setting in ('km_longpress_ok', 'km_menu', 'km_disc_menu'):
         xbmcaddon.SETTINGS[setting] = False
     check(keymap.build() == '', 'no triggers means no keymap file')
     xbmcaddon.SETTINGS.clear()
@@ -191,10 +203,22 @@ def test_actions():
     actions.process_info()
     expected = ['PlayerControl(Play)', 'PlayerControl(Stop)',
                 'PlayerControl(Next)', 'PlayerControl(Previous)',
-                'Action(showvideomenu)', 'ActivateWindow(videoosd)',
+                'PlayerControl(ShowVideoMenu)', 'ActivateWindow(videoosd)',
                 'EjectTray()', 'ActivateWindow(playerprocessinfo)']
     check(xbmc.BUILTINS == expected,
           'the player builtins are the expected ones')
+
+    # PlayerControl goes to the player itself, so the disc menu does not
+    # depend on which window has focus; Action(...) would.
+    check(not any(builtin.startswith('Action(show') for builtin in expected),
+          'the disc menu does not rely on window routing')
+
+    xbmc.BUILTINS.clear()
+    actions.disc_popup_menu()
+    actions.disc_top_menu()
+    check(xbmc.BUILTINS == ['PlayerControl(ShowVideoMenu(popup))',
+                            'PlayerControl(ShowVideoMenu(top))'],
+          'the popup and top menu variants pass their argument')
 
     xbmc.BUILTINS.clear()
     xbmc.JSONRPC_RESPONSES['Player.Seek'] = {'percentage': 11.0}
@@ -264,6 +288,32 @@ def test_diagnostics():
     check('3840x2160' in text, 'the playing resolution is reported')
     missing = [line for line in text.splitlines() if line.strip().endswith(': ')]
     check(not missing, 'no diagnostic line is left blank: %s' % missing)
+
+
+def test_more_menu():
+    section('more menu')
+    xbmcgui.SELECT_RESULT = -1
+    xbmcaddon.SETTINGS['extended_disc_menus'] = False
+    plain = []
+    original_select = xbmcgui.Dialog.select
+
+    def capture(self, heading, options, preselect=-1):
+        plain.extend(options)
+        return -1
+
+    xbmcgui.Dialog.select = capture
+    try:
+        tools.more_menu()
+        check('Disc popup menu' not in plain,
+              'the popup entries are hidden on a stock build')
+        xbmcaddon.SETTINGS['extended_disc_menus'] = True
+        plain.clear()
+        tools.more_menu()
+        check('Disc popup menu' in plain and 'Disc top menu' in plain,
+              'they appear once the extended menus are enabled')
+    finally:
+        xbmcgui.Dialog.select = original_select
+        xbmcaddon.SETTINGS['extended_disc_menus'] = False
 
 
 def test_service():
@@ -394,6 +444,7 @@ def main_test():
     test_actions()
     test_titles_browser()
     test_diagnostics()
+    test_more_menu()
     test_service()
     test_skin_ids_match()
     test_dialog()

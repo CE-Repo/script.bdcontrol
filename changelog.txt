@@ -6,3 +6,11 @@ v1.0.0
 - Pause, stop, chapter skip, seek, audio and subtitle selection during menu playback.
 - Title browser: play a single title without the disc menu.
 - Blu-ray playback mode switch, disc eject and a diagnostics report for CoreELEC.
+
+v1.0.1
+- Disc menu now uses PlayerControl(ShowVideoMenu), which reaches the player
+  directly instead of depending on which window has focus.
+- The keymap binds the Title / Top Menu button to the disc menu, the mapping
+  Kodi does not ship itself.
+- Optional separate popup and top menu entries for builds whose
+  PlayerControl(ShowVideoMenu) accepts "popup" and "top".
