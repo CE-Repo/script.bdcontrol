@@ -4,16 +4,6 @@
 
     <category id="general" label="30200">
       <group id="1">
-        <setting id="show_hint" type="boolean" label="30201">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-        </setting>
-        <setting id="auto_open" type="boolean" label="30202" help="30262">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-        </setting>
         <setting id="osd_timeout" type="integer" label="30203">
           <level>0</level>
           <default>10</default>
@@ -26,17 +16,27 @@
             <popup>false</popup>
           </control>
         </setting>
+        <setting id="show_hint" type="boolean" label="30201">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="auto_open" type="boolean" label="30202" help="30262">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
+        <setting id="debug_log" type="boolean" label="30241">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+        </setting>
         <setting id="open_diagnostics" type="action" label="30034">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=diagnostics)</data>
           <control type="button" format="action">
             <close>false</close>
           </control>
-        </setting>
-        <setting id="debug_log" type="boolean" label="30241">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
         </setting>
       </group>
     </category>
