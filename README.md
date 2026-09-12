@@ -27,126 +27,142 @@ Because the keymap is evaluated *before* the action reaches the player, that
 button is not swallowed by the disc, and the dialog that opens receives the
 remote itself — so OK, the arrow keys and Back all work normally inside it.
 
-From the OSD you can reach:
+The OSD shows the disc title, the position, the chapter counter and a progress
+bar, and holds exactly four buttons:
 
-| Row | Buttons |
+| Button | What it does |
 | --- | --- |
-| Playback | Disc menu · Play/Pause · Stop · Previous chapter · Next chapter · Rewind · Fast forward |
-| Tools | **Kodi OSD** · Audio track · Subtitles · Video settings · Codec info · Titles · More |
+| **Popup menu** | `PlayerControl(ShowVideoMenu(popup))` — the disc's in-movie popup menu |
+| **Main menu** | `PlayerControl(ShowVideoMenu(top))` — the disc's top / root menu |
+| **Video OSD** | `ActivateWindow(videoosd)` — Kodi's own player OSD |
+| **Diagnostics** | the report described [below](#diagnostics) |
 
-Plus, under **More**: Kodi's audio and subtitle settings, subtitle toggle, next
-audio language, the Blu-ray playback mode, disc eject, and a diagnostics
-report.
+**Video OSD** is the one that answers "OK does nothing": activating the window
+by name bypasses the disc's grip on the OK button entirely, so you get the
+familiar player controls back — pause, stop, the seek bar, audio and subtitle
+selection — from Kodi's own OSD.
 
-Three entries are worth calling out:
+The `PlayerControl(...)` builtins behind the two menu buttons go to the player
+rather than to the focused window, so they work regardless of what is on
+screen.
 
-* **Kodi OSD** opens Kodi's own player OSD by name. That bypasses the disc's
-  grip on the OK button entirely, so you get the familiar player controls back,
-  including the seek bar.
-* **Disc menu** sends `PlayerControl(ShowVideoMenu)`. That builtin goes to the
-  player itself rather than to the focused window, so it works regardless of
-  what is on screen. libbluray tries the in-movie popup menu first and falls
-  back to the root menu, so one button behaves like a standalone player's
-  POPUP MENU / TOP MENU combo.
-* **Titles** lists the playlists on the disc and plays one directly, without
-  the disc menu. Kodi is then fully in charge again — OSD, seeking and resume
-  all behave as they do with any other video.
+> **A build requirement for the two menu buttons.** Upstream Kodi compares the
+> builtin's parameter exactly (`paramlow == "showvideomenu"`), so the
+> `ShowVideoMenu(popup)` / `ShowVideoMenu(top)` argument form matches nothing
+> and does *silently* nothing on a stock build. Telling the popup and the top
+> menu apart needs a build carrying the ShowVideoMenu patch —
+> [SamuriHL's CoreELEC build](https://github.com/SamuriHL/coreelec-xbmc) among
+> them. There is no way to probe for it from a script. On a stock build, use
+> Kodi's own **Video OSD** button, or map the portable
+> `PlayerControl(ShowVideoMenu)` to a remote button directly.
 
-### Separate popup and top menus
+### Button style
 
-Some Kodi builds — [SamuriHL's CoreELEC
-build](https://github.com/SamuriHL/coreelec-xbmc) among them — extend the
-builtin so it takes an argument: `PlayerControl(ShowVideoMenu(popup))` opens
-only the in-movie popup menu, `ShowVideoMenu(top)` only the root menu.
+The four buttons can be shown three ways, under **Settings → Appearance →
+Buttons → Button style**:
 
-Upstream Kodi compares the builtin's parameter exactly, so on a stock build
-the argument form matches nothing and does *silently* nothing. There is no way
-to probe for the patch, so it is a setting: switch on **Separate popup and top
-menu entries** (General) and two extra entries appear under **More**, and the
-Title button sends the popup variant instead of the portable one. Leave it off
-on a stock build.
+| Style | |
+| --- | --- |
+| **Icons** | the glyph only |
+| **Text** | the label only |
+| **Icons and text** | both (the default) |
+
+Whichever you pick, the line under the buttons always explains the focused one.
 
 ## Installation
 
 1. Download this repository as a ZIP.
 2. In Kodi: **Add-ons → Install from zip file** and pick the ZIP.
-3. Open **Settings → Keymap** and assign a button (see below). Nothing is
-   bound until you do.
+3. Map a remote button with **Keymap Editor** (see below). Nothing is bound
+   until you do.
 
-## Assigning a button
+## Mapping a button
 
-Nothing is bound until you say so. In **Settings → Keymap** there are two
-assignable buttons:
+BD Control does not manage keymaps itself — key assignment is the
+[**Keymap Editor**](https://github.com/tamland/xbmc-keymap-editor)
+(`script.keymap`) addon's job, and it is the only supported way to bind a
+button.
 
-| | |
-| --- | --- |
-| **Assign the button for BD Control** | opens the BD Control OSD |
-| **Assign the button for the disc menu** | the disc's own popup / top menu |
+### The quick way
 
-Pressing either one starts the same short wizard:
+1. Start playback of the disc, or just open Keymap Editor from
+   **Add-ons → Program add-ons**.
+2. Choose **Edit keymap → Fullscreen video → Add-ons**.
+3. Pick **BD Control** from the list.
+4. Press the remote button you want to use, and save.
 
-1. A dialog asks you to **press the button you want to use**. Back cancels.
-2. It then asks whether it should **only trigger on a long press**, or on a
-   normal short press.
-3. The keymap is written immediately — no restart, no SSH, no XML.
+That writes `runaddon(script.bdcontrol)` for the button, which opens the BD
+Control OSD — and closes it again when the same button is pressed a second
+time.
 
-The button is bound by its **raw button code**:
+Keymap Editor also offers **Long press** for a mapping, which is handy if you
+want to keep the button's short press for something else. Long press only
+fires when the input driver reports a *held* key, and not every remote on
+CoreELEC does: Amlogic's IR driver only emits repeats when `repeat_enable` is
+set in `remote.conf`. The [diagnostics](#diagnostics) page reports what your
+`remote.conf` says.
+
+### Mapping the individual commands
+
+Keymap Editor's **Add-ons** category can only write the plain "launch the
+addon" form. To put one specific command on a button — the popup menu on a
+POPUP key, say — write the keymap by hand. Drop a file into
+`userdata/keymaps/` (any name ending in `.xml`):
 
 ```xml
 <keymap>
   <FullscreenVideo>
     <keyboard>
-      <key id="61517" mod="longpress">RunScript(script.bdcontrol,action=toggle)</key>
-      <key id="61453">PlayerControl(ShowVideoMenu)</key>
+      <key id="61517" mod="longpress">RunScript(script.bdcontrol)</key>
+      <key id="61453">RunScript(script.bdcontrol,action=popupmenu)</key>
+      <key id="61454">RunScript(script.bdcontrol,action=topmenu)</key>
     </keyboard>
   </FullscreenVideo>
 </keymap>
 ```
 
-Kodi merges every keymap section into one map keyed by that number, so the
-code captured from a real press works whatever kind of device sent it —
-keyboard, IR remote or CEC. There is no list of named buttons to guess from,
-and the mapping only ever touches the `FullscreenVideo` window, so navigation
-everywhere else in Kodi is unchanged.
+Kodi merges every keymap section into one map keyed by the raw button code, so
+a code captured from a real press works whatever kind of device sent it —
+keyboard, IR remote or CEC. Keeping the mapping inside `<FullscreenVideo>`
+leaves navigation everywhere else in Kodi unchanged.
 
-> **A note on long press:** it only fires when the input driver reports a
-> *held* key, and not every remote on CoreELEC does — Amlogic's IR driver only
-> emits repeats when `repeat_enable` is set in `remote.conf`. If a long press
-> binding does nothing, assign the button again and choose **short press**.
-> The addon says as much when you pick long press.
+To find the button code, switch on
+**Settings → System → Logging → Enable debug logging**, press the button, and
+look for the `HandleKey:` lines in `kodi.log`.
 
-**If the dialog never sees your press:** a button with no mapping anywhere
-produces no action at all and never reaches a dialog. The wizard then offers
-to pick from the Kodi log instead, which reads the `HandleKey:` lines out of
-`kodi.log` — the same thing the manual procedure asks you to look for over
-SSH. That needs debug logging on:
-**Settings → System → Logging → Enable debug logging**.
-**Show recent key presses from the log** does the same as a read-only list.
+The diagnostics page lists every keymap entry that mentions `script.bdcontrol`,
+so a binding that does not fire can be told apart from one that was never
+written.
 
-**Clear all assignments** removes both bindings and deletes the keymap file.
-
-### Keymap Editor
-
-If you would rather use the **Keymap Editor** addon (`script.keymap`), note
-that on save it renames every *other* `*.xml` in `userdata/keymaps` to
-`*.xml.bak.N` — including this addon's — unless its **Allow multiple keymap
-files** setting is on. The service notices within half a minute, puts the
-keymap back and tells you; the diagnostics page names the setting. Its
-**Add-ons → Launch BD Control** entry writes `runaddon(script.bdcontrol)`,
-which during playback opens the OSD directly.
+> **Note on Keymap Editor and other keymap files:** on save it renames every
+> *other* `*.xml` in `userdata/keymaps` to `*.xml.bak.N`, unless its **Allow
+> multiple keymap files** setting is on. Switch that setting on if you keep a
+> hand-written keymap alongside it.
 
 ## Settings
 
 **General**
 
-* *Show a hint when a disc menu takes over* — a short notification naming the
-  trigger button, whenever a disc menu starts driving playback.
+* *Show a hint when a disc menu takes over* — a short notification whenever a
+  disc menu starts driving playback.
 * *Open BD Control automatically* — show the OSD by itself in that situation.
 * *Close the OSD after* — idle timeout in seconds; `0` keeps it open.
-* *Seek step* — how far the rewind / fast forward buttons jump.
 
-**Tools** contains the OSD, the Blu-ray playback mode switch and the
-diagnostics report, so they can be reached without a disc in the drive.
+**Appearance**
+
+* *Button style* — icons, text, or both.
+* *Vertical position* — `0 %` anchors the panel at the bottom, `100 %` moves
+  it to just below the top edge.
+* A colour and an opacity for each part of the OSD — panel, screen dim, title,
+  text, progress bar, and the focused / unfocused button background and text.
+  Each offers a 50-colour palette plus a custom **HEX colour** entry.
+* *Show OSD preview (3 seconds)* — renders the OSD with sample data so a
+  colour, style or position change can be checked without a disc in the drive.
+
+**Tools** holds the OSD and the diagnostics report, so both can be reached
+without playback.
+
+**Advanced** has the addon's own debug logging.
 
 ## Diagnostics
 
@@ -157,63 +173,37 @@ CoreELEC:
 * the optical drive device nodes and whether a disc is present,
 * `libbluray`, `libaacs`, `libbdplus` and a `KEYDB.cfg` (needed for encrypted
   retail discs),
-* Kodi's Blu-ray playback mode and whether the extended popup/top menus are
-  enabled,
-* which buttons are assigned and the full contents of the generated keymap
-  file,
+* Kodi's Blu-ray playback mode,
+* whether Keymap Editor is installed, and every keymap entry that refers to
+  BD Control,
 * whether a `remote.conf` is present and what it says about key repeat, which
   is what long press depends on,
-* whether debug logging is on, and the last few key presses from the log,
+* whether Kodi's debug logging is on,
 * the live state of the current playback: whether the disc menu is in control,
   whether seeking is allowed, chapter counters, track counts and the output
   resolution.
 
-*Write diagnostics to the Kodi log* puts the same report into `kodi.log`, which
-is the quickest thing to attach to a forum post.
-
 ## Scripting
 
-Every command is reachable from a keymap, a skin button or another addon:
+These are all the commands BD Control provides. Each one is reachable from a
+keymap, a skin button or another addon:
 
 ```
-RunScript(script.bdcontrol,action=toggle)        # open / close the BD Control OSD
-RunScript(script.bdcontrol,action=osd)           # Kodi's own player OSD
-RunScript(script.bdcontrol,action=discmenu)      # popup menu, or top menu if there is none
-RunScript(script.bdcontrol,action=popupmenu)     # popup menu only   (patched builds)
-RunScript(script.bdcontrol,action=topmenu)       # top menu only     (patched builds)
-RunScript(script.bdcontrol,action=playpause)
-RunScript(script.bdcontrol,action=stop)
-RunScript(script.bdcontrol,action=nextchapter)
-RunScript(script.bdcontrol,action=previouschapter)
-RunScript(script.bdcontrol,action=seek,seconds=60)
-RunScript(script.bdcontrol,action=audio)
-RunScript(script.bdcontrol,action=subtitles)
-RunScript(script.bdcontrol,action=titles)
-RunScript(script.bdcontrol,action=discmode)
-RunScript(script.bdcontrol,action=eject)
-RunScript(script.bdcontrol,action=assign,slot=osd)       # assign the BD Control button
-RunScript(script.bdcontrol,action=assign,slot=discmenu)  # assign the disc menu button
-RunScript(script.bdcontrol,action=keylog)        # recent key presses from the log
+RunScript(script.bdcontrol)
+# opens and closes the BD Control OSD
+
+RunScript(script.bdcontrol,action=osd)
+# opens Kodi's own video OSD
+
+RunScript(script.bdcontrol,action=popupmenu)
+# opens the disc's popup menu only
+
+RunScript(script.bdcontrol,action=topmenu)
+# opens the disc's main menu only
+
 RunScript(script.bdcontrol,action=diagnostics)
-RunScript(script.bdcontrol,action=clearkeys)     # clear both assignments
+# opens the diagnostics report
 ```
-
-## Development
-
-The repository carries its own generators and checks, all standard library
-only:
-
-```
-python3 tools/make_assets.py     # regenerate the PNG textures and the icon
-python3 tools/make_strings.py    # regenerate the English and German .po files
-python3 tools/check_strings.py   # every string id used by the code is defined
-python3 tools/smoke_test.py      # exercise the addon against stubbed Kodi APIs
-```
-
-`tools/smoke_test.py` runs the real addon modules against small stand-ins for
-`xbmc`, `xbmcgui`, `xbmcaddon` and `xbmcvfs`, covering the keymap generation,
-the disc path handling, the player state, the actions, the title browser, the
-diagnostics report, the service and the OSD dialog.
 
 ## Licence
 

@@ -161,6 +161,14 @@ _HEX8_RE = re.compile(r'^[0-9A-Fa-f]{8}$')
 # HEX) is shown as the row's label2 so the custom color previews live.
 _CUSTOM_BTN_SUFFIX = '_custom_btn'
 
+# The three OSD button styles, matching the settings.xml <option> order and
+# the <visible> conditions in script-bdcontrol-osd.xml.
+STYLE_ICONS = 0
+STYLE_TEXT = 1
+STYLE_ICONS_AND_TEXT = 2
+
+_DEFAULT_BUTTON_STYLE = STYLE_ICONS_AND_TEXT
+
 # property name, palette, color setting id. The opacity setting id is always
 # ``<color setting id>_opacity``.
 _PROPERTIES = (
@@ -235,6 +243,14 @@ def _resolve(palette, setting_id, custom):
     return _pick(palette, value)
 
 
+def button_style():
+    """Return the selected OSD button style as one of the STYLE_* constants."""
+    value = kodiutils.get_setting_int('osd_button_style', _DEFAULT_BUTTON_STYLE)
+    if value not in (STYLE_ICONS, STYLE_TEXT, STYLE_ICONS_AND_TEXT):
+        return _DEFAULT_BUTTON_STYLE
+    return value
+
+
 def apply_theme():
     """Read the appearance settings and publish them as Home-window
     properties. Call before opening the OSD so the skin can resolve every
@@ -251,6 +267,10 @@ def apply_theme():
     dim_opacity = kodiutils.get_setting_int(
         'osd_dim_color_opacity', _DEFAULT_OPACITY.get('osd_dim_color_opacity', 0))
     kodiutils.home_property('BDControl.DimVisible', '1' if dim_opacity > 0 else '0')
+    # Whether each button shows its icon, its label or both. The skin file
+    # switches the icon images on this; dialog.py clears the labels for the
+    # icons-only style.
+    kodiutils.home_property('BDControl.ButtonStyle', str(button_style()))
 
 
 def custom_color(setting_id):

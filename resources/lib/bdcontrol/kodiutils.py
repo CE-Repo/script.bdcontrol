@@ -74,20 +74,6 @@ def get_setting_int(setting_id, default=0):
             return default
 
 
-def set_setting(setting_id, value):
-    try:
-        addon().setSetting(setting_id, str(value))
-    except Exception as exc:  # pylint: disable=broad-except
-        log_error('could not write setting %s: %s' % (setting_id, exc))
-
-
-def set_setting_bool(setting_id, value):
-    try:
-        addon().setSettingBool(setting_id, value)
-    except Exception:  # pylint: disable=broad-except
-        addon().setSetting(setting_id, 'true' if value else 'false')
-
-
 def open_settings():
     addon().openSettings()
 
@@ -113,27 +99,6 @@ def notify(message, heading=None, icon=None, time=5000):
     if icon is None:
         icon = addon().getAddonInfo('icon')
     xbmcgui.Dialog().notification(heading, message, icon, time)
-
-
-def ok_dialog(message, heading=None):
-    xbmcgui.Dialog().ok(heading or localize(30000), message)
-
-
-def yes_no(message, heading=None, yeslabel=None, nolabel=None):
-    heading = heading or localize(30000)
-    if yeslabel or nolabel:
-        try:
-            return xbmcgui.Dialog().yesno(heading, message,
-                                          nolabel=nolabel or '',
-                                          yeslabel=yeslabel or '')
-        except TypeError:
-            # Older signatures take the labels positionally.
-            pass
-    return xbmcgui.Dialog().yesno(heading, message)
-
-
-def select(heading, options):
-    return xbmcgui.Dialog().select(heading, options)
 
 
 def textviewer(text, heading=None, monospace=True):
@@ -182,10 +147,3 @@ def home_property(name, value=None):
     else:
         window.setProperty(name, value)
     return value
-
-
-def kodi_major_version():
-    try:
-        return int(xbmc.getInfoLabel('System.BuildVersion').split('.')[0])
-    except (ValueError, IndexError):
-        return 0

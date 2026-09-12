@@ -24,35 +24,20 @@ LABEL_HINT = 103
 # Panel <top> (see the skin file's group id=2) at 0% / 100% of the "vertical
 # position" slider - bottom-anchored by default, sliding up to a small margin
 # below the top edge.
-PANEL_TOP_BOTTOM = 724
+PANEL_TOP_BOTTOM = 812
 PANEL_TOP_TOP = 20
 
-BUTTON_DISC_MENU = 201
-BUTTON_PLAY_PAUSE = 202
-BUTTON_STOP = 203
-BUTTON_CHAPTER_PREV = 204
-BUTTON_CHAPTER_NEXT = 205
-BUTTON_SEEK_BACK = 206
-BUTTON_SEEK_FORWARD = 207
-# Shown instead of BUTTON_DISC_MENU, as the first row-1 buttons, when the
-# "Popup- und Hauptmenü anzeigen" setting (extended_disc_menus) is on - see
-# script-bdcontrol-osd.xml's <visible> conditions on 201/208/209.
-BUTTON_DISC_POPUP_MENU = 208
-BUTTON_DISC_TOP_MENU = 209
+BUTTON_POPUP_MENU = 201
+BUTTON_TOP_MENU = 202
+BUTTON_KODI_OSD = 203
+BUTTON_DIAGNOSTICS = 204
 
-BUTTON_KODI_OSD = 301
-BUTTON_AUDIO = 302
-BUTTON_SUBTITLES = 303
-BUTTON_VIDEO_SETTINGS = 304
-BUTTON_CODEC_INFO = 305
-BUTTON_TITLES = 306
-BUTTON_MORE = 307
+# Left to right, matching the skin file and the plain-list fallback.
+BUTTON_ORDER = (BUTTON_POPUP_MENU, BUTTON_TOP_MENU, BUTTON_KODI_OSD,
+                BUTTON_DIAGNOSTICS)
 
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
-ACTION_STOP = 13
-ACTION_PLAYER_PLAY = 79
-ACTION_PAUSE = 12
 
 CLOSE_ACTIONS = (ACTION_PREVIOUS_MENU, ACTION_NAV_BACK)
 
@@ -82,29 +67,13 @@ class Command(object):
 
 def _build_commands():
     return {
-        BUTTON_DISC_MENU: Command(30020, 30040, actions.disc_menu, closes=True),
-        BUTTON_PLAY_PAUSE: Command(30021, 30041, actions.play_pause),
-        BUTTON_STOP: Command(30022, 30042, actions.stop, closes=True),
-        BUTTON_CHAPTER_PREV: Command(30023, 30043, actions.chapter_previous),
-        BUTTON_CHAPTER_NEXT: Command(30024, 30044, actions.chapter_next),
-        BUTTON_SEEK_BACK: Command(30025, 30045, actions.seek_backward),
-        BUTTON_SEEK_FORWARD: Command(30027, 30046, actions.seek_forward),
-        BUTTON_DISC_POPUP_MENU: Command(30114, 30459, actions.disc_popup_menu,
-                                        closes=True),
-        BUTTON_DISC_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
-                                      closes=True),
-        BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
-        BUTTON_AUDIO: Command(30035, 30461, actions.audio_settings,
-                              closes=True),
-        BUTTON_SUBTITLES: Command(30036, 30462, actions.subtitle_settings,
-                                  closes=True),
-        BUTTON_VIDEO_SETTINGS: Command(30029, 30050, actions.video_settings,
-                                       closes=True),
-        BUTTON_CODEC_INFO: Command(30051, 30052, actions.process_info,
+        BUTTON_POPUP_MENU: Command(30114, 30459, actions.disc_popup_menu,
                                    closes=True),
-        BUTTON_TITLES: Command(30032, 30053, actions.browse_titles,
-                               closes=True),
-        BUTTON_MORE: Command(30026, 30054, None),
+        BUTTON_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
+                                 closes=True),
+        BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
+        BUTTON_DIAGNOSTICS: Command(30034, 30048, tools.show_diagnostics,
+                                    closes=True),
     }
 
 
@@ -127,10 +96,7 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         self._apply_position()
-        home_property('BDControl.ExtendedDiscMenus',
-                      '1' if actions.extended_disc_menus() else '0')
-        for control_id, command in self.commands.items():
-            self._set_label(control_id, command.label)
+        self._apply_labels()
         if self.preview_mode:
             self._show_preview_content()
         else:
@@ -159,22 +125,9 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
     # -- input ------------------------------------------------------------
 
     def onAction(self, action):
-        action_id = action.getId()
         self._touch()
-        if action_id in CLOSE_ACTIONS:
+        if action.getId() in CLOSE_ACTIONS:
             self.close()
-            return
-        if self.preview_mode:
-            # Sample data only - remote shortcuts must not run real commands.
-            return
-        if action_id in (ACTION_STOP,):
-            self.close()
-            actions.stop()
-            return
-        if action_id in (ACTION_PAUSE, ACTION_PLAYER_PLAY):
-            actions.play_pause()
-            self._refresh()
-            return
 
     def onClick(self, control_id):
         self._touch()
@@ -183,11 +136,6 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             return
         command = self.commands.get(control_id)
         if command is None:
-            return
-        if control_id == BUTTON_MORE:
-            tools.more_menu(closer=self.close)
-            if not self._closing:
-                self._refresh()
             return
         if command.closes:
             self.close()
@@ -220,6 +168,16 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         except Exception:  # pylint: disable=broad-except
             pass
 
+    def _apply_labels(self):
+        """Label the buttons, unless the icons-only style is selected.
+
+        The icons themselves are part of the skin file and switch on the same
+        BDControl.ButtonStyle property, which theme.apply_theme() publishes.
+        """
+        icons_only = theme.button_style() == theme.STYLE_ICONS
+        for control_id, command in self.commands.items():
+            self._set_label(control_id, '' if icons_only else command.label)
+
     def _touch(self):
         self._last_input = time.time()
 
@@ -241,12 +199,6 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._set_label(LABEL_TITLE, state.title())
         self._set_label(LABEL_STATUS, state.describe())
         self._set_progress(state.percentage)
-        self._set_label(
-            BUTTON_PLAY_PAUSE,
-            localize(30021) if not state.paused else localize(30056))
-        step = max(kodiutils.get_setting_int('seek_step', 30), 1)
-        self._set_label(BUTTON_SEEK_BACK, localize(30025, step))
-        self._set_label(BUTTON_SEEK_FORWARD, localize(30027, step))
         if not state.playing:
             # Playback ended while the OSD was open - there is nothing to
             # control any more.
@@ -261,10 +213,6 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._set_label(LABEL_TITLE, localize(30451))
         self._set_label(LABEL_STATUS, localize(30010, 3, 24))
         self._set_progress(35)
-        self._set_label(BUTTON_PLAY_PAUSE, localize(30021))
-        step = max(kodiutils.get_setting_int('seek_step', 30), 1)
-        self._set_label(BUTTON_SEEK_BACK, localize(30025, step))
-        self._set_label(BUTTON_SEEK_FORWARD, localize(30027, step))
 
     def _preview_loop(self):
         """Close the preview after PREVIEW_SECONDS, unless closed sooner."""
@@ -301,24 +249,6 @@ def request_close():
     home_property(PROP_OSD_CLOSE, '1')
 
 
-FALLBACK_ORDER = (
-    BUTTON_KODI_OSD,
-    BUTTON_PLAY_PAUSE,
-    BUTTON_STOP,
-    BUTTON_DISC_MENU,
-    BUTTON_CHAPTER_PREV,
-    BUTTON_CHAPTER_NEXT,
-    BUTTON_SEEK_BACK,
-    BUTTON_SEEK_FORWARD,
-    BUTTON_AUDIO,
-    BUTTON_SUBTITLES,
-    BUTTON_VIDEO_SETTINGS,
-    BUTTON_CODEC_INFO,
-    BUTTON_TITLES,
-    BUTTON_MORE,
-)
-
-
 def fallback():
     """A plain list version of the OSD.
 
@@ -327,29 +257,15 @@ def fallback():
     Kodi's own select dialog, so it works everywhere.
     """
     commands = _build_commands()
-    order = list(FALLBACK_ORDER)
-    if actions.extended_disc_menus():
-        index = order.index(BUTTON_DISC_MENU)
-        order[index:index + 1] = [BUTTON_DISC_POPUP_MENU, BUTTON_DISC_TOP_MENU]
-    labels = []
-    for control_id in order:
-        command = commands[control_id]
-        label = command.label
-        if control_id in (BUTTON_SEEK_BACK, BUTTON_SEEK_FORWARD):
-            label = localize(command.label_id,
-                             max(kodiutils.get_setting_int('seek_step', 30), 1))
-        labels.append(label)
+    labels = [commands[control_id].label for control_id in BUTTON_ORDER]
     choice = xbmcgui.Dialog().select(localize(30000), labels)
     if choice < 0:
         return
-    control_id = order[choice]
-    if control_id == BUTTON_MORE:
-        tools.more_menu()
-        return
     try:
-        commands[control_id].handler()
+        commands[BUTTON_ORDER[choice]].handler()
     except Exception as exc:  # pylint: disable=broad-except
-        kodiutils.log_error('command %s failed: %s' % (control_id, exc))
+        kodiutils.log_error('command %s failed: %s'
+                            % (BUTTON_ORDER[choice], exc))
         kodiutils.notify(localize(30055))
 
 
@@ -391,8 +307,9 @@ def show():
 def preview():
     """Show the OSD with sample data for a few seconds.
 
-    Lets a color or position change made in the settings be checked without
-    needing something to be playing, or disturbing real playback if there is.
+    Lets a color, style or position change made in the settings be checked
+    without needing something to be playing, or disturbing real playback if
+    there is.
     """
     theme.apply_theme()
     try:

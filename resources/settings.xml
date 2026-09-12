@@ -26,27 +26,24 @@
             <popup>false</popup>
           </control>
         </setting>
-        <setting id="extended_disc_menus" type="boolean" label="30223" help="30263">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-        </setting>
-        <setting id="seek_step" type="integer" label="30204">
-          <level>0</level>
-          <default>30</default>
-          <constraints>
-            <minimum>5</minimum>
-            <step>5</step>
-            <maximum>300</maximum>
-          </constraints>
-          <control type="slider" format="integer">
-            <popup>false</popup>
-          </control>
-        </setting>
       </group>
     </category>
 
     <category id="appearance" label="30270">
+      <group id="12" label="30219">
+        <setting id="osd_button_style" type="integer" label="30220" help="30224">
+          <level>0</level>
+          <default>2</default>
+          <constraints>
+            <options>
+              <option label="30221">0</option>
+              <option label="30222">1</option>
+              <option label="30223">2</option>
+            </options>
+          </constraints>
+          <control type="list" format="string"/>
+        </setting>
+      </group>
       <group id="1" label="30271">
         <setting id="osd_position_y" type="integer" label="30272" help="30273">
           <level>0</level>
@@ -865,112 +862,18 @@
       </group>
     </category>
 
-    <category id="keymap" label="30210">
-      <group id="1">
-        <setting id="keymap_enabled" type="boolean" label="30211" help="30261">
-          <level>0</level>
-          <default>true</default>
-          <control type="toggle"/>
-        </setting>
-      </group>
-      <group id="2" label="30452">
-        <setting id="assign_osd" type="action" label="30227" help="30264">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=assign,slot=osd)</data>
-          <control type="button" format="action">
-            <close>true</close>
-          </control>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="key_osd_code" type="string" label="30140">
-          <level>0</level>
-          <default></default>
-          <control type="edit" format="string"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="key_osd_longpress" type="boolean" label="30143">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="clear_osd" type="action" label="30454">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=clearkey,slot=osd)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-      </group>
-      <group id="3" label="30453">
-        <setting id="assign_discmenu" type="action" label="30228">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=assign,slot=discmenu)</data>
-          <control type="button" format="action">
-            <close>true</close>
-          </control>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="key_menu_code" type="string" label="30141">
-          <level>0</level>
-          <default></default>
-          <control type="edit" format="string"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="key_menu_longpress" type="boolean" label="30143">
-          <level>0</level>
-          <default>false</default>
-          <control type="toggle"/>
-          <dependencies>
-            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
-          </dependencies>
-        </setting>
-        <setting id="clear_discmenu" type="action" label="30454">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=clearkey,slot=discmenu)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-      </group>
-    </category>
-
     <category id="tools" label="30230">
       <group id="1">
         <setting id="open_osd" type="action" label="30231">
           <level>0</level>
-          <data>RunScript(script.bdcontrol,action=show)</data>
+          <data>RunScript(script.bdcontrol)</data>
           <control type="button" format="action">
             <close>true</close>
-          </control>
-        </setting>
-        <setting id="open_disc_mode" type="action" label="30033">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=discmode)</data>
-          <control type="button" format="action">
-            <close>false</close>
           </control>
         </setting>
         <setting id="open_diagnostics" type="action" label="30034">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=diagnostics)</data>
-          <control type="button" format="action">
-            <close>false</close>
-          </control>
-        </setting>
-        <setting id="log_diagnostics" type="action" label="30113">
-          <level>0</level>
-          <data>RunScript(script.bdcontrol,action=logdiagnostics)</data>
           <control type="button" format="action">
             <close>false</close>
           </control>

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Extra tools: the "More" menu and the diagnostics report."""
+"""The diagnostics report."""
 import glob
 import os
 
 import xbmc
 import xbmcaddon
-import xbmcgui
+import xbmcvfs
 
-from . import actions, keymap, kodiutils, learn, player
+from . import actions, kodiutils, player
 from .kodiutils import jsonrpc, localize
 
 # Places a CoreELEC/LibreELEC image or a regular distribution keeps the
@@ -25,6 +25,9 @@ AACS_CONFIG_DIRS = (
     '/storage/.config/aacs',
 )
 
+KEYMAP_DIR = 'special://profile/keymaps'
+KEYMAP_EDITOR_ID = 'script.keymap'
+
 
 def _find_library(name):
     """Return the first matching shared object for `name`, or ''."""
@@ -36,8 +39,7 @@ def _find_library(name):
 
 
 def _optical_drives():
-    drives = sorted(glob.glob('/dev/sr[0-9]*'))
-    return drives
+    return sorted(glob.glob('/dev/sr[0-9]*'))
 
 
 def _aacs_keydb():
@@ -67,8 +69,8 @@ def _os_release():
 
 
 # Amlogic's IR driver only emits repeats - and therefore only lets Kodi see a
-# held key - when the remote configuration enables them, which is what long
-# press mappings depend on.
+# held key - when the remote configuration enables them, which is what the
+# long press mappings offered by Keymap Editor depend on.
 REMOTE_CONF_PATHS = (
     '/storage/.config/remote.conf',
     '/flash/remote.conf',
@@ -104,28 +106,41 @@ def _remote_conf_repeat():
     return found
 
 
-KEYMAP_EDITOR_ID = 'script.keymap'
+def _keymap_bindings():
+    """Return `(file name, line)` for every keymap entry naming this addon.
 
-
-def _keymap_editor_status():
-    """Report whether Keymap Editor is installed and set to co-exist.
-
-    Its "enable_multifile" setting decides whether saving renames every other
-    keymap file - ours included - to *.xml.bak.N.  It defaults to off.
+    Key assignment is the Keymap Editor's job; this only reads back what it
+    (or a hand written file) ended up with, so a binding that does not fire
+    can be told apart from one that was never written.
     """
+    directory = xbmcvfs.translatePath(KEYMAP_DIR)
+    bindings = []
     try:
-        editor = xbmcaddon.Addon(KEYMAP_EDITOR_ID)
-    except Exception:  # pylint: disable=broad-except
-        return None, False, ''
+        names = sorted(os.listdir(directory))
+    except OSError:
+        return bindings
+    for name in names:
+        if not name.lower().endswith('.xml'):
+            continue
+        try:
+            with open(os.path.join(directory, name), 'r',
+                      encoding='utf-8', errors='replace') as handle:
+                lines = handle.readlines()
+        except (IOError, OSError) as exc:
+            bindings.append((name, str(exc)))
+            continue
+        for line in lines:
+            if kodiutils.ADDON_ID in line:
+                bindings.append((name, ' '.join(line.split())))
+    return bindings
+
+
+def _keymap_editor_version():
+    """Return the installed Keymap Editor's version, or None."""
     try:
-        multifile = editor.getSetting('enable_multifile') == 'true'
+        return xbmcaddon.Addon(KEYMAP_EDITOR_ID).getAddonInfo('version')
     except Exception:  # pylint: disable=broad-except
-        multifile = False
-    try:
-        filename = editor.getSetting('keymap_editor_filename') or 'gen'
-    except Exception:  # pylint: disable=broad-except
-        filename = 'gen'
-    return editor.getAddonInfo('version'), multifile, '%s.xml' % filename
+        return None
 
 
 def _debug_logging():
@@ -185,50 +200,22 @@ def diagnostics_text():
 
     section(localize(30097))  # Kodi disc settings
     lines.append('%s: %s' % (localize(30098), _disc_playback_mode_label()))
-    lines.append('%s: %s' % (localize(30223),
-                             _yes_no(actions.extended_disc_menus())))
 
     section(localize(30099))  # Keymap
-    lines.append('%s: %s' % (localize(30100),
-                             keymap.keymap_path() if keymap.is_installed()
-                             else _yes_no(False)))
-    for line in keymap.describe():
-        lines.append('  %s' % line)
-    if keymap.is_installed():
-        lines.append('')
-        lines.append('%s:' % localize(30126))
-        for line in keymap.read_existing().splitlines():
-            if line.strip().startswith('<!--') or line.strip().startswith('-->'):
-                continue
-            lines.append('  %s' % line)
-
-    version, multifile, filename = _keymap_editor_status()
-    lines.append('')
-    if version is None:
-        lines.append('%s: %s' % (localize(30132), localize(30133)))
+    version = _keymap_editor_version()
+    lines.append('%s: %s' % (localize(30132), version or localize(30133)))
+    bindings = _keymap_bindings()
+    if bindings:
+        lines.append('%s:' % localize(30137))
+        for name, line in bindings:
+            lines.append('  %s: %s' % (name, line))
     else:
-        lines.append('%s: %s (%s)' % (localize(30132), version, filename))
-        lines.append('  %s: %s' % (localize(30134), _yes_no(multifile)))
-        if not multifile:
-            lines.append('  %s' % localize(30136))
-    copies = keymap.disabled_copies()
-    if copies:
-        lines.append('%s:' % localize(30135))
-        for path in copies:
-            lines.append('  %s' % path)
+        lines.append(localize(30138))
 
     section(localize(30128))  # Remote configuration
     for path, value in _remote_conf_repeat():
         lines.append('%s: %s' % (path, value))
     lines.append('%s: %s' % (localize(30125), _yes_no(_debug_logging())))
-    keys = learn.recent_keys(limit=8)
-    if keys:
-        lines.append('%s:' % localize(30121))
-        for name, code, action in keys:
-            lines.append('  %s (id %d)%s'
-                         % (name, code, '  ->  %s' % action if action else ''))
-    else:
-        lines.append(localize(30122))
 
     section(localize(30101))  # Playback
     state = player.PlayerState()
@@ -254,41 +241,3 @@ def diagnostics_text():
 
 def show_diagnostics():
     kodiutils.textviewer(diagnostics_text(), localize(30034))
-
-
-def copy_diagnostics_to_log():
-    for line in diagnostics_text().splitlines():
-        kodiutils.log_info(line)
-    kodiutils.notify(localize(30112))
-
-
-def more_menu(closer=None):
-    """The overflow menu reached from the "More" button of the OSD.
-
-    `closer` closes the BD Control dialog; entries that open another Kodi
-    window or take over playback call it first so they are not stacked on top
-    of our own OSD.
-    """
-    # The popup/top disc-menu buttons live directly in the OSD instead of
-    # here once extended_disc_menus is on - see dialog._build_commands().
-    entries = [
-        (localize(30030), actions.choose_audio, False),
-        (localize(30031), actions.choose_subtitle, False),
-        (localize(30037), actions.toggle_subtitles, True),
-        (localize(30038), actions.next_audio_language, True),
-        (localize(30033), actions.disc_playback_mode, False),
-        (localize(30039), actions.eject, True),
-        (localize(30116), lambda: learn.assign('osd'), False),
-        (localize(30121), learn.show_recent_keys, False),
-        (localize(30034), show_diagnostics, False),
-        (localize(30113), copy_diagnostics_to_log, False),
-        (localize(30004), actions.open_settings, True),
-    ]
-    choice = xbmcgui.Dialog().select(localize(30026),
-                                     [entry[0] for entry in entries])
-    if choice < 0:
-        return
-    _label, handler, needs_close = entries[choice]
-    if needs_close and closer is not None:
-        closer()
-    handler()

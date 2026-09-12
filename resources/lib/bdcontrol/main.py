@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 """Argument handling for RunScript(script.bdcontrol, ...)."""
-import xbmcgui
-
-from . import actions, dialog, keymap, kodiutils, learn, player, theme, tools
+from . import actions, dialog, kodiutils, theme, tools
 from .kodiutils import localize, log
 
 
 def parse_args(argv):
-    """Turn `['action=toggle', 'seconds=30']` into a dict.
+    """Turn `['action=osd']` into a dict.
 
     A bare first argument is accepted as the action as well, so both
-    `RunScript(script.bdcontrol,toggle)` and
-    `RunScript(script.bdcontrol,action=toggle)` work.
+    `RunScript(script.bdcontrol,popupmenu)` and
+    `RunScript(script.bdcontrol,action=popupmenu)` work.
     """
     args = {}
     for position, raw in enumerate(argv):
@@ -25,62 +23,18 @@ def parse_args(argv):
     return args
 
 
-def main_menu():
-    """The menu shown when the addon is started from the Kodi UI."""
-    entries = [
-        (localize(30001), dialog.show),
-        (localize(30028), actions.kodi_osd),
-        (localize(30032), actions.browse_titles),
-        (localize(30033), actions.disc_playback_mode),
-        (localize(30116), lambda: learn.assign('osd')),
-        (localize(30121), learn.show_recent_keys),
-        (localize(30034), tools.show_diagnostics),
-        (localize(30004), kodiutils.open_settings),
-    ]
-    choice = xbmcgui.Dialog().select(localize(30000),
-                                     [entry[0] for entry in entries])
-    if choice < 0:
-        return
-    entries[choice][1]()
-
-
-def auto_action():
-    """What starting the addon without arguments should do.
-
-    Keymap Editor's "Add-ons" category writes `runaddon(script.bdcontrol)`,
-    which starts the script with no arguments at all.  A button bound that way
-    is meant to be the trigger, so during playback go straight to the OSD and
-    only fall back to the menu when there is nothing to control.
-    """
-    if player.is_playing_video():
-        dialog.toggle()
-        return
-    main_menu()
-
-
+# The commands BD Control offers. `auto` is what a bare
+# `RunScript(script.bdcontrol)` runs, which is how Keymap Editor's "Add-ons"
+# category writes a binding, and how the addon is started from the Kodi UI.
 HANDLERS = {
-    'auto': auto_action,
-    'toggle': dialog.toggle,
-    'show': dialog.show,
-    'previewosd': dialog.preview,
+    'auto': dialog.toggle,
     'osd': actions.kodi_osd,
-    'menu': main_menu,
-    'discmenu': actions.disc_menu,
     'popupmenu': actions.disc_popup_menu,
     'topmenu': actions.disc_top_menu,
-    'playpause': actions.play_pause,
-    'stop': actions.stop,
-    'nextchapter': actions.chapter_next,
-    'previouschapter': actions.chapter_previous,
-    'audio': actions.choose_audio,
-    'subtitles': actions.choose_subtitle,
-    'titles': actions.browse_titles,
-    'discmode': actions.disc_playback_mode,
-    'eject': actions.eject,
     'diagnostics': tools.show_diagnostics,
-    'logdiagnostics': tools.copy_diagnostics_to_log,
 
-    'settings': kodiutils.open_settings,
+    # Internal, used by the buttons in the addon's own settings dialog.
+    'previewosd': dialog.preview,
 }
 
 
@@ -89,24 +43,9 @@ def run(argv):
     action = args.get('action') or 'auto'
     log('run: action=%s args=%s' % (action, args))
 
-    if action == 'assign':
-        learn.assign(args.get('slot', 'osd'))
-        return
-
-    if action == 'clearkey':
-        keymap.clear_assignment(args.get('slot', 'osd'))
-        return
-
     if action == 'customcolor':
+        # Internal: the HEX colour picker behind each appearance setting.
         theme.custom_color(args.get('id', ''))
-        return
-
-    if action == 'seek':
-        try:
-            seconds = int(args.get('seconds', 30))
-        except (TypeError, ValueError):
-            seconds = 30
-        actions.seek(seconds)
         return
 
     handler = HANDLERS.get(action)

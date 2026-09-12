@@ -21,14 +21,6 @@ msgctxt "#30000"
 msgid "BD Control"
 msgstr "BD Control"
 
-msgctxt "#30001"
-msgid "Open the BD Control OSD"
-msgstr "BD-Control-OSD öffnen"
-
-msgctxt "#30004"
-msgid "Settings"
-msgstr "Einstellungen"
-
 msgctxt "#30010"
 msgid "Chapter %d/%d"
 msgstr "Kapitel %d/%d"
@@ -37,205 +29,37 @@ msgctxt "#30011"
 msgid "Disc menu active"
 msgstr "Disc-Menü aktiv"
 
-msgctxt "#30020"
-msgid "Disc menu"
-msgstr "Disc-Menü"
-
-msgctxt "#30021"
-msgid "Pause"
-msgstr "Pause"
-
-msgctxt "#30022"
-msgid "Stop"
-msgstr "Stopp"
-
-msgctxt "#30023"
-msgid "Prev. chapter"
-msgstr "Kapitel zurück"
-
-msgctxt "#30024"
-msgid "Next chapter"
-msgstr "Kapitel vor"
-
-msgctxt "#30025"
-msgid "- %d s"
-msgstr "- %d s"
-
-msgctxt "#30026"
-msgid "More..."
-msgstr "Mehr ..."
-
-msgctxt "#30027"
-msgid "+ %d s"
-msgstr "+ %d s"
-
 msgctxt "#30028"
-msgid "Kodi OSD"
-msgstr "Kodi-OSD"
-
-msgctxt "#30029"
-msgid "Video settings"
-msgstr "Bildeinstellungen"
-
-msgctxt "#30030"
-msgid "Audio track"
-msgstr "Tonspur"
-
-msgctxt "#30031"
-msgid "Subtitles"
-msgstr "Untertitel"
-
-msgctxt "#30032"
-msgid "Titles"
-msgstr "Titel"
-
-msgctxt "#30033"
-msgid "Blu-ray playback mode"
-msgstr "Blu-ray-Wiedergabemodus"
+msgid "Video OSD"
+msgstr "Video-OSD"
 
 msgctxt "#30034"
 msgid "Diagnostics"
 msgstr "Diagnose"
 
-msgctxt "#30035"
-msgid "Audio settings"
-msgstr "Toneinstellungen"
-
-msgctxt "#30036"
-msgid "Subtitle settings"
-msgstr "Untertiteleinstellungen"
-
-msgctxt "#30037"
-msgid "Turn subtitles on or off"
-msgstr "Untertitel ein-/ausschalten"
-
-msgctxt "#30038"
-msgid "Next audio language"
-msgstr "Nächste Tonsprache"
-
-msgctxt "#30039"
-msgid "Eject disc"
-msgstr "Disc auswerfen"
-
-msgctxt "#30040"
-msgid "Go back to the disc's own menu"
-msgstr "Zurück zum Menü der Disc"
-
-msgctxt "#30041"
-msgid "Pause or resume playback"
-msgstr "Wiedergabe anhalten oder fortsetzen"
-
-msgctxt "#30042"
-msgid "Stop playback and leave the disc"
-msgstr "Wiedergabe beenden und die Disc verlassen"
-
-msgctxt "#30043"
-msgid "Jump to the previous chapter"
-msgstr "Zum vorherigen Kapitel springen"
-
-msgctxt "#30044"
-msgid "Jump to the next chapter"
-msgstr "Zum nächsten Kapitel springen"
-
-msgctxt "#30045"
-msgid "Rewind by the configured step"
-msgstr "Um die eingestellte Schrittweite zurückspulen"
-
-msgctxt "#30046"
-msgid "Fast forward by the configured step"
-msgstr "Um die eingestellte Schrittweite vorspulen"
-
 msgctxt "#30047"
-msgid "Open the skin's own OSD, which is blocked by the disc menu"
-msgstr "Das Skin-eigene OSD öffnen, das vom Disc-Menü blockiert wird"
+msgid "Open Kodi's own video OSD, which the disc menu blocks"
+msgstr "Das Kodi-eigene Video-OSD öffnen, das vom Disc-Menü blockiert wird"
 
-msgctxt "#30050"
-msgid "Open video settings for this stream"
-msgstr "Bildeinstellungen für diesen Stream öffnen"
-
-msgctxt "#30051"
-msgid "Codec info"
-msgstr "Codec-Info"
-
-msgctxt "#30052"
-msgid "Show decoder, resolution and HDR information"
-msgstr "Decoder, Auflösung und HDR-Informationen anzeigen"
-
-msgctxt "#30053"
-msgid "Play a single title without the disc menu"
-msgstr "Einen einzelnen Titel ohne Disc-Menü abspielen"
-
-msgctxt "#30054"
-msgid "More tools, disc settings and diagnostics"
-msgstr "Weitere Werkzeuge, Disc-Einstellungen und Diagnose"
+msgctxt "#30048"
+msgid "Show the diagnostics report"
+msgstr "Den Diagnosebericht anzeigen"
 
 msgctxt "#30055"
 msgid "The command failed - see the Kodi log"
 msgstr "Der Befehl ist fehlgeschlagen - siehe Kodi-Log"
-
-msgctxt "#30056"
-msgid "Play"
-msgstr "Wiedergabe"
 
 msgctxt "#30057"
 msgid "Unknown action \"%s\""
 msgstr "Unbekannte Aktion \"%s\""
 
 msgctxt "#30058"
-msgid "Blu-ray menu playback - assign a button in the BD Control settings"
-msgstr "Blu-ray-Menüwiedergabe - Taste in den BD-Control-Einstellungen zuweisen"
-
-msgctxt "#30059"
-msgid "Blu-ray menu playback - hold your BD Control button for player controls"
-msgstr "Blu-ray-Menüwiedergabe - BD-Control-Taste gedrückt halten für die Steuerung"
-
-msgctxt "#30152"
-msgid "Blu-ray menu playback - press your BD Control button for player controls"
-msgstr "Blu-ray-Menüwiedergabe - BD-Control-Taste drücken für die Steuerung"
-
-msgctxt "#30060"
-msgid "This disc does not allow seeking here"
-msgstr "Diese Disc erlaubt hier kein Spulen"
-
-msgctxt "#30061"
-msgid "No audio tracks reported"
-msgstr "Keine Tonspuren gemeldet"
-
-msgctxt "#30062"
-msgid "Disabled"
-msgstr "Aus"
-
-msgctxt "#30063"
-msgid "This disc reports no subtitle tracks"
-msgstr "Diese Disc meldet keine Untertitelspuren"
-
-msgctxt "#30064"
-msgid "No Blu-ray disc is playing"
-msgstr "Es wird gerade keine Blu-ray wiedergegeben"
-
-msgctxt "#30065"
-msgid "No titles found on this disc"
-msgstr "Auf dieser Disc wurden keine Titel gefunden"
+msgid "Blu-ray menu playback - open BD Control with the button you mapped in Keymap Editor"
+msgstr "Blu-ray-Menüwiedergabe - BD Control mit der im Keymap Editor belegten Taste öffnen"
 
 msgctxt "#30066"
 msgid "Kodi did not report a Blu-ray playback mode"
 msgstr "Kodi hat keinen Blu-ray-Wiedergabemodus gemeldet"
-
-msgctxt "#30067"
-msgid "Playback mode changed - it applies the next time a disc starts"
-msgstr "Wiedergabemodus geändert - gilt ab der nächsten Disc"
-
-msgctxt "#30070"
-msgid "Keymap installed"
-msgstr "Tastenbelegung installiert"
-
-msgctxt "#30071"
-msgid "Keymap removed"
-msgstr "Tastenbelegung entfernt"
-
-msgctxt "#30073"
-msgid "The keymap is switched off"
-msgstr "Die Tastenbelegung ist deaktiviert"
 
 msgctxt "#30080"
 msgid "yes"
@@ -285,10 +109,6 @@ msgctxt "#30099"
 msgid "Keymap"
 msgstr "Tastenbelegung"
 
-msgctxt "#30100"
-msgid "Keymap file"
-msgstr "Tastenbelegungsdatei"
-
 msgctxt "#30101"
 msgid "Playback"
 msgstr "Wiedergabe"
@@ -333,61 +153,17 @@ msgctxt "#30111"
 msgid "Resolution"
 msgstr "Auflösung"
 
-msgctxt "#30112"
-msgid "Diagnostics written to the Kodi log"
-msgstr "Diagnose in das Kodi-Log geschrieben"
-
-msgctxt "#30113"
-msgid "Write diagnostics to the Kodi log"
-msgstr "Diagnose in das Kodi-Log schreiben"
-
 msgctxt "#30114"
-msgid "Disc popup menu"
-msgstr "Popup-Menü der Disc"
+msgid "Popup menu"
+msgstr "Popup-Menü"
 
 msgctxt "#30115"
-msgid "Disc top menu"
-msgstr "Hauptmenü der Disc"
-
-msgctxt "#30116"
-msgid "Assign a button"
-msgstr "Taste zuweisen"
-
-msgctxt "#30117"
-msgid "Press the button you want to use for BD Control"
-msgstr "Drücke die Taste, die BD Control öffnen soll"
-
-msgctxt "#30118"
-msgid "Press it now on your remote. Back cancels."
-msgstr "Jetzt auf der Fernbedienung drücken. Zurück bricht ab."
-
-msgctxt "#30119"
-msgid "Button id %d"
-msgstr "Tasten-ID %d"
-
-msgctxt "#30120"
-msgid "No button was detected"
-msgstr "Es wurde keine Taste erkannt"
-
-msgctxt "#30121"
-msgid "Recent key presses from the Kodi log"
-msgstr "Zuletzt gedrückte Tasten laut Kodi-Log"
-
-msgctxt "#30122"
-msgid "No key presses found in the log. Turn on debug logging under Settings > System > Logging, press the button during playback, then look again."
-msgstr "Im Log wurden keine Tastendrücke gefunden. Debug-Logging unter Einstellungen > System > Protokollierung einschalten, die Taste während der Wiedergabe drücken und erneut nachsehen."
+msgid "Main menu"
+msgstr "Hauptmenü"
 
 msgctxt "#30125"
 msgid "Debug logging"
 msgstr "Debug-Logging"
-
-msgctxt "#30126"
-msgid "Keymap file contents"
-msgstr "Inhalt der Tastenbelegungsdatei"
-
-msgctxt "#30127"
-msgid "Note: long press only fires when the remote driver reports a held key. If it does not work, assign the button again and choose a short press."
-msgstr "Hinweis: Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet. Falls es nicht klappt, die Taste erneut zuweisen und kurzes Drücken wählen."
 
 msgctxt "#30128"
 msgid "Remote configuration"
@@ -401,10 +177,6 @@ msgctxt "#30130"
 msgid "none found"
 msgstr "keine gefunden"
 
-msgctxt "#30131"
-msgid "The BD Control keymap was disabled by another addon and has been restored"
-msgstr "Die BD-Control-Tastenbelegung wurde von einem anderen Addon deaktiviert und wiederhergestellt"
-
 msgctxt "#30132"
 msgid "Keymap Editor"
 msgstr "Keymap Editor"
@@ -413,53 +185,13 @@ msgctxt "#30133"
 msgid "not installed"
 msgstr "nicht installiert"
 
-msgctxt "#30134"
-msgid "Allow multiple keymap files"
-msgstr "Mehrere Tastenbelegungsdateien zulassen"
+msgctxt "#30137"
+msgid "Keymap entries pointing at BD Control"
+msgstr "Keymap-Einträge, die auf BD Control verweisen"
 
-msgctxt "#30135"
-msgid "Disabled copies of the BD Control keymap"
-msgstr "Deaktivierte Kopien der BD-Control-Tastenbelegung"
-
-msgctxt "#30140"
-msgid "Open BD Control"
-msgstr "BD Control öffnen"
-
-msgctxt "#30141"
-msgid "Open the disc menu"
-msgstr "Disc-Menü öffnen"
-
-msgctxt "#30142"
-msgid "Should it only trigger on a long press?"
-msgstr "Soll sie erst bei langem Drücken auslösen?"
-
-msgctxt "#30143"
-msgid "Long press"
-msgstr "Langes Drücken"
-
-msgctxt "#30144"
-msgid "Short press"
-msgstr "Kurzes Drücken"
-
-msgctxt "#30146"
-msgid "not assigned"
-msgstr "nicht zugewiesen"
-
-msgctxt "#30149"
-msgid "No button was detected. Pick one from the Kodi log instead?"
-msgstr "Es wurde keine Taste erkannt. Stattdessen eine aus dem Kodi-Log wählen?"
-
-msgctxt "#30150"
-msgid "That button is already assigned to \"%s\""
-msgstr "Diese Taste ist bereits \"%s\" zugewiesen"
-
-msgctxt "#30151"
-msgid "Long press only works when the remote driver reports a held key, which not every remote does. If the button does nothing, assign it again and choose a short press."
-msgstr "Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet - das tut nicht jede Fernbedienung. Passiert nichts, die Taste erneut zuweisen und kurzes Drücken wählen."
-
-msgctxt "#30136"
-msgid "With this off, saving in Keymap Editor renames every other keymap file to *.xml.bak.N - including this addon's. Turn it on in the Keymap Editor settings, or switch the BD Control keymap off and do the mapping in Keymap Editor instead."
-msgstr "Ist dies aus, benennt das Speichern im Keymap Editor alle anderen Tastenbelegungsdateien in *.xml.bak.N um - auch die dieses Addons. Entweder in den Keymap-Editor-Einstellungen einschalten oder die BD-Control-Tastenbelegung ausschalten und die Zuordnung im Keymap Editor vornehmen."
+msgctxt "#30138"
+msgid "No keymap entry refers to BD Control - map a button with Keymap Editor"
+msgstr "Kein Keymap-Eintrag verweist auf BD Control - Taste im Keymap Editor belegen"
 
 msgctxt "#30200"
 msgid "General"
@@ -477,29 +209,29 @@ msgctxt "#30203"
 msgid "Close the OSD after (seconds, 0 = never)"
 msgstr "OSD schließen nach (Sekunden, 0 = nie)"
 
-msgctxt "#30204"
-msgid "Seek step (seconds)"
-msgstr "Spulschritt (Sekunden)"
+msgctxt "#30219"
+msgid "Buttons"
+msgstr "Schaltflächen"
 
-msgctxt "#30210"
-msgid "Keymap"
-msgstr "Tastenbelegung"
+msgctxt "#30220"
+msgid "Button style"
+msgstr "Darstellung der Schaltflächen"
 
-msgctxt "#30211"
-msgid "Install the BD Control keymap"
-msgstr "BD-Control-Tastenbelegung installieren"
+msgctxt "#30221"
+msgid "Icons"
+msgstr "Icons"
 
-msgctxt "#30227"
-msgid "Assign the button for BD Control"
-msgstr "Taste für BD Control zuweisen"
-
-msgctxt "#30228"
-msgid "Assign the button for the disc menu"
-msgstr "Taste für das Disc-Menü zuweisen"
+msgctxt "#30222"
+msgid "Text"
+msgstr "Text"
 
 msgctxt "#30223"
-msgid "Separate popup and top menu entries"
-msgstr "Popup- und Hauptmenü anzeigen"
+msgid "Icons and text"
+msgstr "Icons + Text"
+
+msgctxt "#30224"
+msgid "Whether the four OSD buttons show their icon, their label, or both."
+msgstr "Ob die vier OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen."
 
 msgctxt "#30230"
 msgid "Tools"
@@ -516,18 +248,6 @@ msgstr "Erweitert"
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
 msgstr "Debug-Meldungen in das Kodi-Log schreiben"
-
-msgctxt "#30261"
-msgid "The keymap only changes fullscreen video playback. The rest of Kodi is untouched."
-msgstr "Die Tastenbelegung ändert nur die Vollbildwiedergabe. Der Rest von Kodi bleibt unverändert."
-
-msgctxt "#30263"
-msgid "Needs a build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
-msgstr "Benötigt einen Build, dessen PlayerControl(ShowVideoMenu) die Argumente \"popup\" und \"top\" akzeptiert, etwa den CoreELEC-Build von SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet lassen und die einzelne Disc-Menü-Taste verwenden."
-
-msgctxt "#30264"
-msgid "Press the button you want to use, then choose whether it should need a long press. The exact button code is bound, so it works whatever kind of remote sends it."
-msgstr "Die gewünschte Taste drücken und danach wählen, ob sie lange gedrückt werden soll. Gebunden wird der exakte Tastencode - das funktioniert unabhängig davon, welche Art von Fernbedienung ihn sendet."
 
 msgctxt "#30262"
 msgid "Opens the OSD by itself whenever a disc menu takes over the remote."
@@ -1054,24 +774,12 @@ msgid "Show OSD preview (3 seconds)"
 msgstr "OSD-Vorschau anzeigen (3 Sekunden)"
 
 msgctxt "#30450"
-msgid "Shows the OSD with sample data for 3 seconds, so a color or position change can be checked without needing something to be playing."
-msgstr "Zeigt das OSD 3 Sekunden lang mit Beispieldaten an, damit eine Farb- oder Positionsänderung geprüft werden kann, ohne dass etwas wiedergegeben werden muss."
+msgid "Shows the OSD with sample data for 3 seconds, so a colour, button style or position change can be checked without needing something to be playing."
+msgstr "Zeigt das OSD 3 Sekunden lang mit Beispieldaten an, damit eine Änderung an Farbe, Schaltflächen-Darstellung oder Position geprüft werden kann, ohne dass etwas wiedergegeben werden muss."
 
 msgctxt "#30451"
 msgid "OSD preview"
 msgstr "OSD-Vorschau"
-
-msgctxt "#30452"
-msgid "Button for BD Control"
-msgstr "Taste für BD Control"
-
-msgctxt "#30453"
-msgid "Button for the disc menu"
-msgstr "Taste für das Disc-Menü"
-
-msgctxt "#30454"
-msgid "Clear this assignment"
-msgstr "Diese Zuweisung löschen"
 
 msgctxt "#30455"
 msgid "Unfocused button"
@@ -1094,13 +802,5 @@ msgid "Open the disc's in-movie popup menu"
 msgstr "Das Popup-Menü der Disc öffnen"
 
 msgctxt "#30460"
-msgid "Open the disc's top/root menu"
+msgid "Open the disc's main menu"
 msgstr "Das Hauptmenü der Disc öffnen"
-
-msgctxt "#30461"
-msgid "Open audio settings for this stream"
-msgstr "Toneinstellungen für diesen Stream öffnen"
-
-msgctxt "#30462"
-msgid "Open subtitle settings for this stream"
-msgstr "Untertiteleinstellungen für diesen Stream öffnen"

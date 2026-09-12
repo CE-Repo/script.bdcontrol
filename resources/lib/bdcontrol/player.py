@@ -8,7 +8,7 @@ except ImportError:  # pragma: no cover - Kodi 19+ is always Python 3
 import xbmc
 
 from . import kodiutils
-from .kodiutils import jsonrpc, log
+from .kodiutils import jsonrpc
 
 # Path prefixes Kodi uses for optical media and disc images.
 DISC_PREFIXES = ('bluray://', 'dvd://', 'udf://', 'iso9660://')
@@ -48,18 +48,6 @@ def get_properties(player_id=None):
     result = jsonrpc('Player.GetProperties', playerid=player_id,
                      properties=PLAYER_PROPERTIES)
     return result or {}
-
-
-def get_item(player_id=None):
-    """Return the currently playing list item as a dict."""
-    if player_id is None:
-        player_id = active_video_player_id()
-    if player_id is None:
-        return {}
-    result = jsonrpc('Player.GetItem', playerid=player_id,
-                     properties=['title', 'file', 'season', 'episode',
-                                 'showtitle', 'duration'])
-    return (result or {}).get('item', {})
 
 
 def playing_file():
@@ -233,11 +221,3 @@ class PlayerState(object):
         if self.has_menu:
             parts.append(kodiutils.localize(30011))
         return '  ·  '.join(parts)
-
-
-def dump_state():
-    """Debug helper used by the diagnostics page."""
-    state = PlayerState()
-    log('player state: playing=%s disc=%s menu=%s path=%s'
-        % (state.playing, state.is_disc, state.has_menu, state.path))
-    return state
