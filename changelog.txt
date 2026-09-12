@@ -14,3 +14,12 @@ v1.0.1
   Kodi does not ship itself.
 - Optional separate popup and top menu entries for builds whose
   PlayerControl(ShowVideoMenu) accepts "popup" and "top".
+
+v1.0.2
+- "Find my button": learns a button code from a real key press and binds it
+  directly, for remotes whose driver does not report held keys so long press
+  never fires.
+- "Show recent key presses from the log": reads the HandleKey lines out of
+  kodi.log and lets you bind one, without needing SSH.
+- Diagnostics now include the generated keymap, the remote.conf key-repeat
+  settings, whether debug logging is on and the last few key presses.

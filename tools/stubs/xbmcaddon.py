@@ -20,6 +20,8 @@ SETTINGS = {
     'km_osd_direct': False,
     'km_stop': False,
     'debug_log': True,
+    'km_custom': False,
+    'km_custom_code': '',
 }
 
 _PO = re.compile(r'msgctxt "#(\d+)"\nmsgid "((?:[^"\\]|\\.)*)"', re.MULTILINE)

@@ -6,6 +6,8 @@ PROFILE = os.path.join(ROOT, '.profile')
 
 
 def translatePath(path):  # noqa: N802
+    if path.startswith('special://logpath/'):
+        return os.path.join(PROFILE, 'temp')
     if path.startswith('special://profile/'):
         return os.path.join(PROFILE, path[len('special://profile/'):])
     if path.startswith('special://home/'):

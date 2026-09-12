@@ -74,6 +74,13 @@ def get_setting_int(setting_id, default=0):
             return default
 
 
+def set_setting(setting_id, value):
+    try:
+        addon().setSetting(setting_id, str(value))
+    except Exception as exc:  # pylint: disable=broad-except
+        log_error('could not write setting %s: %s' % (setting_id, exc))
+
+
 def set_setting_bool(setting_id, value):
     try:
         addon().setSettingBool(setting_id, value)

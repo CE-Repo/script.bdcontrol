@@ -22,8 +22,8 @@ import xbmc  # noqa: E402
 import xbmcaddon  # noqa: E402
 import xbmcgui  # noqa: E402
 
-from bdcontrol import (actions, dialog, keymap, kodiutils, main, player,  # noqa: E402
-                       service, tools)
+from bdcontrol import (actions, dialog, keymap, kodiutils, learn, main,  # noqa: E402
+                       player, service, tools)
 
 FAILURES = []
 
@@ -316,6 +316,83 @@ def test_more_menu():
         xbmcaddon.SETTINGS['extended_disc_menus'] = False
 
 
+def test_learn():
+    section('finding the trigger button')
+    instance = learn.LearnDialog('script-bdcontrol-learn.xml', ROOT, 'default',
+                                 '1080i')
+    instance.onInit()
+    check(instance.getControl(learn.LABEL_HEADING).label.startswith('Press'),
+          'the learn dialog explains itself')
+
+    # Back must cancel rather than being learned as the trigger.
+    instance.onAction(xbmcgui.Action(learn.ACTION_NAV_BACK, 61448))
+    check(instance.cancelled and not instance.button_code,
+          'Back cancels instead of being captured')
+
+    instance = learn.LearnDialog('script-bdcontrol-learn.xml', ROOT, 'default',
+                                 '1080i')
+    instance.onAction(xbmcgui.Action(0, 0))
+    check(not instance.button_code,
+          'an action without a button code is ignored')
+    instance.onAction(xbmcgui.Action(7, 61517))
+    check(instance.button_code == 61517 and not instance.cancelled,
+          'a real press is captured (%d)' % instance.button_code)
+
+    # A learned code must end up in the keymap as a raw <key id="...">.
+    xbmcaddon.SETTINGS['km_custom'] = True
+    xbmcaddon.SETTINGS['km_custom_code'] = '61517'
+    check(learn.custom_code() == 61517, 'the code round-trips through settings')
+    content = keymap.build()
+    check('<key id="61517">RunScript(script.bdcontrol,action=toggle)</key>'
+          in content, 'the learned button is bound by its raw code')
+    xml.dom.minidom.parseString(content)
+    check(True, 'the keymap is still well-formed with a custom key')
+    xbmcaddon.SETTINGS['km_custom'] = False
+    check('<key id=' not in keymap.build(),
+          'turning the custom button off removes it again')
+    xbmcaddon.SETTINGS['km_custom_code'] = ''
+
+    # A nonsense stored code must not produce a broken keymap.
+    xbmcaddon.SETTINGS['km_custom'] = True
+    xbmcaddon.SETTINGS['km_custom_code'] = 'nonsense'
+    check(learn.custom_code() == 0, 'a corrupt code reads as none')
+    check('<key id=' not in keymap.build(), 'and is left out of the keymap')
+    xbmcaddon.SETTINGS['km_custom'] = False
+    xbmcaddon.SETTINGS['km_custom_code'] = ''
+
+
+def test_key_log():
+    section('reading key presses from kodi.log')
+    log_dir = os.path.dirname(learn.log_path())
+    os.makedirs(log_dir, exist_ok=True)
+    with open(learn.log_path(), 'w', encoding='utf-8') as handle:
+        handle.write(
+            "2026-09-12 09:02:11.123 T:1234   debug <general>: something else\n"
+            "2026-09-12 09:02:12.000 T:1234   debug <general>: "
+            "HandleKey: menu (0xf04d) pressed, action is ActivateWindow(Home)\n"
+            "2026-09-12 09:02:13.000 T:1234   debug <general>: "
+            "HandleKey: return (0xf00d, obc12) pressed, action is Select\n"
+            "2026-09-12 09:02:14.000 T:1234   debug <general>: "
+            "HandleKey: menu (0xf04d) pressed, action is ActivateWindow(Home)\n"
+            "2026-09-12 09:02:15.000 T:1234   debug <general>: "
+            "CInputManager::OnKey: red (0xf10a) pressed, action is \n")
+    entries = learn.recent_keys()
+    check(len(entries) == 3, 'each distinct key appears once (%d)' % len(entries))
+    check(entries[0][0] == 'red' and entries[0][1] == 0xf10a,
+          'the newest press comes first, with its decimal id (%s)'
+          % (entries[0],))
+    check(entries[1][0] == 'menu',
+          'a repeated key keeps only its newest entry (%s)'
+          % ([entry[0] for entry in entries],))
+    check(entries[2] == ('return', 0xf00d, 'Select'),
+          'the name, code and resulting action are parsed (%s)'
+          % (entries[2],))
+    check(0xf00d == 61453, 'the ids match what a <key id> mapping expects')
+
+    os.remove(learn.log_path())
+    check(learn.recent_keys() == [], 'a missing log is not an error')
+
+
 def test_service():
     section('service')
     instance = service.Service()
@@ -445,6 +522,8 @@ def main_test():
     test_titles_browser()
     test_diagnostics()
     test_more_menu()
+    test_learn()
+    test_key_log()
     test_service()
     test_skin_ids_match()
     test_dialog()

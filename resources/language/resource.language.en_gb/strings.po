@@ -369,6 +369,66 @@ msgctxt "#30115"
 msgid "Disc top menu"
 msgstr ""
 
+msgctxt "#30116"
+msgid "Find my button"
+msgstr ""
+
+msgctxt "#30117"
+msgid "Press the button you want to use for BD Control"
+msgstr ""
+
+msgctxt "#30118"
+msgid "Press it now on your remote. Back cancels."
+msgstr ""
+
+msgctxt "#30119"
+msgid "Button id %d"
+msgstr ""
+
+msgctxt "#30120"
+msgid "No button was detected"
+msgstr ""
+
+msgctxt "#30121"
+msgid "Recent key presses from the Kodi log"
+msgstr ""
+
+msgctxt "#30122"
+msgid "No key presses found in the log. Turn on debug logging under Settings > System > Logging, press the button during playback, then look again."
+msgstr ""
+
+msgctxt "#30123"
+msgid "Use this button for BD Control?"
+msgstr ""
+
+msgctxt "#30124"
+msgid "Custom button"
+msgstr ""
+
+msgctxt "#30125"
+msgid "Debug logging"
+msgstr ""
+
+msgctxt "#30126"
+msgid "Keymap file contents"
+msgstr ""
+
+msgctxt "#30127"
+msgid "Note: long press only fires when the remote driver reports a held key. If nothing happens, use \"Find my button\" and pick a spare button instead."
+msgstr ""
+
+msgctxt "#30128"
+msgid "Remote configuration"
+msgstr ""
+
+msgctxt "#30129"
+msgid "no repeat settings found"
+msgstr ""
+
+msgctxt "#30130"
+msgid "none found"
+msgstr ""
+
 msgctxt "#30200"
 msgid "General"
 msgstr ""
@@ -445,6 +505,18 @@ msgctxt "#30223"
 msgid "Separate popup and top menu entries"
 msgstr ""
 
+msgctxt "#30224"
+msgid "Use a button I pick myself"
+msgstr ""
+
+msgctxt "#30225"
+msgid "Find my button"
+msgstr ""
+
+msgctxt "#30226"
+msgid "Show recent key presses from the log"
+msgstr ""
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr ""
@@ -471,6 +543,10 @@ msgstr ""
 
 msgctxt "#30263"
 msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
+msgstr ""
+
+msgctxt "#30264"
+msgid "Binds the exact button code you picked, which works whatever kind of remote sends it and does not need long press support."
 msgstr ""
 
 msgctxt "#30262"

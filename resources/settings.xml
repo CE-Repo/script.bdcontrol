@@ -120,7 +120,39 @@
           </dependencies>
         </setting>
       </group>
-      <group id="3">
+      <group id="3" label="30124">
+        <setting id="km_custom" type="boolean" label="30224" help="30264">
+          <level>0</level>
+          <default>false</default>
+          <control type="toggle"/>
+          <dependencies>
+            <dependency type="enable" setting="keymap_enabled" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="km_custom_code" type="string" label="30124">
+          <level>0</level>
+          <default></default>
+          <control type="edit" format="string"/>
+          <dependencies>
+            <dependency type="enable" setting="km_custom" operator="is">true</dependency>
+          </dependencies>
+        </setting>
+        <setting id="find_button" type="action" label="30225">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=learn)</data>
+          <control type="button" format="action">
+            <close>true</close>
+          </control>
+        </setting>
+        <setting id="show_keylog" type="action" label="30226">
+          <level>0</level>
+          <data>RunScript(script.bdcontrol,action=keylog)</data>
+          <control type="button" format="action">
+            <close>false</close>
+          </control>
+        </setting>
+      </group>
+      <group id="4">
         <setting id="install_keymap" type="action" label="30219">
           <level>0</level>
           <data>RunScript(script.bdcontrol,action=install_keymap)</data>

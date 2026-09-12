@@ -369,6 +369,66 @@ msgctxt "#30115"
 msgid "Disc top menu"
 msgstr "Hauptmenü der Disc"
 
+msgctxt "#30116"
+msgid "Find my button"
+msgstr "Meine Taste finden"
+
+msgctxt "#30117"
+msgid "Press the button you want to use for BD Control"
+msgstr "Drücke die Taste, die BD Control öffnen soll"
+
+msgctxt "#30118"
+msgid "Press it now on your remote. Back cancels."
+msgstr "Jetzt auf der Fernbedienung drücken. Zurück bricht ab."
+
+msgctxt "#30119"
+msgid "Button id %d"
+msgstr "Tasten-ID %d"
+
+msgctxt "#30120"
+msgid "No button was detected"
+msgstr "Es wurde keine Taste erkannt"
+
+msgctxt "#30121"
+msgid "Recent key presses from the Kodi log"
+msgstr "Zuletzt gedrückte Tasten laut Kodi-Log"
+
+msgctxt "#30122"
+msgid "No key presses found in the log. Turn on debug logging under Settings > System > Logging, press the button during playback, then look again."
+msgstr "Im Log wurden keine Tastendrücke gefunden. Debug-Logging unter Einstellungen > System > Protokollierung einschalten, die Taste während der Wiedergabe drücken und erneut nachsehen."
+
+msgctxt "#30123"
+msgid "Use this button for BD Control?"
+msgstr "Diese Taste für BD Control verwenden?"
+
+msgctxt "#30124"
+msgid "Custom button"
+msgstr "Eigene Taste"
+
+msgctxt "#30125"
+msgid "Debug logging"
+msgstr "Debug-Logging"
+
+msgctxt "#30126"
+msgid "Keymap file contents"
+msgstr "Inhalt der Tastenbelegungsdatei"
+
+msgctxt "#30127"
+msgid "Note: long press only fires when the remote driver reports a held key. If nothing happens, use \"Find my button\" and pick a spare button instead."
+msgstr "Hinweis: Langes Drücken funktioniert nur, wenn der Fernbedienungstreiber eine gehaltene Taste meldet. Passiert nichts, stattdessen \"Meine Taste finden\" verwenden und eine freie Taste wählen."
+
+msgctxt "#30128"
+msgid "Remote configuration"
+msgstr "Fernbedienungs-Konfiguration"
+
+msgctxt "#30129"
+msgid "no repeat settings found"
+msgstr "keine Repeat-Einstellungen gefunden"
+
+msgctxt "#30130"
+msgid "none found"
+msgstr "keine gefunden"
+
 msgctxt "#30200"
 msgid "General"
 msgstr "Allgemein"
@@ -445,6 +505,18 @@ msgctxt "#30223"
 msgid "Separate popup and top menu entries"
 msgstr "Getrennte Einträge für Popup- und Hauptmenü"
 
+msgctxt "#30224"
+msgid "Use a button I pick myself"
+msgstr "Eine selbst gewählte Taste verwenden"
+
+msgctxt "#30225"
+msgid "Find my button"
+msgstr "Meine Taste finden"
+
+msgctxt "#30226"
+msgid "Show recent key presses from the log"
+msgstr "Zuletzt gedrückte Tasten aus dem Log anzeigen"
+
 msgctxt "#30230"
 msgid "Tools"
 msgstr "Werkzeuge"
@@ -472,6 +544,10 @@ msgstr "Die Tastenbelegung ändert nur die Vollbildwiedergabe; der Rest von Kodi
 msgctxt "#30263"
 msgid "Needs a Kodi build whose PlayerControl(ShowVideoMenu) accepts \"popup\" and \"top\", such as SamuriHL's CoreELEC build. Other builds ignore the argument, so leave this off there and use the single Disc menu button."
 msgstr "Benötigt einen Kodi-Build, dessen PlayerControl(ShowVideoMenu) die Argumente \"popup\" und \"top\" akzeptiert, etwa den CoreELEC-Build von SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet lassen und die einzelne Disc-Menü-Taste verwenden."
+
+msgctxt "#30264"
+msgid "Binds the exact button code you picked, which works whatever kind of remote sends it and does not need long press support."
+msgstr "Bindet genau den gewählten Tastencode - unabhängig davon, welche Art von Fernbedienung ihn sendet, und ohne Longpress-Unterstützung."
 
 msgctxt "#30262"
 msgid "Opens the OSD by itself whenever a disc menu takes over the remote."

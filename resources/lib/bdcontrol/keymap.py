@@ -112,6 +112,23 @@ def _element(name, command, longpress):
     return '      <%s%s>%s</%s>\n' % (name, modifier, command, name)
 
 
+def _custom_key_element():
+    """A `<key id="...">` entry for the button the user picked, or ''.
+
+    Kodi merges every keymap section into a single per-window map keyed by the
+    numeric button code, so binding the raw code works no matter which device
+    the button came from - which is the point: it does not depend on the
+    button having a name in the remote section, nor on long press support.
+    """
+    from . import learn
+    if not kodiutils.get_setting_bool('km_custom', False):
+        return ''
+    code = learn.custom_code()
+    if not code:
+        return ''
+    return '      <key id="%d">%s</key>\n' % (code, TOGGLE)
+
+
 def build():
     """Render the keymap XML for the current settings, or '' when empty."""
     keyboard = []
@@ -123,6 +140,9 @@ def build():
             keyboard.append(_element(key, mapping.command, mapping.longpress))
         for key in mapping.remote:
             remote.append(_element(key, mapping.command, mapping.longpress))
+    custom = _custom_key_element()
+    if custom:
+        keyboard.append(custom)
     if not keyboard and not remote:
         return ''
     body = ''
@@ -220,9 +240,19 @@ def describe():
     for mapping in MAPPINGS:
         if not mapping.enabled():
             continue
-        keys = list(mapping.keyboard) + list(mapping.remote)
+        keys = []
+        for key in list(mapping.keyboard) + list(mapping.remote):
+            if key not in keys:  # the same name often exists in both sections
+                keys.append(key)
         suffix = ' (%s)' % localize(30074) if mapping.longpress else ''
         lines.append('%s%s -> %s' % (', '.join(keys), suffix, mapping.command))
+    from . import learn
+    if kodiutils.get_setting_bool('km_custom', False) and learn.custom_code():
+        lines.append('%s id %d -> %s' % (localize(30124), learn.custom_code(),
+                                         TOGGLE))
     if not lines:
         lines.append(localize(30072))
+    if any(mapping.longpress and mapping.enabled() for mapping in MAPPINGS):
+        lines.append('')
+        lines.append(localize(30127))
     return lines

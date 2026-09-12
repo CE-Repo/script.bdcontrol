@@ -2,7 +2,7 @@
 """Argument handling for RunScript(script.bdcontrol, ...)."""
 import xbmcgui
 
-from . import actions, dialog, keymap, kodiutils, tools
+from . import actions, dialog, keymap, kodiutils, learn, tools
 from .kodiutils import localize, log
 
 
@@ -34,6 +34,8 @@ def main_menu():
         (localize(30033), actions.disc_playback_mode),
         (localize(30002), keymap.install),
         (localize(30003), keymap.uninstall),
+        (localize(30116), learn.learn_button),
+        (localize(30121), learn.show_recent_keys),
         (localize(30034), tools.show_diagnostics),
         (localize(30004), kodiutils.open_settings),
     ]
@@ -61,6 +63,8 @@ HANDLERS = {
     'titles': actions.browse_titles,
     'discmode': actions.disc_playback_mode,
     'eject': actions.eject,
+    'learn': learn.learn_button,
+    'keylog': learn.show_recent_keys,
     'diagnostics': tools.show_diagnostics,
     'logdiagnostics': tools.copy_diagnostics_to_log,
     'install_keymap': keymap.install,

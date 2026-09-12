@@ -74,11 +74,18 @@ on a stock build.
 
 ## Which button opens BD Control?
 
-By default: **hold OK** during playback.
+By default: **hold OK** during playback, or the **Menu** button.
 
 A *short* press of OK still goes to the disc, so navigating the disc menu is
-unchanged; only holding the button opens BD Control. Additional triggers can be
-enabled in **Settings → Keymap**:
+unchanged; only holding the button opens BD Control.
+
+> **If holding OK does nothing:** long press only fires when the input driver
+> reports a *held* key, and not every remote on CoreELEC does — Amlogic's IR
+> driver only emits repeats when `repeat_enable` is set in `remote.conf`.
+> Nothing in the addon can work around that, so don't fight it: use
+> **Find my button** (below) and bind a spare button instead.
+
+Additional triggers can be enabled in **Settings → Keymap**:
 
 | Trigger | Default |
 | --- | --- |
@@ -109,6 +116,30 @@ The Title button entry is the mapping Kodi does not ship itself:
 It is rewritten whenever you change those settings, and removing it (or using
 **Remove keymap**) restores Kodi's stock behaviour.
 
+### Find my button
+
+**Settings → Keymap → Find my button** (also under *More* in the OSD) opens a
+dialog that waits for one key press and remembers its button code. The keymap
+then binds that exact code:
+
+```xml
+<keyboard>
+  <key id="61517">RunScript(script.bdcontrol,action=toggle)</key>
+</keyboard>
+```
+
+Kodi merges every keymap section into one map keyed by the numeric button
+code, so binding the code directly works whatever kind of remote sends it —
+no long press support needed, and no need to know what the button is called.
+Back cancels the dialog, so Back itself cannot be learned.
+
+If the dialog never sees your press (a button with no mapping anywhere
+produces no action at all), use **Show recent key presses from the log**
+instead. It reads the `HandleKey:` lines out of `kodi.log` — the same thing
+the manual procedure asks you to look for over SSH — and lets you pick one
+from the list. That needs debug logging on:
+**Settings → System → Logging → Enable debug logging**.
+
 ## Settings
 
 **General**
@@ -133,7 +164,11 @@ CoreELEC:
   retail discs),
 * Kodi's Blu-ray playback mode and whether the extended popup/top menus are
   enabled,
-* which BD Control triggers are active,
+* which BD Control triggers are active, and the full contents of the generated
+  keymap file,
+* whether a `remote.conf` is present and what it says about key repeat, which
+  is what long press depends on,
+* whether debug logging is on, and the last few key presses from the log,
 * the live state of the current playback: whether the disc menu is in control,
   whether seeking is allowed, chapter counters, track counts and the output
   resolution.
@@ -161,6 +196,8 @@ RunScript(script.bdcontrol,action=subtitles)
 RunScript(script.bdcontrol,action=titles)
 RunScript(script.bdcontrol,action=discmode)
 RunScript(script.bdcontrol,action=eject)
+RunScript(script.bdcontrol,action=learn)         # find my button
+RunScript(script.bdcontrol,action=keylog)        # recent key presses from the log
 RunScript(script.bdcontrol,action=diagnostics)
 RunScript(script.bdcontrol,action=install_keymap)
 RunScript(script.bdcontrol,action=remove_keymap)

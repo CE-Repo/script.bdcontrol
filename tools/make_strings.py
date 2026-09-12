@@ -141,6 +141,37 @@ STRINGS = [
      'Diagnose in das Kodi-Log schreiben'),
     (30114, 'Disc popup menu', 'Popup-Menü der Disc'),
     (30115, 'Disc top menu', 'Hauptmenü der Disc'),
+    (30116, 'Find my button', 'Meine Taste finden'),
+    (30117, 'Press the button you want to use for BD Control',
+     'Drücke die Taste, die BD Control öffnen soll'),
+    (30118, 'Press it now on your remote. Back cancels.',
+     'Jetzt auf der Fernbedienung drücken. Zurück bricht ab.'),
+    (30119, 'Button id %d', 'Tasten-ID %d'),
+    (30120, 'No button was detected',
+     'Es wurde keine Taste erkannt'),
+    (30121, 'Recent key presses from the Kodi log',
+     'Zuletzt gedrückte Tasten laut Kodi-Log'),
+    (30122, 'No key presses found in the log. Turn on debug logging under '
+            'Settings > System > Logging, press the button during playback, '
+            'then look again.',
+     'Im Log wurden keine Tastendrücke gefunden. Debug-Logging unter '
+     'Einstellungen > System > Protokollierung einschalten, die Taste '
+     'während der Wiedergabe drücken und erneut nachsehen.'),
+    (30123, 'Use this button for BD Control?',
+     'Diese Taste für BD Control verwenden?'),
+    (30124, 'Custom button', 'Eigene Taste'),
+    (30125, 'Debug logging', 'Debug-Logging'),
+    (30126, 'Keymap file contents', 'Inhalt der Tastenbelegungsdatei'),
+    (30127, 'Note: long press only fires when the remote driver reports a '
+            'held key. If nothing happens, use "Find my button" and pick a '
+            'spare button instead.',
+     'Hinweis: Langes Drücken funktioniert nur, wenn der '
+     'Fernbedienungstreiber eine gehaltene Taste meldet. Passiert nichts, '
+     'stattdessen "Meine Taste finden" verwenden und eine freie Taste '
+     'wählen.'),
+    (30128, 'Remote configuration', 'Fernbedienungs-Konfiguration'),
+    (30129, 'no repeat settings found', 'keine Repeat-Einstellungen gefunden'),
+    (30130, 'none found', 'keine gefunden'),
 
     # --- settings --------------------------------------------------------
     (30200, 'General', 'Allgemein'),
@@ -170,6 +201,11 @@ STRINGS = [
      'Title-Taste öffnet das Disc-Menü'),
     (30223, 'Separate popup and top menu entries',
      'Getrennte Einträge für Popup- und Hauptmenü'),
+    (30224, 'Use a button I pick myself',
+     'Eine selbst gewählte Taste verwenden'),
+    (30225, 'Find my button', 'Meine Taste finden'),
+    (30226, 'Show recent key presses from the log',
+     'Zuletzt gedrückte Tasten aus dem Log anzeigen'),
     (30230, 'Tools', 'Werkzeuge'),
     (30231, 'Open the BD Control OSD', 'BD-Control-OSD öffnen'),
     (30240, 'Advanced', 'Erweitert'),
@@ -194,6 +230,10 @@ STRINGS = [
      'Argumente "popup" und "top" akzeptiert, etwa den CoreELEC-Build von '
      'SamuriHL. Andere Builds ignorieren das Argument - dort ausgeschaltet '
      'lassen und die einzelne Disc-Menü-Taste verwenden.'),
+    (30264, 'Binds the exact button code you picked, which works whatever '
+            'kind of remote sends it and does not need long press support.',
+     'Bindet genau den gewählten Tastencode - unabhängig davon, welche Art '
+     'von Fernbedienung ihn sendet, und ohne Longpress-Unterstützung.'),
     (30262, 'Opens the OSD by itself whenever a disc menu takes over the '
             'remote.',
      'Öffnet das OSD automatisch, sobald ein Disc-Menü die Fernbedienung '

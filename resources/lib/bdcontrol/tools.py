@@ -6,8 +6,8 @@ import os
 import xbmc
 import xbmcgui
 
-from . import actions, keymap, kodiutils, player
-from .kodiutils import localize
+from . import actions, keymap, kodiutils, learn, player
+from .kodiutils import jsonrpc, localize
 
 # Places a CoreELEC/LibreELEC image or a regular distribution keeps the
 # libraries libbluray loads for encrypted discs.
@@ -63,6 +63,49 @@ def _os_release():
         return values.get('PRETTY_NAME') or values.get('NAME') or ''
     except (IOError, OSError):
         return ''
+
+
+# Amlogic's IR driver only emits repeats - and therefore only lets Kodi see a
+# held key - when the remote configuration enables them, which is what long
+# press mappings depend on.
+REMOTE_CONF_PATHS = (
+    '/storage/.config/remote.conf',
+    '/flash/remote.conf',
+    '/etc/amremote/remote.conf',
+)
+
+REPEAT_KEYS = ('repeat_enable', 'repeat_delay', 'repeat_peroid',
+               'repeat_period')
+
+
+def _remote_conf_repeat():
+    """Return (path, summary) for every remote.conf found."""
+    found = []
+    for path in REMOTE_CONF_PATHS:
+        if not os.path.isfile(path):
+            continue
+        values = []
+        try:
+            with open(path, 'r', errors='replace') as handle:
+                for line in handle:
+                    stripped = line.strip()
+                    if stripped.startswith('#'):
+                        continue
+                    for key in REPEAT_KEYS:
+                        if stripped.startswith(key):
+                            values.append(' '.join(stripped.split()))
+                            break
+        except (IOError, OSError) as exc:
+            values.append(str(exc))
+        found.append((path, ', '.join(values) if values else localize(30129)))
+    if not found:
+        found.append(('remote.conf', localize(30130)))
+    return found
+
+
+def _debug_logging():
+    value = jsonrpc('Settings.GetSettingValue', setting='debug.showloginfo')
+    return bool((value or {}).get('value', False))
 
 
 def _disc_playback_mode_label():
@@ -126,6 +169,26 @@ def diagnostics_text():
                              else _yes_no(False)))
     for line in keymap.describe():
         lines.append('  %s' % line)
+    if keymap.is_installed():
+        lines.append('')
+        lines.append('%s:' % localize(30126))
+        for line in keymap.read_existing().splitlines():
+            if line.strip().startswith('<!--') or line.strip().startswith('-->'):
+                continue
+            lines.append('  %s' % line)
+
+    section(localize(30128))  # Remote configuration
+    for path, value in _remote_conf_repeat():
+        lines.append('%s: %s' % (path, value))
+    lines.append('%s: %s' % (localize(30125), _yes_no(_debug_logging())))
+    keys = learn.recent_keys(limit=8)
+    if keys:
+        lines.append('%s:' % localize(30121))
+        for name, code, action in keys:
+            lines.append('  %s (id %d)%s'
+                         % (name, code, '  ->  %s' % action if action else ''))
+    else:
+        lines.append(localize(30122))
 
     section(localize(30101))  # Playback
     state = player.PlayerState()
@@ -179,6 +242,8 @@ def more_menu(closer=None):
         (localize(30038), actions.next_audio_language, True),
         (localize(30033), actions.disc_playback_mode, False),
         (localize(30039), actions.eject, True),
+        (localize(30116), learn.learn_button, False),
+        (localize(30121), learn.show_recent_keys, False),
         (localize(30034), show_diagnostics, False),
         (localize(30113), copy_diagnostics_to_log, False),
         (localize(30004), actions.open_settings, True),

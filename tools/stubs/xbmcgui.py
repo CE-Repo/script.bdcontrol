@@ -49,6 +49,18 @@ class Control(object):
         self.percent = percent
 
 
+class Action(object):
+    def __init__(self, action_id=0, button_code=0):
+        self._id = action_id
+        self._code = button_code
+
+    def getId(self):  # noqa: N802
+        return self._id
+
+    def getButtonCode(self):  # noqa: N802
+        return self._code
+
+
 class WindowXMLDialog(object):
     def __init__(self, *args, **kwargs):
         self._controls = {}
