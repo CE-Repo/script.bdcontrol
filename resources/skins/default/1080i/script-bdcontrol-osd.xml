@@ -26,9 +26,15 @@
     <control type="group" id="2">
       <left>50</left>
       <top>860</top>
-      <animation effect="slide" start="0,120" end="0,0" time="200" tween="quadratic" easing="out">WindowOpen</animation>
+      <!-- Nothing is drawn until dialog.py has moved the panel to the
+           position the settings ask for: the window file can only name one
+           position, and the panel would otherwise show at that one for a
+           frame and then jump to the real one. Opening therefore hangs off
+           this becoming true rather than off the window opening. -->
+      <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
+      <animation effect="slide" start="0,120" end="0,0" time="200" tween="quadratic" easing="out">Visible</animation>
       <animation effect="slide" start="0,0" end="0,120" time="150" tween="quadratic" easing="in">WindowClose</animation>
-      <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
       <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
 
       <!-- Chapter tab, resting on the panel's top right corner. Its lower

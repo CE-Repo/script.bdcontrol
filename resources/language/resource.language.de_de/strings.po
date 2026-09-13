@@ -290,24 +290,24 @@ msgid "Icons and text"
 msgstr "Icons + Text"
 
 msgctxt "#30224"
-msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar layouts always use icons with text."
-msgstr "Ob die OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen. Die Seitenleisten nutzen immer Icons und Text."
+msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar and wheel layouts always use icons with text."
+msgstr "Ob die OSD-Schaltflächen ihr Icon, ihre Beschriftung oder beides anzeigen. Seitenleisten und Rad nutzen immer Icons und Text."
 
 msgctxt "#30225"
 msgid "Layout"
 msgstr "Layout"
 
 msgctxt "#30226"
-msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick."
-msgstr "Vollgröße spannt sich unten über den Bildschirm. Kompakt ist dasselbe Panel auf etwa drei Viertel. Die Seitenleisten stellen die Schaltflächen untereinander in eine Leiste, die vom gewählten Rand herausfährt."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick. The wheel lays them out in the segments of a ring, with the chapter and the running time in its hub."
+msgstr "Vollgröße spannt sich unten über den Bildschirm. Kompakt ist dasselbe Panel auf etwa drei Viertel. Die Seitenleisten stellen die Schaltflächen untereinander in eine Leiste, die vom gewählten Rand herausfährt. Das Rad verteilt sie auf die Segmente eines Rings, mit Kapitel und Laufzeit in der Nabe."
 
 msgctxt "#30227"
 msgid "Horizontal position"
 msgstr "Horizontale Position"
 
 msgctxt "#30228"
-msgid "Compact layout only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The other layouts are anchored and have nowhere to move."
-msgstr "Nur im Layout Kompakt: 50 % zentriert das OSD, 0 % schiebt es an den linken Rand und 100 % an den rechten. Die anderen Layouts sind verankert und haben keinen Spielraum."
+msgid "Compact and wheel layouts only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The full size panel spans the screen and the sidebars belong to an edge, so neither has anywhere to move."
+msgstr "Nur in den Layouts Kompakt und Rad: 50 % zentriert das OSD, 0 % schiebt es an den linken Rand und 100 % an den rechten. Vollgröße spannt sich über den Bildschirm, die Seitenleisten gehören an ihren Rand – beide haben keinen Spielraum."
 
 msgctxt "#30229"
 msgid "Full size"
@@ -328,6 +328,10 @@ msgstr "Seitenleiste (rechts)"
 msgctxt "#30235"
 msgid "Buttons and position"
 msgstr "Schaltflächen und Position"
+
+msgctxt "#30236"
+msgid "Wheel"
+msgstr "Rad"
 
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"

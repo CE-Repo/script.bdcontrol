@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The wheel layout: the five commands sit in the segments of a ring,
+     the way a game's weapon or radio wheel arranges its choices, each
+     with its icon and its name; the middle keeps the chapter and the
+     running time.
+
+     The ring rests on a round panel in the colour the other layouts
+     give their rectangular one, so the segments read as buttons on a
+     panel rather than as shapes on the picture. The panel is one shape
+     with the ring's hole leaving its middle showing, not a hub laid
+     over it: two translucent shapes over each other double up their
+     colour.
+
+     Every position is worked out from one centre and one radius, so the
+     ring stays a ring; the segments are five pre-rotated textures,
+     because a skin cannot turn one texture five ways. Each segment
+     comes in two weights - a faint one for the segments the remote is
+     not sitting on and a solid one for the segment it is - the way the
+     other layouts give their buttons a faint and a solid texture. That
+     is what keeps the chosen colours readable: what the eye meets
+     first is the panel in the panel colour, not a ring painted over
+     it. The buttons draw nothing themselves - they are invisible hit
+     areas over the segments, and focus is a swap of texture and colour
+     on the segment, its icon and its name. The names carry a standing
+     zoom: a wedge wants smaller writing than font10, and font10 is the
+     smallest font name a skin can be relied on to define - the window
+     is drawn with whichever skin is running, not with fonts of its
+     own. Icons with text whatever the button style setting says:
+     dialog.py prescribes it - which is also why there is no hint line
+     under the ring. That line explains an unlabelled icon, and there
+     are none here. -->
+<window type="dialog">
+  <defaultcontrol always="true">203</defaultcontrol>
+  <coordinates>
+    <system>1</system>
+    <posx>0</posx>
+    <posy>0</posy>
+  </coordinates>
+  <controls>
+    <control type="image" id="1">
+      <left>0</left>
+      <top>0</top>
+      <width>1920</width>
+      <height>1080</height>
+      <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1)</visible>
+      <texture colordiffuse="$INFO[Window(10000).Property(BDControl.DimColor)]">bd-dim.png</texture>
+      <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+      <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+    </control>
+
+    <control type="group" id="2">
+      <left>680</left>
+      <top>438</top>
+      <width>560</width>
+      <height>592</height>
+      <control type="group">
+        <left>0</left>
+        <top>0</top>
+        <width>560</width>
+        <height>592</height>
+        <!-- Nothing is drawn until dialog.py has moved the panel to the
+             position the settings ask for: the window file can only name one
+             position, and the panel would otherwise show at that one for a
+             frame and then jump to the real one. Opening therefore hangs off
+             this becoming true rather than off the window opening. -->
+        <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
+        <!-- The wheel grows out of its own centre rather than sliding in
+             from an edge: it is the one layout that is not anchored to one. -->
+        <animation effect="zoom" start="60" end="100" center="280,312" time="200" tween="quadratic" easing="out">Visible</animation>
+        <animation effect="zoom" start="100" end="60" center="280,312" time="150" tween="quadratic" easing="in">WindowClose</animation>
+        <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+        <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+
+        <!-- The disc's title, above the panel. -->
+        <control type="label" id="100">
+          <left>0</left>
+          <top>0</top>
+          <width>560</width>
+          <height>30</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TitleColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <label></label>
+        </control>
+
+        <!-- The panel: one round shape, with the ring's hole leaving its
+             middle showing rather than a second piece laid over it. -->
+        <control type="image">
+          <left>0</left>
+          <top>32</top>
+          <width>560</width>
+          <height>560</height>
+          <aspectratio>keep</aspectratio>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]">bd-wheel-disc.png</texture>
+        </control>
+
+        <!-- The ring. Two textures per segment: the faint one for the
+             segments the remote is not sitting on, the solid one for the
+             segment it is. -->
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]">bd-wheel-segment1-nofocus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]">bd-wheel-segment1-focus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]">bd-wheel-segment2-nofocus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]">bd-wheel-segment2-focus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]">bd-wheel-segment3-nofocus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]">bd-wheel-segment3-focus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]">bd-wheel-segment4-nofocus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]">bd-wheel-segment4-focus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]">bd-wheel-segment5-nofocus.png</texture>
+        </control>
+        <control type="image">
+          <left>6</left>
+          <top>38</top>
+          <width>548</width>
+          <height>548</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]">bd-wheel-segment5-focus.png</texture>
+        </control>
+
+        <!-- The middle: the chapter, and how far into the disc we are. A
+             circle has no corner for the tab the wide layouts hang the
+             chapter from, and the middle of a wheel is where a player
+             looks anyway. -->
+        <control type="label">
+          <left>180</left>
+          <top>280</top>
+          <width>200</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!String.IsEmpty(Window(10000).Property(BDControl.Chapter))</visible>
+          <label>$INFO[Window(10000).Property(BDControl.Chapter)]</label>
+        </control>
+        <control type="label" id="101">
+          <left>170</left>
+          <top>310</top>
+          <width>220</width>
+          <height>34</height>
+          <font>font12</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TitleColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <label></label>
+        </control>
+
+        <!-- 203: name set from dialog.py, 303 unfocused and 403 focused -->
+        <control type="image">
+          <left>250</left>
+          <top>74</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
+        </control>
+        <control type="image">
+          <left>250</left>
+          <top>74</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
+        </control>
+        <control type="label" id="303">
+          <left>200</left>
+          <top>142</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!Control.HasFocus(203)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="label" id="403">
+          <left>200</left>
+          <top>142</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>Control.HasFocus(203)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="button" id="203">
+          <left>220</left>
+          <top>59</top>
+          <width>120</width>
+          <height>120</height>
+          <onleft>204</onleft>
+          <onright>205</onright>
+          <onup>203</onup>
+          <ondown>201</ondown>
+          <texturefocus></texturefocus>
+          <texturenofocus></texturenofocus>
+          <label></label>
+        </control>
+
+        <!-- 205: name set from dialog.py, 305 unfocused and 405 focused -->
+        <control type="image">
+          <left>434</left>
+          <top>207</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
+        </control>
+        <control type="image">
+          <left>434</left>
+          <top>207</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
+        </control>
+        <control type="label" id="305">
+          <left>384</left>
+          <top>275</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!Control.HasFocus(205)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="label" id="405">
+          <left>384</left>
+          <top>275</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>Control.HasFocus(205)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="button" id="205">
+          <left>404</left>
+          <top>192</top>
+          <width>120</width>
+          <height>120</height>
+          <onleft>203</onleft>
+          <onright>205</onright>
+          <onup>205</onup>
+          <ondown>201</ondown>
+          <texturefocus></texturefocus>
+          <texturenofocus></texturenofocus>
+          <label></label>
+        </control>
+
+        <!-- 201: name set from dialog.py, 301 unfocused and 401 focused -->
+        <control type="image">
+          <left>363</left>
+          <top>423</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
+        </control>
+        <control type="image">
+          <left>363</left>
+          <top>423</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
+        </control>
+        <control type="label" id="301">
+          <left>313</left>
+          <top>491</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!Control.HasFocus(201)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="label" id="401">
+          <left>313</left>
+          <top>491</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>Control.HasFocus(201)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="button" id="201">
+          <left>333</left>
+          <top>408</top>
+          <width>120</width>
+          <height>120</height>
+          <onleft>202</onleft>
+          <onright>201</onright>
+          <onup>205</onup>
+          <ondown>201</ondown>
+          <texturefocus></texturefocus>
+          <texturenofocus></texturenofocus>
+          <label></label>
+        </control>
+
+        <!-- 202: name set from dialog.py, 302 unfocused and 402 focused -->
+        <control type="image">
+          <left>137</left>
+          <top>423</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
+        </control>
+        <control type="image">
+          <left>137</left>
+          <top>423</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
+        </control>
+        <control type="label" id="302">
+          <left>87</left>
+          <top>491</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!Control.HasFocus(202)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="label" id="402">
+          <left>87</left>
+          <top>491</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>Control.HasFocus(202)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="button" id="202">
+          <left>107</left>
+          <top>408</top>
+          <width>120</width>
+          <height>120</height>
+          <onleft>202</onleft>
+          <onright>201</onright>
+          <onup>204</onup>
+          <ondown>202</ondown>
+          <texturefocus></texturefocus>
+          <texturenofocus></texturenofocus>
+          <label></label>
+        </control>
+
+        <!-- 204: name set from dialog.py, 304 unfocused and 404 focused -->
+        <control type="image">
+          <left>66</left>
+          <top>207</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-diagnostics.png</texture>
+        </control>
+        <control type="image">
+          <left>66</left>
+          <top>207</top>
+          <width>60</width>
+          <height>60</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>
+        </control>
+        <control type="label" id="304">
+          <left>16</left>
+          <top>275</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>!Control.HasFocus(204)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="label" id="404">
+          <left>16</left>
+          <top>275</top>
+          <width>160</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+          <align>center</align>
+          <aligny>center</aligny>
+          <visible>Control.HasFocus(204)</visible>
+          <animation effect="zoom" start="100" end="82" center="auto" time="0" condition="true">Conditional</animation>
+          <label></label>
+        </control>
+        <control type="button" id="204">
+          <left>36</left>
+          <top>192</top>
+          <width>120</width>
+          <height>120</height>
+          <onleft>204</onleft>
+          <onright>203</onright>
+          <onup>204</onup>
+          <ondown>202</ondown>
+          <texturefocus></texturefocus>
+          <texturenofocus></texturenofocus>
+          <label></label>
+        </control>
+
+      </control>
+    </control>
+  </controls>
+</window>

@@ -69,6 +69,7 @@
               <option label="30232">1</option>
               <option label="30233">2</option>
               <option label="30234">3</option>
+              <option label="30236">4</option>
             </options>
           </constraints>
           <control type="list" format="string"/>
@@ -97,7 +98,10 @@
           </constraints>
           <dependencies>
             <dependency type="enable">
-              <condition operator="is" setting="osd_mode">1</condition>
+              <or>
+                <condition operator="is" setting="osd_mode">1</condition>
+                <condition operator="is" setting="osd_mode">4</condition>
+              </or>
             </dependency>
           </dependencies>
           <control type="slider" format="percentage">

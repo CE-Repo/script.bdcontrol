@@ -8,24 +8,32 @@ import xbmcgui
 
 from . import actions, kodiutils, player, theme, tools
 from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
-                        PROP_OSD_TRIGGERED, home_property, localize, log)
+                        PROP_OSD_TRIGGERED, PROP_PLACED, home_property,
+                        localize, log)
 
 # The layouts, and the window file each is drawn from.
 MODE_NORMAL = 0
 MODE_COMPACT = 1
 MODE_SIDEBAR_LEFT = 2
 MODE_SIDEBAR_RIGHT = 3
+MODE_WHEEL = 4
 
 XML_FILES = {
     MODE_NORMAL: 'script-bdcontrol-osd.xml',
     MODE_COMPACT: 'script-bdcontrol-osd-compact.xml',
     MODE_SIDEBAR_LEFT: 'script-bdcontrol-osd-sidebar-left.xml',
     MODE_SIDEBAR_RIGHT: 'script-bdcontrol-osd-sidebar-right.xml',
+    MODE_WHEEL: 'script-bdcontrol-osd-wheel.xml',
 }
 
 # Both bars are the same stack of buttons; they differ only in which edge
 # they rest against and travel from.
 SIDEBAR_MODES = (MODE_SIDEBAR_LEFT, MODE_SIDEBAR_RIGHT)
+
+# The layouts narrow enough to be moved sideways as well as up and down. The
+# full size panel spans the screen and the sidebars belong to an edge, so for
+# those the horizontal setting has nothing to offer and is greyed out.
+MOVABLE_MODES = (MODE_COMPACT, MODE_WHEEL)
 SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
@@ -42,6 +50,7 @@ PANEL_SIZE = {
     MODE_COMPACT: (1365, 128),
     MODE_SIDEBAR_LEFT: (330, 528),
     MODE_SIDEBAR_RIGHT: (330, 528),
+    MODE_WHEEL: (560, 592),
 }
 
 # The margin every mode keeps to the screen edge, matching the one the full
@@ -59,7 +68,7 @@ def panel_bounds(mode):
     which is how the sidebar came to stop short of the bottom of the screen.
     """
     width, height = PANEL_SIZE[mode]
-    if mode == MODE_COMPACT:
+    if mode in MOVABLE_MODES:
         left = (SCREEN_WIDTH - width) // 2
     elif mode == MODE_SIDEBAR_RIGHT:
         left = SCREEN_WIDTH - width - SCREEN_MARGIN
@@ -68,9 +77,9 @@ def panel_bounds(mode):
     return left, SCREEN_HEIGHT - height - SCREEN_MARGIN, SCREEN_MARGIN
 
 
-def compact_left_range():
-    """How far the compact panel may travel sideways, margin to margin."""
-    width = PANEL_SIZE[MODE_COMPACT][0]
+def left_range(mode):
+    """How far a movable panel may travel sideways, margin to margin."""
+    width = PANEL_SIZE[mode][0]
     return SCREEN_MARGIN, SCREEN_WIDTH - width - SCREEN_MARGIN
 
 BUTTON_POPUP_MENU = 201
@@ -223,6 +232,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
     def onFocus(self, control_id):
         self._touch()
         command = self.commands.get(control_id)
+        if effective_button_style(self._mode) != theme.STYLE_ICONS:
+            # The hint line explains an icon that carries no words of its own,
+            # so the skin files show it for that style alone - and the wheel,
+            # which labels every segment, has no such control to write to.
+            return
         self._set_label(LABEL_HINT, command.hint if command else '')
 
     # -- rendering --------------------------------------------------------
@@ -231,19 +245,31 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """Move the panel to the configured vertical position.
 
         100% is the bottom of the screen and the default; 0% moves it to a
-        small margin below the top edge. Sideways only the compact panel can
-        move: the full size one spans the screen and has nowhere to go.
+        small margin below the top edge. Sideways only the panels narrower
+        than the screen can move: the full size one spans it, and a sidebar
+        that has left its edge is no longer a sidebar.
         """
         left, bottom, ceiling = panel_bounds(self._mode)
         percent = max(0, min(100, kodiutils.get_setting_int('osd_position_y', 100)))
         top = ceiling + round((bottom - ceiling) * percent / 100)
-        if self._mode == MODE_COMPACT:
+        if self._mode in MOVABLE_MODES:
             across = max(0, min(100,
                                 kodiutils.get_setting_int('osd_position_x', 50)))
-            leftmost, rightmost = compact_left_range()
+            leftmost, rightmost = left_range(self._mode)
             left = leftmost + round((rightmost - leftmost) * across / 100)
         try:
             self.getControl(GROUP_PANEL).setPosition(left, top)
+        except Exception:  # pylint: disable=broad-except
+            pass
+        # Only now is the panel where the settings want it, so only now may
+        # it be drawn: the window file knows one position, and every other
+        # one would show there for a frame and then jump. The skin file
+        # hides the panel until this says otherwise and opens it from here.
+        home_property(PROP_PLACED, '1')
+        # The panel was hidden while the window handed out its default
+        # focus, so that focus went nowhere; it has to be given again.
+        try:
+            self.setFocusId(BUTTON_KODI_OSD)
         except Exception:  # pylint: disable=broad-except
             pass
 
@@ -259,6 +285,18 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """
         style = effective_button_style(self._mode)
         wordless = style == theme.STYLE_ICONS
+        if self._mode == MODE_WHEEL:
+            # Every segment carries its own name, the diagnostics one too:
+            # the wheel gives each the same wedge, and an unnamed icon among
+            # four named ones reads as a mistake. The name is a label of its
+            # own rather than the button's, in a focused and an unfocused
+            # copy, since a label control has no colour of its own to switch.
+            for control_id, command in self.commands.items():
+                self._set_label(control_id, '')
+                self._set_label(control_id + PAIR_LABEL_OFFSET, command.label)
+                self._set_label(control_id + PAIR_FOCUS_LABEL_OFFSET,
+                                command.label)
+            return
         if self._mode in SIDEBAR_MODES:
             # Stacked, the icon is an overlay on the left and the button
             # draws its own centred label, so one label carries both text
@@ -346,11 +384,17 @@ def effective_button_style(mode):
 
     The sidebars prescribe icons with text and ignore the setting: their
     buttons are as wide as the bar, which leaves an icon alone stranded in a
-    corner and a label alone with an empty stripe beside it. The setting is
-    greyed out for those layouts, and this is what makes that true rather
-    than merely advertised.
+    corner and a label alone with an empty stripe beside it. The wheel
+    prescribes icons with text for the same kind of reason: a wedge is not a
+    stripe either, and the name belongs under the icon. The setting is greyed
+    out for those layouts, and this is what makes that true rather than
+    merely advertised.
     """
     if mode in SIDEBAR_MODES:
+        return theme.STYLE_ICONS_AND_TEXT
+    if mode == MODE_WHEEL:
+        # A segment is roomy enough for the icon with the name under it, and
+        # a wheel whose segments are unnamed makes the icons guesswork.
         return theme.STYLE_ICONS_AND_TEXT
     return theme.button_style()
 
@@ -425,6 +469,7 @@ def show():
         fallback()
         return
     home_property(PROP_OSD_OPEN, '1')
+    home_property(PROP_PLACED, '')
     failed = False
     try:
         dialog.doModal()
@@ -436,6 +481,7 @@ def show():
         home_property(PROP_OSD_OPEN, '')
         home_property(PROP_OSD_CLOSE, '')
         home_property(PROP_CHAPTER, '')
+        home_property(PROP_PLACED, '')
         del dialog
     if failed:
         fallback()
@@ -456,12 +502,14 @@ def preview():
         kodiutils.log_error('could not create the preview OSD window: %s' % exc)
         return
     preview_dialog.preview_mode = True
+    home_property(PROP_PLACED, '')
     try:
         preview_dialog.doModal()
     except Exception as exc:  # pylint: disable=broad-except
         kodiutils.log_error('the preview OSD window failed: %s' % exc)
     finally:
         preview_dialog.wait_for_worker()
+        home_property(PROP_PLACED, '')
         del preview_dialog
 
 

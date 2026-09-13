@@ -290,7 +290,7 @@ msgid "Icons and text"
 msgstr ""
 
 msgctxt "#30224"
-msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar layouts always use icons with text."
+msgid "Whether the OSD buttons show their icon, their label, or both. The sidebar and wheel layouts always use icons with text."
 msgstr ""
 
 msgctxt "#30225"
@@ -298,7 +298,7 @@ msgid "Layout"
 msgstr ""
 
 msgctxt "#30226"
-msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick."
+msgid "Full size spans the screen along the bottom. Compact is the same panel at about three quarters the size. The sidebars stack the buttons in a bar that slides out from the edge you pick. The wheel lays them out in the segments of a ring, with the chapter and the running time in its hub."
 msgstr ""
 
 msgctxt "#30227"
@@ -306,7 +306,7 @@ msgid "Horizontal position"
 msgstr ""
 
 msgctxt "#30228"
-msgid "Compact layout only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The other layouts are anchored and have nowhere to move."
+msgid "Compact and wheel layouts only: 50% centres the OSD, 0% moves it to the left edge and 100% to the right. The full size panel spans the screen and the sidebars belong to an edge, so neither has anywhere to move."
 msgstr ""
 
 msgctxt "#30229"
@@ -327,6 +327,10 @@ msgstr ""
 
 msgctxt "#30235"
 msgid "Buttons and position"
+msgstr ""
+
+msgctxt "#30236"
+msgid "Wheel"
 msgstr ""
 
 msgctxt "#30241"

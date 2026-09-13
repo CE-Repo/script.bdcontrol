@@ -21,6 +21,11 @@ PROP_OSD_TRIGGERED = 'bdcontrol.osd.triggered'
 # from here and hides itself while it is empty.
 PROP_CHAPTER = 'BDControl.Chapter'
 
+# Also read by the skin file: the panel stays hidden until onInit has moved
+# it to the configured position. A window file can only name one position,
+# and any other setting would show for a frame there before the move.
+PROP_PLACED = 'BDControl.Placed'
+
 
 def addon():
     """Return a fresh Addon object (settings are cached per instance)."""
