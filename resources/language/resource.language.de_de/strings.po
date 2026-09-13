@@ -333,6 +333,10 @@ msgctxt "#30236"
 msgid "Wheel"
 msgstr "Rad"
 
+msgctxt "#30237"
+msgid "Single button"
+msgstr "Einzelne Schaltfläche"
+
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
 msgstr "Debug-Meldungen in das Kodi-Log schreiben"

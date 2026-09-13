@@ -55,7 +55,10 @@
           </constraints>
           <dependencies>
             <dependency type="enable">
-              <condition operator="lt" setting="osd_mode">2</condition>
+              <or>
+                <condition operator="lt" setting="osd_mode">2</condition>
+                <condition operator="is" setting="osd_mode">5</condition>
+              </or>
             </dependency>
           </dependencies>
           <control type="list" format="string"/>
@@ -70,6 +73,7 @@
               <option label="30233">2</option>
               <option label="30234">3</option>
               <option label="30236">4</option>
+              <option label="30237">5</option>
             </options>
           </constraints>
           <control type="list" format="string"/>
@@ -101,6 +105,7 @@
               <or>
                 <condition operator="is" setting="osd_mode">1</condition>
                 <condition operator="is" setting="osd_mode">4</condition>
+                <condition operator="is" setting="osd_mode">5</condition>
               </or>
             </dependency>
           </dependencies>

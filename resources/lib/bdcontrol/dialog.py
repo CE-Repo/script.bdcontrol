@@ -17,6 +17,7 @@ MODE_COMPACT = 1
 MODE_SIDEBAR_LEFT = 2
 MODE_SIDEBAR_RIGHT = 3
 MODE_WHEEL = 4
+MODE_SINGLE = 5
 
 XML_FILES = {
     MODE_NORMAL: 'script-bdcontrol-osd.xml',
@@ -24,6 +25,7 @@ XML_FILES = {
     MODE_SIDEBAR_LEFT: 'script-bdcontrol-osd-sidebar-left.xml',
     MODE_SIDEBAR_RIGHT: 'script-bdcontrol-osd-sidebar-right.xml',
     MODE_WHEEL: 'script-bdcontrol-osd-wheel.xml',
+    MODE_SINGLE: 'script-bdcontrol-osd-single.xml',
 }
 
 # Both bars are the same stack of buttons; they differ only in which edge
@@ -33,7 +35,7 @@ SIDEBAR_MODES = (MODE_SIDEBAR_LEFT, MODE_SIDEBAR_RIGHT)
 # The layouts narrow enough to be moved sideways as well as up and down. The
 # full size panel spans the screen and the sidebars belong to an edge, so for
 # those the horizontal setting has nothing to offer and is greyed out.
-MOVABLE_MODES = (MODE_COMPACT, MODE_WHEEL)
+MOVABLE_MODES = (MODE_COMPACT, MODE_WHEEL, MODE_SINGLE)
 SKIN_FOLDER = 'default'
 SKIN_RESOLUTION = '1080i'
 
@@ -51,13 +53,27 @@ PANEL_SIZE = {
     MODE_SIDEBAR_LEFT: (330, 528),
     MODE_SIDEBAR_RIGHT: (330, 528),
     MODE_WHEEL: (560, 592),
+    MODE_SINGLE: (700, 128),
 }
+
+# The single button layout in the icons-only style: an icon says nothing on
+# its own, so that style carries the hint line and the panel is a line
+# taller for it. Its window file draws the two heights the same way.
+SINGLE_SIZE_WITH_HINT = (700, 150)
 
 # The margin every mode keeps to the screen edge, matching the one the full
 # size panel is drawn with.
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 SCREEN_MARGIN = 50
+
+
+def panel_size(mode):
+    """The panel's size, which for one layout depends on the button style."""
+    if (mode == MODE_SINGLE
+            and effective_button_style(mode) == theme.STYLE_ICONS):
+        return SINGLE_SIZE_WITH_HINT
+    return PANEL_SIZE[mode]
 
 
 def panel_bounds(mode):
@@ -67,7 +83,7 @@ def panel_bounds(mode):
     a second time: these numbers went stale the moment a panel was resized,
     which is how the sidebar came to stop short of the bottom of the screen.
     """
-    width, height = PANEL_SIZE[mode]
+    width, height = panel_size(mode)
     if mode in MOVABLE_MODES:
         left = (SCREEN_WIDTH - width) // 2
     elif mode == MODE_SIDEBAR_RIGHT:
@@ -79,7 +95,7 @@ def panel_bounds(mode):
 
 def left_range(mode):
     """How far a movable panel may travel sideways, margin to margin."""
-    width = PANEL_SIZE[mode][0]
+    width = panel_size(mode)[0]
     return SCREEN_MARGIN, SCREEN_WIDTH - width - SCREEN_MARGIN
 
 BUTTON_POPUP_MENU = 201
@@ -93,6 +109,32 @@ BUTTON_STREAM = 205
 # each focus state.
 PAIR_LABEL_OFFSET = 100
 PAIR_FOCUS_LABEL_OFFSET = 200
+
+# The single button layout's one button, and the two copies of the name it
+# shows - unfocused and focused, as everywhere else. The button stands for
+# whichever command the step is on rather than for one of its own, which is
+# why its id is not one of the five.
+SINGLE_BUTTON = 210
+SINGLE_LABEL = 310
+SINGLE_FOCUS_LABEL = 410
+
+# Which command the single button is on, read by its window file to show the
+# matching icon.
+PROP_STEP = 'BDControl.Step'
+
+# The layouts whose window file has no hint line to write to. The wheel
+# names every segment it draws and has no room for a second line.
+HINTLESS_MODES = (MODE_WHEEL,)
+
+# The control each layout opens with the remote on. Only the single button
+# layout differs: its one button stands for every command, so none of the
+# five ids the other layouts use exists in it.
+DEFAULT_FOCUS = {MODE_SINGLE: SINGLE_BUTTON}
+
+# Kodi's left and right. In every other layout these move focus from button
+# to button; the single button layout has only the one, so they step it.
+ACTION_MOVE_LEFT = 1
+ACTION_MOVE_RIGHT = 2
 
 # Buttons the wide layouts draw square and icon-only, whatever the selected
 # button style - they have no label of either kind to fill in. The sidebar
@@ -165,6 +207,10 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._last_input = time.time()
         self._timeout = max(kodiutils.get_setting_int('osd_timeout', 10), 0)
         self._closing = False
+        # Which command the single button layout is on, as an index into
+        # BUTTON_ORDER. The other layouts show all five at once and leave it
+        # alone.
+        self._step = 0
         # Set while a command of ours is running. One that leaves the OSD
         # open puts a menu of its own on top, and the OSD sees no input for
         # as long as that menu is up - which the idle timeout would read as
@@ -216,13 +262,24 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._touch()
         if action.getId() in CLOSE_ACTIONS:
             self.close()
+            return
+        if self._mode != MODE_SINGLE:
+            return
+        # One button, so left and right have no neighbour to move to; they
+        # step the button through the commands instead. The button's own
+        # navigation leads back to itself, so focus never leaves it and the
+        # action arrives here.
+        if action.getId() == ACTION_MOVE_LEFT:
+            self._set_step(self._step - 1)
+        elif action.getId() == ACTION_MOVE_RIGHT:
+            self._set_step(self._step + 1)
 
     def onClick(self, control_id):
         self._touch()
         if self.preview_mode:
             # Sample data only - a click must not run a real player command.
             return
-        command = self.commands.get(control_id)
+        command = self.commands.get(self._command_id(control_id))
         if command is None:
             return
         if command.closes:
@@ -251,11 +308,13 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
 
     def onFocus(self, control_id):
         self._touch()
-        command = self.commands.get(control_id)
-        if effective_button_style(self._mode) != theme.STYLE_ICONS:
-            # The hint line explains an icon that carries no words of its own,
-            # so the skin files show it for that style alone - and the wheel,
-            # which labels every segment, has no such control to write to.
+        command = self.commands.get(self._command_id(control_id))
+        if (self._mode in HINTLESS_MODES
+                or effective_button_style(self._mode) != theme.STYLE_ICONS):
+            # The hint line explains an icon that carries no words of its
+            # own, so the skin files show it for that style alone - and the
+            # wheel, which names every segment it draws, has no such control
+            # to write to at all.
             return
         self._set_label(LABEL_HINT, command.hint if command else '')
 
@@ -287,9 +346,12 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         # hides the panel until this says otherwise and opens it from here.
         home_property(PROP_PLACED, '1')
         # The panel was hidden while the window handed out its default
-        # focus, so that focus went nowhere; it has to be given again.
+        # focus, so that focus went nowhere; it has to be given again - and
+        # to the button this layout actually has. Left unfocused, the button
+        # draws itself in the unfocused colours, which is what gave the
+        # single button layout the wrong text colour on opening.
         try:
-            self.setFocusId(BUTTON_KODI_OSD)
+            self.setFocusId(DEFAULT_FOCUS.get(self._mode, BUTTON_KODI_OSD))
         except Exception:  # pylint: disable=broad-except
             pass
 
@@ -305,6 +367,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         """
         style = effective_button_style(self._mode)
         wordless = style == theme.STYLE_ICONS
+        if self._mode == MODE_SINGLE:
+            # One button, one name: the step decides which, and writing it
+            # out is the same work as moving to it.
+            self._set_step(self._step)
+            return
         if self._mode == MODE_WHEEL:
             # Every segment carries its own name, the diagnostics one too:
             # the wheel gives each the same wedge, and an unnamed icon among
@@ -335,6 +402,42 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             paired = command.label if style == theme.STYLE_ICONS_AND_TEXT else ''
             self._set_label(control_id + PAIR_LABEL_OFFSET, paired)
             self._set_label(control_id + PAIR_FOCUS_LABEL_OFFSET, paired)
+
+    def _command_id(self, control_id):
+        """The command a clicked or focused control stands for.
+
+        Every layout but one has a button per command, and the control id is
+        the answer; the single button layout has one button standing for
+        whichever command its step is on.
+        """
+        if control_id == SINGLE_BUTTON:
+            return BUTTON_ORDER[self._step % len(BUTTON_ORDER)]
+        return control_id
+
+    def _set_step(self, step):
+        """Move the single button to another command and show it.
+
+        The step wraps: five commands in a ring is what makes one button
+        enough, and a step that stopped at either end would leave the user
+        pressing against nothing.
+        """
+        self._step = step % len(BUTTON_ORDER)
+        command = self.commands[BUTTON_ORDER[self._step]]
+        home_property(PROP_STEP, str(self._step))
+        # The name goes wherever the chosen style shows it: on the button
+        # itself when it stands alone, in the grouplist when it is paired
+        # with the icon, and nowhere at all for icons only. Same division of
+        # labour as the wide layouts, for one button rather than five.
+        style = effective_button_style(self._mode)
+        self._set_label(SINGLE_BUTTON,
+                        command.label if style == theme.STYLE_TEXT else '')
+        paired = command.label if style == theme.STYLE_ICONS_AND_TEXT else ''
+        self._set_label(SINGLE_LABEL, paired)
+        self._set_label(SINGLE_FOCUS_LABEL, paired)
+        # Icons only: the panel grows a line for what the command does, since
+        # an icon on its own says nothing. The other styles name it already.
+        self._set_label(LABEL_HINT,
+                        command.hint if style == theme.STYLE_ICONS else '')
 
     def _touch(self):
         self._last_input = time.time()
