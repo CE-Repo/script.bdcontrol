@@ -269,7 +269,7 @@
           <height>32</height>
           <aspectratio>keep</aspectratio>
           <visible>[String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) | String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2)] + !Control.HasFocus(204)</visible>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-diagnostics.png</texture>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-more.png</texture>
         </control>
         <control type="image">
           <left>40</left>
@@ -278,7 +278,7 @@
           <height>32</height>
           <aspectratio>keep</aspectratio>
           <visible>[String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) | String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2)] + Control.HasFocus(204)</visible>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-more.png</texture>
         </control>
 
         <!-- Explanation of the focused button - icons-only style needs it, text

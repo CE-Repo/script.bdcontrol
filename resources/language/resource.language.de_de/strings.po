@@ -337,6 +337,14 @@ msgctxt "#30237"
 msgid "Single button"
 msgstr "Einzelne Schaltfläche"
 
+msgctxt "#30238"
+msgid "More..."
+msgstr "Mehr…"
+
+msgctxt "#30239"
+msgid "Stop playback"
+msgstr "Wiedergabe stoppen"
+
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
 msgstr "Debug-Meldungen in das Kodi-Log schreiben"
@@ -896,3 +904,8 @@ msgstr "Ein Kapitel aus einer Liste wählen"
 msgctxt "#30462"
 msgid "Choose the audio track, subtitles or a chapter"
 msgstr "Tonspur, Untertitel oder Kapitel wählen"
+
+msgctxt "#30463"
+msgid "Stop playback, diagnostics and other odds and ends"
+msgstr "Wiedergabe stoppen, Diagnose und weitere Kleinigkeiten"
+

@@ -81,27 +81,64 @@ def _language_label(language):
 def stream_menu():
     """The Stream button: choose what to change, then open that chooser.
 
-    The choosers come back with True when the user asked to step back out of
-    them, which is what makes this a menu rather than a one-way door. This
-    menu heads its own list with the same step back, out to the OSD it was
-    opened from: every chooser under it offers one, and a menu that can only
-    be left by backing out of the dialog reads as a dead end beside them.
+    The choosers come back with True when the user left them without
+    changing anything, which is what makes this a menu rather than a one-way
+    door: leaving a chooser lands here, and leaving here lands on the OSD.
     """
     entries = [(localize(30118), audio_menu),
                (localize(30119), subtitle_menu),
                (localize(30116), chapter_list)]
     preselect = 0
     while True:
-        choice = xbmcgui.Dialog().select(
-            localize(30117),
-            [localize(30164)] + [label for label, _ in entries],
-            preselect=preselect + 1)
-        # The first entry steps back to the OSD, which is still standing
-        # behind this menu; backing out of the dialog lands there too.
-        if choice <= 0:
+        choice = xbmcgui.Dialog().select(localize(30117),
+                                         [label for label, _ in entries],
+                                         preselect=preselect)
+        # Back on the remote is the way out, and it leads to the OSD, which
+        # is standing behind this menu. An entry of its own would say the
+        # same thing twice - unlike the choosers below, where the two once
+        # led to different places.
+        if choice < 0:
             return
-        preselect = choice - 1
-        if not entries[preselect][1]():
+        preselect = choice
+        if not entries[choice][1]():
+            return
+
+
+def stop_playback():
+    """Stop the disc.
+
+    `PlayerControl(...)` goes to the player rather than to the active window,
+    so a disc menu holding on to the remote does not get in the way.
+    """
+    execute_builtin('PlayerControl(Stop)')
+
+
+def more_menu():
+    """The More button: the commands that are not worth a button of their own.
+
+    Built like the Stream menu, and behaving like it: the OSD steps aside
+    while this is up, the first entry steps back to it, and an entry that
+    leaves something on screen comes back here afterwards. Stopping the disc
+    is the one that does not - there is nothing left to come back to.
+    """
+    # Imported here rather than at the top: tools imports this module, and
+    # the two would not load each other at import time.
+    from . import tools
+    entries = [(localize(30239), stop_playback, False),
+               (localize(30034), tools.show_diagnostics, True)]
+    preselect = 0
+    while True:
+        choice = xbmcgui.Dialog().select(localize(30238),
+                                         [label for label, _, _ in entries],
+                                         preselect=preselect)
+        # Back on the remote leads to the OSD behind this menu, the same way
+        # it does out of the Stream menu.
+        if choice < 0:
+            return
+        preselect = choice
+        label, handler, returns = entries[choice]
+        handler()
+        if not returns:
             return
 
 
@@ -157,19 +194,16 @@ def _selected_index(streams, index):
 
 
 def _choose(heading, labels, preselect):
-    """Show a chooser whose first entry steps back to the Stream menu.
+    """Show a chooser. Returns the picked position, or None when none was.
 
-    Returns the picked entry's position in `labels`, or None when the user
-    left the chooser - by picking that first entry or by backing out of the
-    dialog, which differ only in where they land afterwards.
+    Leaving it is back on the remote, and that lands one level up, in the
+    menu this was opened from: a chooser is a step down from that menu, and
+    a step back from a step down goes up one, not all the way out. The
+    menus carry no entry saying so - it would say what the button already
+    does.
     """
-    choice = xbmcgui.Dialog().select(heading, [localize(30164)] + labels,
-                                     preselect=preselect + 1)
-    if choice < 0:
-        return None, False
-    if choice == 0:
-        return None, True
-    return choice - 1, True
+    choice = xbmcgui.Dialog().select(heading, labels, preselect=preselect)
+    return None if choice < 0 else choice
 
 
 def _confirm_switch(what, wanted, read_current):
@@ -201,10 +235,10 @@ def audio_menu():
         return True
     labels = [_stream_label(stream, number)
               for number, stream in enumerate(streams, 1)]
-    choice, back = _choose(localize(30118), labels,
-                           _selected_index(streams, state.current_audio_index))
+    choice = _choose(localize(30118), labels,
+                     _selected_index(streams, state.current_audio_index))
     if choice is None or state.player_id is None:
-        return back
+        return True
     wanted = streams[choice].get('index', choice)
     jsonrpc('Player.SetAudioStream', playerid=state.player_id, stream=wanted)
     _confirm_switch('audio', wanted,
@@ -225,9 +259,9 @@ def subtitle_menu():
     preselect = 0
     if state.subtitles_enabled:
         preselect = _selected_index(streams, state.current_subtitle_index) + 1
-    choice, back = _choose(localize(30119), labels, preselect)
+    choice = _choose(localize(30119), labels, preselect)
     if choice is None or state.player_id is None:
-        return back
+        return True
     if choice == 0:
         jsonrpc('Player.SetSubtitle', playerid=state.player_id, subtitle='off')
         return False
@@ -271,9 +305,9 @@ def chapter_list():
         kodiutils.notify(localize(30158))
         return True
     labels = chapter_labels(marks, state.chapter_count, state.duration)
-    choice, back = _choose(localize(30116), labels, max(state.chapter - 1, 0))
+    choice = _choose(localize(30116), labels, max(state.chapter - 1, 0))
     if choice is None:
-        return back
+        return True
     if marks:
         seek_percentage(marks[choice])
     else:

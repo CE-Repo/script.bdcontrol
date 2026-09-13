@@ -6,7 +6,7 @@ import time
 import xbmc
 import xbmcgui
 
-from . import actions, kodiutils, player, theme, tools
+from . import actions, kodiutils, player, theme
 from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
                         PROP_OSD_TRIGGERED, PROP_PLACED, home_property,
                         localize, log)
@@ -101,7 +101,9 @@ def left_range(mode):
 BUTTON_POPUP_MENU = 201
 BUTTON_TOP_MENU = 202
 BUTTON_KODI_OSD = 203
-BUTTON_DIAGNOSTICS = 204
+# Was the diagnostics button; it now carries the commands that are not
+# worth a button of their own, diagnostics among them.
+BUTTON_MORE = 204
 BUTTON_STREAM = 205
 
 # The icons+text style draws its label inside a grouplist next to the icon
@@ -139,13 +141,13 @@ ACTION_MOVE_RIGHT = 2
 # Buttons the wide layouts draw square and icon-only, whatever the selected
 # button style - they have no label of either kind to fill in. The sidebar
 # stacks them all alike and singles none of them out.
-ICON_ONLY_BUTTONS = (BUTTON_DIAGNOSTICS,)
+ICON_ONLY_BUTTONS = (BUTTON_MORE,)
 
 # Left to right, matching the skin file and the plain-list fallback. The ids
 # are not in order here: they were handed out as the buttons were added, the
 # row has been arranged since.
 BUTTON_ORDER = (BUTTON_KODI_OSD, BUTTON_STREAM, BUTTON_POPUP_MENU,
-                BUTTON_TOP_MENU, BUTTON_DIAGNOSTICS)
+                BUTTON_TOP_MENU, BUTTON_MORE)
 
 ACTION_PREVIOUS_MENU = 10
 ACTION_NAV_BACK = 92
@@ -191,8 +193,9 @@ def _build_commands():
         # The one command that leaves the OSD standing: its menu offers a way
         # back, and a way back needs something to come back to.
         BUTTON_STREAM: Command(30117, 30462, actions.stream_menu),
-        BUTTON_DIAGNOSTICS: Command(30034, 30048, tools.show_diagnostics,
-                                    closes=True),
+        # Leaves the OSD standing, as the Stream button does: its menu
+        # offers a way back, and a way back needs something to come back to.
+        BUTTON_MORE: Command(30238, 30463, actions.more_menu),
     }
 
 
