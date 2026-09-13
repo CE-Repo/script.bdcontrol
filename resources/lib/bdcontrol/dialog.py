@@ -8,8 +8,8 @@ import xbmcgui
 
 from . import actions, kodiutils, player, theme
 from .kodiutils import (PROP_CHAPTER, PROP_OSD_CLOSE, PROP_OSD_OPEN,
-                        PROP_OSD_TRIGGERED, PROP_PLACED, home_property,
-                        localize, log)
+                        PROP_OSD_RELOAD, PROP_OSD_TRIGGERED, PROP_PLACED,
+                        home_property, localize, log)
 
 # The layouts, and the window file each is drawn from.
 MODE_NORMAL = 0
@@ -306,6 +306,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             self._touch()
             if steps_aside and not self._closing:
                 home_property(PROP_PLACED, '1')
+        if home_property(PROP_OSD_RELOAD) == '1':
+            # Settings were changed, and this window was built from the old
+            # ones. It closes; show() opens one built from the new ones.
+            self.close()
+            return
         if not self._closing:
             self._refresh()
 
@@ -586,6 +591,21 @@ def show():
         # OSD belongs.
         kodiutils.notify(localize(30156))
         return
+    # Usually one window and done. Settings changed from inside the OSD ask
+    # for another one: the layout decides which file the window is built
+    # from, and the colours are written to its properties as it opens, so
+    # neither reaches a window that is already standing. Opening the new one
+    # has to happen out here, after the command that asked has returned.
+    while True:
+        home_property(PROP_OSD_RELOAD, '')
+        _show_once()
+        if home_property(PROP_OSD_RELOAD) != '1':
+            return
+        log('settings changed - opening the OSD again')
+
+
+def _show_once():
+    """One run of the OSD window, from opening it to cleaning up after it."""
     theme.apply_theme(effective_button_style(osd_mode()))
     try:
         dialog = BDControlDialog(xml_file(), kodiutils.addon_path(),

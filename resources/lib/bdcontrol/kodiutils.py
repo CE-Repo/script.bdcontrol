@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Thin wrappers around the Kodi Python API used throughout the addon."""
+import hashlib
 import json
+import os
 
 import xbmc
 import xbmcaddon
@@ -16,6 +18,11 @@ HOME_WINDOW = 10000
 PROP_OSD_OPEN = 'bdcontrol.osd.open'
 PROP_OSD_CLOSE = 'bdcontrol.osd.close'
 PROP_OSD_TRIGGERED = 'bdcontrol.osd.triggered'
+# Set when the OSD has to be built again rather than carried on with - a
+# layout picked in the settings names a different window file, and a window
+# cannot become another one. Read by show() once the command that set it has
+# returned; nothing can reopen the window it is running inside.
+PROP_OSD_RELOAD = 'bdcontrol.osd.reload'
 
 # Read by the skin file rather than by us: the chapter tab takes its text
 # from here and hides itself while it is empty.
@@ -84,7 +91,28 @@ def get_setting_int(setting_id, default=0):
             return default
 
 
+def settings_fingerprint():
+    """What the addon's settings look like right now, as one value.
+
+    Everything the OSD is drawn from lives in these two files - the settings
+    Kodi writes, and the custom colours the HEX picker keeps beside them -
+    so the same value before and after the settings dialog means nothing the
+    OSD cares about has moved. Missing files count as empty, which is what a
+    first run looks like.
+    """
+    digest = hashlib.md5()
+    for name in ('settings.xml', 'custom_colors.json'):
+        try:
+            with open(os.path.join(addon_profile(), name), 'rb') as handle:
+                digest.update(handle.read())
+        except OSError:
+            pass
+        digest.update(b'|')
+    return digest.hexdigest()
+
+
 def open_settings():
+    """Open this addon's own settings dialog."""
     addon().openSettings()
 
 

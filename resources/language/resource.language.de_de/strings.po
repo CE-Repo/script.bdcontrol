@@ -41,10 +41,6 @@ msgctxt "#30047"
 msgid "Open Kodi's own video OSD, which the disc menu blocks"
 msgstr "Das Kodi-eigene Video-OSD öffnen, das vom Disc-Menü blockiert wird"
 
-msgctxt "#30048"
-msgid "Show the diagnostics report"
-msgstr "Den Diagnosebericht anzeigen"
-
 msgctxt "#30055"
 msgid "The command failed - see the Kodi log"
 msgstr "Der Befehl ist fehlgeschlagen - siehe Kodi-Log"
@@ -245,10 +241,6 @@ msgctxt "#30163"
 msgid "Track %d"
 msgstr "Spur %d"
 
-msgctxt "#30164"
-msgid "Back"
-msgstr "Zurück"
-
 msgctxt "#30165"
 msgid "The player did not apply the change"
 msgstr "Der Player hat die Änderung nicht übernommen"
@@ -344,6 +336,10 @@ msgstr "Mehr…"
 msgctxt "#30239"
 msgid "Stop playback"
 msgstr "Wiedergabe stoppen"
+
+msgctxt "#30240"
+msgid "Settings"
+msgstr "Einstellungen"
 
 msgctxt "#30241"
 msgid "Write debug messages to the Kodi log"
@@ -896,10 +892,6 @@ msgstr "Das Popup-Menü der Disc öffnen"
 msgctxt "#30460"
 msgid "Open the disc's main menu"
 msgstr "Das Hauptmenü der Disc öffnen"
-
-msgctxt "#30461"
-msgid "Pick a chapter from a list"
-msgstr "Ein Kapitel aus einer Liste wählen"
 
 msgctxt "#30462"
 msgid "Choose the audio track, subtitles or a chapter"

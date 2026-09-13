@@ -41,10 +41,6 @@ msgctxt "#30047"
 msgid "Open Kodi's own video OSD, which the disc menu blocks"
 msgstr ""
 
-msgctxt "#30048"
-msgid "Show the diagnostics report"
-msgstr ""
-
 msgctxt "#30055"
 msgid "The command failed - see the Kodi log"
 msgstr ""
@@ -245,10 +241,6 @@ msgctxt "#30163"
 msgid "Track %d"
 msgstr ""
 
-msgctxt "#30164"
-msgid "Back"
-msgstr ""
-
 msgctxt "#30165"
 msgid "The player did not apply the change"
 msgstr ""
@@ -343,6 +335,10 @@ msgstr ""
 
 msgctxt "#30239"
 msgid "Stop playback"
+msgstr ""
+
+msgctxt "#30240"
+msgid "Settings"
 msgstr ""
 
 msgctxt "#30241"
@@ -895,10 +891,6 @@ msgstr ""
 
 msgctxt "#30460"
 msgid "Open the disc's main menu"
-msgstr ""
-
-msgctxt "#30461"
-msgid "Pick a chapter from a list"
 msgstr ""
 
 msgctxt "#30462"

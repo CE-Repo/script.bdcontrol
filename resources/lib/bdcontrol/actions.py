@@ -16,7 +16,8 @@ import xbmcgui
 
 from . import kodiutils, maps, player
 from .player import format_time
-from .kodiutils import execute_builtin, jsonrpc, localize
+from .kodiutils import (PROP_OSD_RELOAD, execute_builtin,
+                        home_property, jsonrpc, localize)
 
 DISC_PLAYBACK_SETTING = 'disc.playback'
 
@@ -113,19 +114,41 @@ def stop_playback():
     execute_builtin('PlayerControl(Stop)')
 
 
+def open_settings():
+    """Open the addon settings. False when the OSD has to be rebuilt after.
+
+    Nothing the settings hold reaches a window that is already open: the
+    layout decides which file the window is built from, and the colours and
+    the button style are written to the window properties when it opens. So
+    a settings dialog that changed anything at all is answered with a fresh
+    OSD - closed and opened again by show(), once this command has returned.
+    A dialog that was only looked at leaves the OSD alone.
+    """
+    before = kodiutils.settings_fingerprint()
+    kodiutils.open_settings()
+    if kodiutils.settings_fingerprint() == before:
+        return True
+    home_property(PROP_OSD_RELOAD, '1')
+    return False
+
+
 def more_menu():
     """The More button: the commands that are not worth a button of their own.
 
     Built like the Stream menu, and behaving like it: the OSD steps aside
-    while this is up, the first entry steps back to it, and an entry that
+    while this is up, back on the remote steps back to it, and an entry that
     leaves something on screen comes back here afterwards. Stopping the disc
     is the one that does not - there is nothing left to come back to.
+
+    Settings changed from here take effect on a fresh OSD, which show()
+    opens as soon as this menu is done with.
     """
     # Imported here rather than at the top: tools imports this module, and
     # the two would not load each other at import time.
     from . import tools
     entries = [(localize(30239), stop_playback, False),
-               (localize(30034), tools.show_diagnostics, True)]
+               (localize(30034), tools.show_diagnostics, True),
+               (localize(30240), open_settings, None)]
     preselect = 0
     while True:
         choice = xbmcgui.Dialog().select(localize(30238),
@@ -136,9 +159,12 @@ def more_menu():
         if choice < 0:
             return
         preselect = choice
-        label, handler, returns = entries[choice]
-        handler()
-        if not returns:
+        _, handler, returns = entries[choice]
+        answer = handler()
+        # None means the entry answers for itself: the settings come back
+        # here unless they changed the layout, and then there is a new OSD
+        # to go to rather than this menu.
+        if not (answer if returns is None else returns):
             return
 
 
