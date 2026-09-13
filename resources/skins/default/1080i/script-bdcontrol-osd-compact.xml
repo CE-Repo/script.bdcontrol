@@ -20,479 +20,488 @@
       <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1)</visible>
       <texture colordiffuse="$INFO[Window(10000).Property(BDControl.DimColor)]">bd-dim.png</texture>
       <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
-      <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
+      <animation effect="fade" start="100" end="0" time="300">WindowClose</animation>
     </control>
 
     <control type="group" id="2">
       <left>278</left>
       <top>902</top>
-      <!-- Nothing is drawn until dialog.py has moved the panel to the
-           position the settings ask for: the window file can only name one
-           position, and the panel would otherwise show at that one for a
-           frame and then jump to the real one. Opening therefore hangs off
-           this becoming true rather than off the window opening. -->
-      <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
-      <animation effect="slide" start="0,120" end="0,0" time="200" tween="quadratic" easing="out">Visible</animation>
-      <animation effect="slide" start="0,0" end="0,120" time="150" tween="quadratic" easing="in">WindowClose</animation>
-      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
-      <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
-
-      <!-- Chapter tab, resting on the panel's top right corner. Its lower
-           edge stops exactly where the panel begins rather than running on
-           underneath: two translucent shapes over each other double up their
-           colour, which showed as a dark block once the panel transparency
-           was turned down. Its texture is rounded along the top and square
-           along the bottom, so the join with the panel reads as one shape at
-           any transparency. The text comes straight from a window property,
-           so the tab can hide itself when there is no chapter to show. -->
+      <animation effect="slide" start="0,0" end="0,240" time="300" tween="quadratic" easing="in">WindowClose</animation>
+      <animation effect="fade" start="100" end="0" delay="180" time="120">WindowClose</animation>
       <control type="group">
-        <visible>!String.IsEmpty(Window(10000).Property(BDControl.Chapter))</visible>
-        <control type="image">
-          <left>1163</left>
-          <top>-30</top>
-          <width>180</width>
-          <height>30</height>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="12">bd-tab.png</texture>
+        <left>0</left>
+        <top>0</top>
+        <!-- Nothing is drawn until dialog.py has moved the panel to the
+             position the settings ask for: the window file can only name one
+             position, and the panel would otherwise show at that one for a
+             frame and then jump to the real one. Opening therefore hangs off
+             this becoming true rather than off the window opening.
+
+             It is a group of its own, inside the one that is moved: a control
+             that is hidden until a condition says otherwise does not play the
+             panel out again when the window closes, and the closing animation
+             has to stay on a control that is always there. -->
+        <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
+        <animation effect="slide" start="0,120" end="0,0" time="200" tween="quadratic" easing="out">Visible</animation>
+        <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+
+        <!-- Chapter tab, resting on the panel's top right corner. Its lower
+             edge stops exactly where the panel begins rather than running on
+             underneath: two translucent shapes over each other double up their
+             colour, which showed as a dark block once the panel transparency
+             was turned down. Its texture is rounded along the top and square
+             along the bottom, so the join with the panel reads as one shape at
+             any transparency. The text comes straight from a window property,
+             so the tab can hide itself when there is no chapter to show. -->
+        <control type="group">
+          <visible>!String.IsEmpty(Window(10000).Property(BDControl.Chapter))</visible>
+          <control type="image">
+            <left>1163</left>
+            <top>-30</top>
+            <width>180</width>
+            <height>30</height>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="12">bd-tab.png</texture>
+          </control>
+          <control type="label">
+            <left>1163</left>
+            <top>-28</top>
+            <width>180</width>
+            <height>26</height>
+            <font>font10</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
+            <align>center</align>
+            <aligny>center</aligny>
+            <label>$INFO[Window(10000).Property(BDControl.Chapter)]</label>
+          </control>
         </control>
-        <control type="label">
-          <left>1163</left>
-          <top>-28</top>
-          <width>180</width>
+
+        <control type="image" id="3">
+          <left>0</left>
+          <top>0</top>
+          <width>1365</width>
+          <height>128</height>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
+        </control>
+
+        <!-- Title of the disc / current item. It shares the running time's
+             font on purpose: the two sit on one line, and a heavier title made
+             that line read as two competing sizes. -->
+        <control type="label" id="100">
+          <left>22</left>
+          <top>12</top>
+          <width>885</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TitleColor)]</textcolor>
+          <align>left</align>
+          <aligny>center</aligny>
+          <label></label>
+        </control>
+
+        <!-- Position and duration -->
+        <control type="label" id="101">
+          <left>22</left>
+          <top>12</top>
+          <width>1321</width>
+          <height>26</height>
+          <font>font10</font>
+          <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
+          <align>right</align>
+          <aligny>center</aligny>
+          <label></label>
+        </control>
+
+        <!-- 203: set from dialog.py -->
+        <control type="button" id="203">
+          <left>22</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <font>font12</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <onleft>204</onleft>
+          <onright>205</onright>
+          <onup>203</onup>
+          <ondown>203</ondown>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="image">
+          <left>155</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
+        </control>
+        <control type="image">
+          <left>155</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(203)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
+        </control>
+        <control type="grouplist">
+          <left>22</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(203)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
+          </control>
+          <control type="label" id="303">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+        <control type="grouplist">
+          <left>22</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(203)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
+          </control>
+          <control type="label" id="403">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+
+        <!-- 205: set from dialog.py -->
+        <control type="button" id="205">
+          <left>338</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <font>font12</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <onleft>203</onleft>
+          <onright>201</onright>
+          <onup>205</onup>
+          <ondown>205</ondown>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="image">
+          <left>471</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
+        </control>
+        <control type="image">
+          <left>471</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(205)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
+        </control>
+        <control type="grouplist">
+          <left>338</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(205)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
+          </control>
+          <control type="label" id="305">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+        <control type="grouplist">
+          <left>338</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(205)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
+          </control>
+          <control type="label" id="405">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+
+        <!-- 201: set from dialog.py -->
+        <control type="button" id="201">
+          <left>654</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <font>font12</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <onleft>205</onleft>
+          <onright>202</onright>
+          <onup>201</onup>
+          <ondown>201</ondown>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="image">
+          <left>787</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
+        </control>
+        <control type="image">
+          <left>787</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(201)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
+        </control>
+        <control type="grouplist">
+          <left>654</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(201)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
+          </control>
+          <control type="label" id="301">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+        <control type="grouplist">
+          <left>654</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(201)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
+          </control>
+          <control type="label" id="401">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+
+        <!-- 202: set from dialog.py -->
+        <control type="button" id="202">
+          <left>970</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <font>font12</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <onleft>201</onleft>
+          <onright>204</onright>
+          <onup>202</onup>
+          <ondown>202</ondown>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="image">
+          <left>1103</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
+        </control>
+        <control type="image">
+          <left>1103</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(202)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
+        </control>
+        <control type="grouplist">
+          <left>970</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(202)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
+          </control>
+          <control type="label" id="302">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+        <control type="grouplist">
+          <left>970</left>
+          <top>48</top>
+          <width>297</width>
+          <height>57</height>
+          <orientation>horizontal</orientation>
+          <align>center</align>
+          <itemgap>8</itemgap>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(202)</visible>
+          <control type="image">
+            <width>24</width>
+            <height>57</height>
+            <aspectratio align="center" aligny="center">keep</aspectratio>
+            <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
+          </control>
+          <control type="label" id="402">
+            <width>auto</width>
+            <height>57</height>
+            <font>font12</font>
+            <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
+            <aligny>center</aligny>
+            <label></label>
+          </control>
+        </control>
+
+        <!-- 204: set from dialog.py -->
+        <control type="button" id="204">
+          <left>1286</left>
+          <top>48</top>
+          <width>57</width>
+          <height>57</height>
+          <font>font12</font>
+          <align>center</align>
+          <aligny>center</aligny>
+          <onleft>202</onleft>
+          <onright>203</onright>
+          <onup>204</onup>
+          <ondown>204</ondown>
+          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
+          <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
+          <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
+          <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
+        </control>
+        <control type="image">
+          <left>1299</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>!Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-diagnostics.png</texture>
+        </control>
+        <control type="image">
+          <left>1299</left>
+          <top>61</top>
+          <width>30</width>
+          <height>30</height>
+          <aspectratio>keep</aspectratio>
+          <visible>Control.HasFocus(204)</visible>
+          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>
+        </control>
+
+        <!-- Explanation of the focused button - icons-only style needs it, text
+             and icons+text already show the label itself. -->
+        <control type="label" id="103">
+          <left>22</left>
+          <top>103</top>
+          <width>1321</width>
           <height>26</height>
           <font>font10</font>
           <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
           <align>center</align>
           <aligny>center</aligny>
-          <label>$INFO[Window(10000).Property(BDControl.Chapter)]</label>
-        </control>
-      </control>
-
-      <control type="image" id="3">
-        <left>0</left>
-        <top>0</top>
-        <width>1365</width>
-        <height>128</height>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.PanelColor)]" border="24">bd-panel.png</texture>
-      </control>
-
-      <!-- Title of the disc / current item. It shares the running time's
-           font on purpose: the two sit on one line, and a heavier title made
-           that line read as two competing sizes. -->
-      <control type="label" id="100">
-        <left>22</left>
-        <top>12</top>
-        <width>885</width>
-        <height>26</height>
-        <font>font10</font>
-        <textcolor>$INFO[Window(10000).Property(BDControl.TitleColor)]</textcolor>
-        <align>left</align>
-        <aligny>center</aligny>
-        <label></label>
-      </control>
-
-      <!-- Position and duration -->
-      <control type="label" id="101">
-        <left>22</left>
-        <top>12</top>
-        <width>1321</width>
-        <height>26</height>
-        <font>font10</font>
-        <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
-        <align>right</align>
-        <aligny>center</aligny>
-        <label></label>
-      </control>
-
-      <!-- 203: set from dialog.py -->
-      <control type="button" id="203">
-        <left>22</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <font>font12</font>
-        <align>center</align>
-        <aligny>center</aligny>
-        <onleft>204</onleft>
-        <onright>205</onright>
-        <onup>203</onup>
-        <ondown>203</ondown>
-        <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-        <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
-        <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
-        <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
-      </control>
-      <control type="image">
-        <left>155</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(203)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
-      </control>
-      <control type="image">
-        <left>155</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(203)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
-      </control>
-      <control type="grouplist">
-        <left>22</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(203)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
-        </control>
-        <control type="label" id="303">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-          <aligny>center</aligny>
+          <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0)</visible>
           <label></label>
         </control>
-      </control>
-      <control type="grouplist">
-        <left>22</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(203)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
-        </control>
-        <control type="label" id="403">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-
-      <!-- 205: set from dialog.py -->
-      <control type="button" id="205">
-        <left>338</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <font>font12</font>
-        <align>center</align>
-        <aligny>center</aligny>
-        <onleft>203</onleft>
-        <onright>201</onright>
-        <onup>205</onup>
-        <ondown>205</ondown>
-        <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-        <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
-        <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
-        <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
-      </control>
-      <control type="image">
-        <left>471</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(205)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
-      </control>
-      <control type="image">
-        <left>471</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(205)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
-      </control>
-      <control type="grouplist">
-        <left>338</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(205)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
-        </control>
-        <control type="label" id="305">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-      <control type="grouplist">
-        <left>338</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(205)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
-        </control>
-        <control type="label" id="405">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-
-      <!-- 201: set from dialog.py -->
-      <control type="button" id="201">
-        <left>654</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <font>font12</font>
-        <align>center</align>
-        <aligny>center</aligny>
-        <onleft>205</onleft>
-        <onright>202</onright>
-        <onup>201</onup>
-        <ondown>201</ondown>
-        <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-        <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
-        <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
-        <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
-      </control>
-      <control type="image">
-        <left>787</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(201)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
-      </control>
-      <control type="image">
-        <left>787</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(201)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
-      </control>
-      <control type="grouplist">
-        <left>654</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(201)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
-        </control>
-        <control type="label" id="301">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-      <control type="grouplist">
-        <left>654</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(201)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
-        </control>
-        <control type="label" id="401">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-
-      <!-- 202: set from dialog.py -->
-      <control type="button" id="202">
-        <left>970</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <font>font12</font>
-        <align>center</align>
-        <aligny>center</aligny>
-        <onleft>201</onleft>
-        <onright>204</onright>
-        <onup>202</onup>
-        <ondown>202</ondown>
-        <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-        <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
-        <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
-        <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
-      </control>
-      <control type="image">
-        <left>1103</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + !Control.HasFocus(202)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
-      </control>
-      <control type="image">
-        <left>1103</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0) + Control.HasFocus(202)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
-      </control>
-      <control type="grouplist">
-        <left>970</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + !Control.HasFocus(202)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
-        </control>
-        <control type="label" id="302">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-      <control type="grouplist">
-        <left>970</left>
-        <top>48</top>
-        <width>297</width>
-        <height>57</height>
-        <orientation>horizontal</orientation>
-        <align>center</align>
-        <itemgap>8</itemgap>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),2) + Control.HasFocus(202)</visible>
-        <control type="image">
-          <width>24</width>
-          <height>57</height>
-          <aspectratio align="center" aligny="center">keep</aspectratio>
-          <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
-        </control>
-        <control type="label" id="402">
-          <width>auto</width>
-          <height>57</height>
-          <font>font12</font>
-          <textcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</textcolor>
-          <aligny>center</aligny>
-          <label></label>
-        </control>
-      </control>
-
-      <!-- 204: set from dialog.py -->
-      <control type="button" id="204">
-        <left>1286</left>
-        <top>48</top>
-        <width>57</width>
-        <height>57</height>
-        <font>font12</font>
-        <align>center</align>
-        <aligny>center</aligny>
-        <onleft>202</onleft>
-        <onright>203</onright>
-        <onup>204</onup>
-        <ondown>204</ondown>
-        <textcolor>$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]</textcolor>
-        <focusedcolor>$INFO[Window(10000).Property(BDControl.FocusTextColor)]</focusedcolor>
-        <texturefocus colordiffuse="$INFO[Window(10000).Property(BDControl.FocusColor)]" border="10">bd-button-focus.png</texturefocus>
-        <texturenofocus colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusColor)]" border="10">bd-button-nofocus.png</texturenofocus>
-      </control>
-      <control type="image">
-        <left>1299</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>!Control.HasFocus(204)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-diagnostics.png</texture>
-      </control>
-      <control type="image">
-        <left>1299</left>
-        <top>61</top>
-        <width>30</width>
-        <height>30</height>
-        <aspectratio>keep</aspectratio>
-        <visible>Control.HasFocus(204)</visible>
-        <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>
-      </control>
-
-      <!-- Explanation of the focused button - icons-only style needs it, text
-           and icons+text already show the label itself. -->
-      <control type="label" id="103">
-        <left>22</left>
-        <top>103</top>
-        <width>1321</width>
-        <height>26</height>
-        <font>font10</font>
-        <textcolor>$INFO[Window(10000).Property(BDControl.TextColor)]</textcolor>
-        <align>center</align>
-        <aligny>center</aligny>
-        <visible>String.IsEqual(Window(10000).Property(BDControl.ButtonStyle),0)</visible>
-        <label></label>
       </control>
     </control>
   </controls>

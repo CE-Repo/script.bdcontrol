@@ -481,7 +481,10 @@ def show():
         home_property(PROP_OSD_OPEN, '')
         home_property(PROP_OSD_CLOSE, '')
         home_property(PROP_CHAPTER, '')
-        home_property(PROP_PLACED, '')
+        # PROP_PLACED is deliberately left standing: the panel hangs off it,
+        # and clearing it here would take the panel off the screen while the
+        # closing animation is still playing it out. The next OSD clears it
+        # before it opens, which is the only moment it has to be false.
         del dialog
     if failed:
         fallback()
@@ -509,7 +512,6 @@ def preview():
         kodiutils.log_error('the preview OSD window failed: %s' % exc)
     finally:
         preview_dialog.wait_for_worker()
-        home_property(PROP_PLACED, '')
         del preview_dialog
 
 
