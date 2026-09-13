@@ -82,20 +82,26 @@ def stream_menu():
     """The Stream button: choose what to change, then open that chooser.
 
     The choosers come back with True when the user asked to step back out of
-    them, which is what makes this a menu rather than a one-way door.
+    them, which is what makes this a menu rather than a one-way door. This
+    menu heads its own list with the same step back, out to the OSD it was
+    opened from: every chooser under it offers one, and a menu that can only
+    be left by backing out of the dialog reads as a dead end beside them.
     """
     entries = [(localize(30118), audio_menu),
                (localize(30119), subtitle_menu),
                (localize(30116), chapter_list)]
     preselect = 0
     while True:
-        choice = xbmcgui.Dialog().select(localize(30117),
-                                         [label for label, _ in entries],
-                                         preselect=preselect)
-        if choice < 0:
+        choice = xbmcgui.Dialog().select(
+            localize(30117),
+            [localize(30164)] + [label for label, _ in entries],
+            preselect=preselect + 1)
+        # The first entry steps back to the OSD, which is still standing
+        # behind this menu; backing out of the dialog lands there too.
+        if choice <= 0:
             return
-        preselect = choice
-        if not entries[choice][1]():
+        preselect = choice - 1
+        if not entries[preselect][1]():
             return
 
 

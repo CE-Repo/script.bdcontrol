@@ -146,8 +146,9 @@ def _build_commands():
         BUTTON_TOP_MENU: Command(30115, 30460, actions.disc_top_menu,
                                  closes=True),
         BUTTON_KODI_OSD: Command(30028, 30047, actions.kodi_osd, closes=True),
-        BUTTON_STREAM: Command(30117, 30462, actions.stream_menu,
-                               closes=True),
+        # The one command that leaves the OSD standing: its menu offers a way
+        # back, and a way back needs something to come back to.
+        BUTTON_STREAM: Command(30117, 30462, actions.stream_menu),
         BUTTON_DIAGNOSTICS: Command(30034, 30048, tools.show_diagnostics,
                                     closes=True),
     }
@@ -164,6 +165,11 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
         self._last_input = time.time()
         self._timeout = max(kodiutils.get_setting_int('osd_timeout', 10), 0)
         self._closing = False
+        # Set while a command of ours is running. One that leaves the OSD
+        # open puts a menu of its own on top, and the OSD sees no input for
+        # as long as that menu is up - which the idle timeout would read as
+        # an idle user and close the OSD out from under it.
+        self._in_command = False
         # Which of the window files this instance was built from - the panel
         # geometry differs per mode, so _apply_position has to know.
         self._mode = osd_mode()
@@ -221,11 +227,25 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
             return
         if command.closes:
             self.close()
+        self._in_command = True
+        # A command that leaves the OSD standing still puts a menu of its own
+        # on top of it, and two menus over each other is one too many. The
+        # panel goes off the screen the same way it came on - by way of the
+        # property it hangs off - and comes back when the command is done,
+        # which is what the menu's own way back leads to.
+        steps_aside = not command.closes
+        if steps_aside:
+            home_property(PROP_PLACED, '')
         try:
             command.handler()
         except Exception as exc:  # pylint: disable=broad-except
             kodiutils.log_error('command %s failed: %s' % (control_id, exc))
             kodiutils.notify(localize(30055))
+        finally:
+            self._in_command = False
+            self._touch()
+            if steps_aside and not self._closing:
+                home_property(PROP_PLACED, '1')
         if not self._closing:
             self._refresh()
 
@@ -371,7 +391,7 @@ class BDControlDialog(xbmcgui.WindowXMLDialog):
                 home_property(PROP_OSD_CLOSE, '')
                 self.close()
                 break
-            if (self._timeout
+            if (self._timeout and not self._in_command
                     and time.time() - self._last_input > self._timeout):
                 log('closing OSD after %ds without input' % self._timeout)
                 self.close()

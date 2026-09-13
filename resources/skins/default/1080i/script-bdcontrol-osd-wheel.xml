@@ -42,9 +42,10 @@
       <top>0</top>
       <width>1920</width>
       <height>1080</height>
-      <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1)</visible>
+      <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1) + String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
       <texture colordiffuse="$INFO[Window(10000).Property(BDControl.DimColor)]">bd-dim.png</texture>
-      <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+      <animation effect="fade" start="100" end="0" time="150">Hidden</animation>
       <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
     </control>
 
@@ -75,10 +76,13 @@
                position the settings ask for: the window file can only name one
                position, and the panel would otherwise show at that one for a
                frame and then jump to the real one. Opening therefore hangs off
-               this becoming true rather than off the window opening. -->
+               this becoming true rather than off the window opening - and so
+               does the panel stepping aside while a command of its own has a
+               menu open over it. -->
           <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
           <animation effect="zoom" start="60" end="100" center="280,312" time="200" tween="quadratic" easing="out">Visible</animation>
           <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+          <animation effect="fade" start="100" end="0" time="150">Hidden</animation>
 
           <!-- The disc's title, above the panel. -->
           <control type="label" id="100">
@@ -228,19 +232,19 @@
 
           <!-- 203: name set from dialog.py, 303 unfocused and 403 focused -->
           <control type="image">
-            <left>250</left>
-            <top>74</top>
-            <width>60</width>
-            <height>60</height>
+            <left>254</left>
+            <top>78</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>!Control.HasFocus(203)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-videoosd.png</texture>
           </control>
           <control type="image">
-            <left>250</left>
-            <top>74</top>
-            <width>60</width>
-            <height>60</height>
+            <left>254</left>
+            <top>78</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>Control.HasFocus(203)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-videoosd.png</texture>
@@ -287,19 +291,19 @@
 
           <!-- 205: name set from dialog.py, 305 unfocused and 405 focused -->
           <control type="image">
-            <left>434</left>
-            <top>207</top>
-            <width>60</width>
-            <height>60</height>
+            <left>438</left>
+            <top>211</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>!Control.HasFocus(205)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-chapters.png</texture>
           </control>
           <control type="image">
-            <left>434</left>
-            <top>207</top>
-            <width>60</width>
-            <height>60</height>
+            <left>438</left>
+            <top>211</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>Control.HasFocus(205)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-chapters.png</texture>
@@ -346,19 +350,19 @@
 
           <!-- 201: name set from dialog.py, 301 unfocused and 401 focused -->
           <control type="image">
-            <left>363</left>
-            <top>423</top>
-            <width>60</width>
-            <height>60</height>
+            <left>367</left>
+            <top>427</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>!Control.HasFocus(201)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-popupmenu.png</texture>
           </control>
           <control type="image">
-            <left>363</left>
-            <top>423</top>
-            <width>60</width>
-            <height>60</height>
+            <left>367</left>
+            <top>427</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>Control.HasFocus(201)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-popupmenu.png</texture>
@@ -405,19 +409,19 @@
 
           <!-- 202: name set from dialog.py, 302 unfocused and 402 focused -->
           <control type="image">
-            <left>137</left>
-            <top>423</top>
-            <width>60</width>
-            <height>60</height>
+            <left>141</left>
+            <top>427</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>!Control.HasFocus(202)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-topmenu.png</texture>
           </control>
           <control type="image">
-            <left>137</left>
-            <top>423</top>
-            <width>60</width>
-            <height>60</height>
+            <left>141</left>
+            <top>427</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>Control.HasFocus(202)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-topmenu.png</texture>
@@ -464,19 +468,19 @@
 
           <!-- 204: name set from dialog.py, 304 unfocused and 404 focused -->
           <control type="image">
-            <left>66</left>
-            <top>207</top>
-            <width>60</width>
-            <height>60</height>
+            <left>70</left>
+            <top>211</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>!Control.HasFocus(204)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.NoFocusTextColor)]">bd-icon-diagnostics.png</texture>
           </control>
           <control type="image">
-            <left>66</left>
-            <top>207</top>
-            <width>60</width>
-            <height>60</height>
+            <left>70</left>
+            <top>211</top>
+            <width>52</width>
+            <height>52</height>
             <aspectratio>keep</aspectratio>
             <visible>Control.HasFocus(204)</visible>
             <texture colordiffuse="$INFO[Window(10000).Property(BDControl.FocusTextColor)]">bd-icon-diagnostics.png</texture>

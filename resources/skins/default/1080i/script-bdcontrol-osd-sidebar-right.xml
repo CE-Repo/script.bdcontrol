@@ -17,9 +17,10 @@
       <top>0</top>
       <width>1920</width>
       <height>1080</height>
-      <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1)</visible>
+      <visible>String.IsEqual(Window(10000).Property(BDControl.DimVisible),1) + String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
       <texture colordiffuse="$INFO[Window(10000).Property(BDControl.DimColor)]">bd-dim.png</texture>
-      <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+      <animation effect="fade" start="100" end="0" time="150">Hidden</animation>
       <animation effect="fade" start="100" end="0" time="150">WindowClose</animation>
     </control>
 
@@ -44,6 +45,7 @@
         <visible>String.IsEqual(Window(10000).Property(BDControl.Placed),1)</visible>
         <animation effect="slide" start="380,0" end="0,0" time="200" tween="quadratic" easing="out">Visible</animation>
         <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+        <animation effect="fade" start="100" end="0" time="150">Hidden</animation>
 
         <control type="image" id="3">
           <left>0</left>
