@@ -32,8 +32,8 @@ exactly four buttons:
 
 | Button | What it does |
 | --- | --- |
-| **Popup menu** | `PlayerControl(ShowVideoMenu(popup))` — the disc's in-movie popup menu |
-| **Main menu** | `PlayerControl(ShowVideoMenu(top))` — the disc's top / root menu |
+| **Popup menu** | `PlayerControl(ShowVideoMenu)` — the disc's in-movie popup menu |
+| **Main menu** | `PlayerControl(ShowVideoTopMenu)` and `PlayerControl(ShowVideoMenu(top))` — the disc's top / root menu |
 | **Video OSD** | `ActivateWindow(videoosd)` — Kodi's own player OSD |
 | **Diagnostics** | the report described [below](#diagnostics) |
 
@@ -46,15 +46,22 @@ The `PlayerControl(...)` builtins behind the two menu buttons go to the player
 rather than to the focused window, so they work regardless of what is on
 screen.
 
-> **A build requirement for the two menu buttons.** Upstream Kodi compares the
-> builtin's parameter exactly (`paramlow == "showvideomenu"`), so the
-> `ShowVideoMenu(popup)` / `ShowVideoMenu(top)` argument form matches nothing
-> and does *silently* nothing on a stock build. Telling the popup and the top
-> menu apart needs a build carrying the ShowVideoMenu patch —
-> [SamuriHL's CoreELEC build](https://github.com/SamuriHL/coreelec-xbmc) among
-> them. There is no way to probe for it from a script. On a stock build, use
-> Kodi's own **Video OSD** button, or map the portable
-> `PlayerControl(ShowVideoMenu)` to a remote button directly.
+> **Build support for the two menu buttons.** Builds disagree on how to ask
+> for the top menu, and a script cannot tell which one it runs on:
+>
+> | Build | Popup menu | Main menu |
+> | --- | --- | --- |
+> | Stock Kodi / CoreELEC nightly | ✅ | ❌ no top menu command |
+> | [CoreELEC canary](https://github.com/ce-canary/canary) | ✅ | ✅ via `ShowVideoTopMenu` |
+> | [SamuriHL's CoreELEC build](https://github.com/SamuriHL/coreelec-xbmc) | ✅ | ✅ via `ShowVideoMenu(top)` |
+>
+> **Popup menu** sends the bare `ShowVideoMenu`, which every build knows and
+> which opens the popup menu first (falling back to the top menu when the disc
+> has no popup). **Main menu** sends both top menu forms: a build ignores the
+> one it does not know without a word, so exactly one of them acts on canary
+> and on SamuriHL's build. Stock Kodi compares the parameter exactly
+> (`paramlow == "showvideomenu"`), so neither form matches there; use the
+> popup menu or Kodi's own **Video OSD** instead.
 
 ### When the OSD can be opened
 
