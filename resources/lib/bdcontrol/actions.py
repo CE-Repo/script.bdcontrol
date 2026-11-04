@@ -389,17 +389,41 @@ def disc_popup_menu():
     window, so unlike `Action(showvideomenu)` it does not depend on which
     window has focus.
 
-    Note that upstream Kodi matches the builtin parameter exactly (`paramlow
-    == "showvideomenu"`), so the argument form is *silently ignored* there:
-    telling the popup and the top menu apart needs a build carrying the
-    ShowVideoMenu(popup|top) patch - SamuriHL's CoreELEC build among them.
-    There is no way to probe for the patch from a script.
+    The bare `ShowVideoMenu` is the one form every build understands, and on
+    each of them it opens the popup menu first:
+
+    * upstream Kodi and the CoreELEC canary build match the parameter exactly
+      (`paramlow == "showvideomenu"`), so an argument form such as
+      `ShowVideoMenu(popup)` is *silently ignored* there; the bare form opens
+      the popup menu and falls back to the top menu only when the disc
+      rejects the popup key;
+    * builds carrying the ShowVideoMenu(popup|top) patch - SamuriHL's
+      CoreELEC build among them - keep that same popup-first behaviour for
+      the bare form.
     """
-    execute_builtin('PlayerControl(ShowVideoMenu(popup))')
+    execute_builtin('PlayerControl(ShowVideoMenu)')
 
 
 def disc_top_menu():
-    """Open the disc's top/root menu."""
+    """Open the disc's top/root menu.
+
+    There is no common way to ask for the top menu, and no way to probe a
+    build for either from a script, so both known forms are sent. A build
+    ignores the one it does not know without a word, so exactly one of them
+    acts on each build that has a top menu command at all:
+
+    * `ShowVideoTopMenu` is the CoreELEC canary build's action
+      (ce-canary/canary, menu-playback series). It reaches the top menu even
+      inside a BD-J extra, where the popup key is taken and ignored.
+    * `ShowVideoMenu(top)` is the argument form of the ShowVideoMenu patch
+      (SamuriHL's CoreELEC build). Canary and upstream match `showvideomenu`
+      exactly, so it does nothing there - and the patch matches by prefix,
+      which `showvideotopmenu` does not share, so the first form does
+      nothing on that build either.
+
+    A stock upstream build knows neither and does nothing.
+    """
+    execute_builtin('PlayerControl(ShowVideoTopMenu)')
     execute_builtin('PlayerControl(ShowVideoMenu(top))')
 
 
